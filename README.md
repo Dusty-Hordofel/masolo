@@ -12,3 +12,5 @@ $ npx prisma db push
 
 - create [dynamic-form-field](src/components/forms/dynamic-form-field/index.tsx)
 - create [NewProductPage](src/app/account/product/new/page.tsx)
+
+### 3. Product Modal

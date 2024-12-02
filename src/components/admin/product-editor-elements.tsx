@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { HeadingAndSubheading } from "./heading-and-subheading";
 import { ProductEditorSharedProps } from "@/@types/admin/admin.products.interface";
 import DynamicFormField from "../forms/dynamic-form-field";
@@ -31,6 +31,14 @@ const ProductEditorElements = ({
   const handleProductSubmit = (values: ProductFormData) => {
     console.log("🚀 ~ handleProductSubmit ~ values:", values);
   };
+
+  const navigateOnCloseModal = useCallback(() => {
+    if (displayType === "modal") {
+      router.back();
+    } else {
+      router.push("/account/selling/products");
+    }
+  }, [router, displayType]);
 
   return (
     <>
@@ -70,7 +78,7 @@ const ProductEditorElements = ({
             placeholder: "Enter a product description*",
           }}
         />
-        <div className="flex">
+        <div className="flex  gap-x-4">
           <DynamicFormField
             inputType="input"
             label="Price"
@@ -96,8 +104,12 @@ const ProductEditorElements = ({
             }}
           />
         </div>
-        <div className="flex items-center gap-2 ml-auto">
-          <Button type="button" variant="outline">
+        <div className=" flex justify-end items-center gap-x-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={navigateOnCloseModal}
+          >
             Cancel
           </Button>
           <Button
