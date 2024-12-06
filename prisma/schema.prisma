@@ -19,8 +19,8 @@ model Product {
   price       Float   @default(0) @map("price")
   description String?
   inventory   Float   @default(0)
-  images      Json
-  storeId     String // Référence à une autre collection (par exemple, Store)
+  images      Json?
+  storeId     String? // Reference to another collection (e.g. Store)
 
-  @@map("products") // Correspond au nom de la collection MongoDB
+  @@map("products") // Corresponds to the name of the MongoDB collection, note that MongoDB uses it by default.
 }

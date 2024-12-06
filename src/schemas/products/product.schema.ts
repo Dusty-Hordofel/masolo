@@ -24,6 +24,14 @@ export const ProductSchema = z.object({
       "L'inventaire doit être un nombre valide"
     )
     .default(0),
+  images: z
+    .array(
+      z.object({
+        url: z.string().url("L'URL de l'image doit être valide"),
+        alt: z.string().optional(), // Texte alternatif optionnel
+      })
+    )
+    .optional(),
   // images: z
   //   .array(
   //     z.object({
@@ -32,7 +40,10 @@ export const ProductSchema = z.object({
   //     })
   //   )
   //   .min(1, "Au moins une image est requise"),
-  // storeId: z.string().regex(/^[a-f\d]{24}$/i, "ID de magasin invalide"), // Validation pour un ObjectId MongoDB
+  storeId: z
+    .string()
+    .regex(/^[a-f\d]{24}$/i, "ID de magasin invalide")
+    .optional(), // Validation pour un ObjectId MongoDB
 });
 
 export type ProductFormData = z.infer<typeof ProductSchema>;
