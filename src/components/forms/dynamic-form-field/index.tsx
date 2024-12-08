@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Item } from "@/@types/admin/admin.item.interface";
 import { cn } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
@@ -27,6 +28,7 @@ interface DynamicFormFieldProps {
   register: UseFormRegister<any>;
   errors: FieldErrors<FieldValues>;
   fieldProps?: InputProps | TextareaProps | SelectProps;
+  showLabel?: boolean;
 }
 
 const DynamicFormField = ({
@@ -40,6 +42,7 @@ const DynamicFormField = ({
   type,
   options,
   fieldProps,
+  showLabel = false,
 }: DynamicFormFieldProps) => {
   const error = errors[name];
   const errorMessage = error ? (error.message as string) : "";
@@ -48,14 +51,19 @@ const DynamicFormField = ({
     case "textarea":
       return (
         <div className=" w-full">
-          <label className="sr-only" htmlFor={`input-${label}`}>
+          <label
+            className={cn(!showLabel && "sr-only", "store-name")}
+            htmlFor={`input-${label}`}
+          >
             {label}
           </label>
+
           <Textarea
             id={`input-${label}`}
             {...register(name)}
             {...(fieldProps as TextareaProps)}
             rows={lines}
+            className={className}
           />
           <ErrorMessage type="text" error={error} errorMessage={errorMessage} />
         </div>
@@ -70,7 +78,10 @@ const DynamicFormField = ({
               error ? "text-red-600" : "text-black-200"
             )}
           >
-            <label className="sr-only" htmlFor={`select-${label}`}>
+            <label
+              className={cn(!showLabel && "sr-only", "text-sm font-medium")}
+              htmlFor={`select-${label}`}
+            >
               {label}
             </label>
             <select
@@ -78,6 +89,7 @@ const DynamicFormField = ({
               id={`select-${label}`}
               name={name}
               {...(fieldProps as SelectProps)}
+              className={className}
             >
               <option style={{ display: "none" }}>{label}</option>
 
@@ -98,9 +110,13 @@ const DynamicFormField = ({
     default:
       return (
         <div className=" w-full">
-          <label className="sr-only" htmlFor={`input-${label}`}>
+          <label
+            className={cn(!showLabel && "sr-only", "text-sm font-semibold")}
+            htmlFor={`input-${label}`}
+          >
             {label}
           </label>
+
           <Input
             id={`input-${label}`}
             type={type}
@@ -109,6 +125,7 @@ const DynamicFormField = ({
             })}
             {...(fieldProps as InputProps)}
             defaultValue={type === "number" ? 0 : ""}
+            className={className}
           />
 
           <ErrorMessage type="text" error={error} errorMessage={errorMessage} />

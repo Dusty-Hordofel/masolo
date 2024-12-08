@@ -24,3 +24,13 @@ model Product {
 
   @@map("products") // Corresponds to the name of the MongoDB collection, note that MongoDB uses it by default.
 }
+
+model Store {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String  @unique @map("store_name")
+  industry    String?
+  description String?
+  slug        String  @unique @map("slug")
+
+  @@map("stores")
+}
