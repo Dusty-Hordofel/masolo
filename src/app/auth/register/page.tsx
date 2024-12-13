@@ -25,7 +25,6 @@ export default function RegisterPage() {
         <div className="mx-auto px-9 flex w-full flex-col justify-center space-y-6 max-w-[480px]">
           <AuthHeader
             title="Your journey begins here - Register."
-            // title="Enter your email to join us or sign in."
             description=""
           />
           <AuthRegisterForm />
