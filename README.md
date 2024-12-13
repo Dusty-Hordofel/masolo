@@ -16,3 +16,10 @@ $ npx prisma db push
 ### 3. Product Modal
 
 ### 4. Store
+
+### 5. User Authentication - 1
+
+```bash
+$ npm install @prisma/client @auth/prisma-adapter
+$
+```
