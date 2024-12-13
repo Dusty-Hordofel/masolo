@@ -23,3 +23,5 @@ $ npx prisma db push
 $ npm install @prisma/client @auth/prisma-adapter
 $
 ```
+
+### 6. User Authentication - 2
