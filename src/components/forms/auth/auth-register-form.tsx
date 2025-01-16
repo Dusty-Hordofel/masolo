@@ -12,8 +12,11 @@ import { Button } from "@/components/ui/button";
 import { RegisterFormData, RegisterSchema } from "@/schemas/user/auth";
 import DynamicFormField from "../dynamic-form-field";
 import { Loader2, Mail } from "lucide-react";
-import SocialAuthButtons from "./social-auth-buttons";
+import AuthSocialButtons from "./auth-social-buttons";
 import PasswordRequirements from "./password-requirements";
+import AuthDivider from "./auth-divider";
+import SubmitButton from "./submit-button";
+import PasswordToggleButton from "./password-toggle-button";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -38,11 +41,11 @@ function AuthRegisterForm({ className, ...props }: UserAuthFormProps) {
   });
 
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+
   const toggleLoading = (key: keyof typeof loading, value: boolean) => {
     setLoading((prev) => ({ ...prev, [key]: value }));
   };
 
-  const searchParams = useSearchParams();
   const password = watch("password", "");
 
   async function handleRegisterSubmit(data: RegisterFormData) {
@@ -103,59 +106,25 @@ function AuthRegisterForm({ className, ...props }: UserAuthFormProps) {
           name="password"
           register={register}
           errors={errors}
-          type="password"
+          type={isVisible ? "text" : "password"}
           fieldProps={{
             disabled: false,
           }}
           showError={false}
         >
-          <button
-            className={cn(
-              "absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg  outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ",
-              errors["password"]
-                ? "text-destructive"
-                : "text-muted-foreground/80"
-            )}
-            type="button"
-            onClick={toggleVisibility}
-            aria-label={isVisible ? "Hide password" : "Show password"}
-            aria-pressed={isVisible}
-            aria-controls="password"
-          >
-            {isVisible ? (
-              <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
-            ) : (
-              <Eye size={16} strokeWidth={2} aria-hidden="true" />
-            )}
-          </button>
+          <PasswordToggleButton
+            isVisible={isVisible}
+            toggleVisibility={toggleVisibility}
+            hasError={!!errors["password"]}
+          />
         </DynamicFormField>
-        <PasswordRequirements errors={errors} password={password} />
 
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="flex gap-2 items-center justify-center w-full h-11"
-        >
-          {isSubmitting ? (
-            <Loader2 size={18} className="animate-spin" />
-          ) : (
-            "Continuer"
-          )}
-        </Button>
+        <PasswordRequirements errors={errors} password={password} />
+        <SubmitButton label="Continuer" isSubmitting={isSubmitting} />
       </form>
 
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
-      </div>
-
-      <SocialAuthButtons
+      <AuthDivider />
+      <AuthSocialButtons
         isSubmitting={isSubmitting}
         loading={loading}
         toggleLoading={toggleLoading}

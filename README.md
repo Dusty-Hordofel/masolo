@@ -25,3 +25,5 @@ $
 ```
 
 ### 6. User Authentication - 2
+
+### 7. Account

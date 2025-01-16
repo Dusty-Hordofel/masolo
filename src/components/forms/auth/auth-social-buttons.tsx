@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
-type SocialAuthButtonsProps = {
+type AuthSocialButtonsProps = {
   toggleLoading: (key: "general" | "google" | "github", value: boolean) => void;
   loading: {
     general: boolean;
@@ -30,11 +30,11 @@ const AUTH_PROVIDERS = [
   },
 ];
 
-const SocialAuthButtons = ({
+const AuthSocialButtons = ({
   toggleLoading,
   loading,
   isSubmitting,
-}: SocialAuthButtonsProps) => {
+}: AuthSocialButtonsProps) => {
   const handleSignIn = (provider: string) => {
     toggleLoading(provider as "google" | "github", true);
     signIn(provider, {
@@ -68,4 +68,4 @@ const SocialAuthButtons = ({
   );
 };
 
-export default SocialAuthButtons;
+export default AuthSocialButtons;

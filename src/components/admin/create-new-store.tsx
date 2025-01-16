@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import DynamicFormField from "../forms/dynamic-form-field";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,14 +12,12 @@ import {
   StoreSchemaFormData,
 } from "@/schemas/stores/stores.schema";
 import { createStore } from "@/server-actions/store";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast.hook";
 import { cn } from "@/lib/utils";
 
 export const CreateNewStore = () => {
   const router = useRouter();
   const { toast } = useToast();
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const defaultValues: StoreSchemaFormData = {
     name: "",
@@ -38,61 +35,60 @@ export const CreateNewStore = () => {
   });
 
   const handleStoreSubmit = async (data: StoreSchemaFormData) => {
-    await createStore(data).then((res) => {
-      setIsLoading(false);
-      if (!res.error) {
-        reset();
-        router.refresh();
-      }
-      toast({
-        title: res.action,
-        description: res.message,
-      });
+    const res = await createStore(data);
+    if (!res.error) {
+      reset();
+      router.refresh();
+    }
+    toast({
+      title: res.title,
+      description: res.description,
     });
   };
 
   return (
     <div className="grid grid-cols-2 gap-12">
       <form
-        className="flex flex-col  col-span-1"
+        className="flex flex-col  col-span-1 gap-y-4"
         onSubmit={handleSubmit(handleStoreSubmit)}
       >
         <div>
           <Heading size="h3">Create your store</Heading>
-          <p className="mt-2 mb-5 ">
+          <p className="mt-2">
             Enter the name of your store below and press create.
           </p>
         </div>
-        <DynamicFormField
-          showLabel
-          inputType="input"
-          label="Store Name"
-          name="name"
-          register={register}
-          errors={errors}
-          type="text"
-          className="mt-2"
-          fieldProps={{
-            placeholder: "e.g. Tim's Toys",
-            disabled: false,
-          }}
-        />
-        <DynamicFormField
-          inputType="textarea"
-          label="Description"
-          name="description"
-          register={register}
-          errors={errors}
-          lines={8}
-          fieldProps={{
-            placeholder: "Enter a store description*",
-          }}
-        />
-
+        <div className="space-y-4">
+          <DynamicFormField
+            showLabel
+            inputType="input"
+            label="Store Name"
+            name="name"
+            register={register}
+            errors={errors}
+            type="text"
+            // className="mt-2"
+            fieldProps={{
+              placeholder: "e.g. Tim's Toys",
+              disabled: false,
+            }}
+          />
+          {/* <DynamicFormField
+            inputType="textarea"
+            label="Description"
+            name="description"
+            register={register}
+            errors={errors}
+            lines={8}
+            fieldProps={{
+              placeholder: "Enter a store description*",
+            }}
+          /> */}
+        </div>
         <div className="w-fit">
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={isSubmitting}
             className="font-semibold relative"
           >
             {isSubmitting && (

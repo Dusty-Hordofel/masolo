@@ -1,3 +1,4 @@
+import DemoComponent from "@/components/demo/demo-component";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,6 +12,12 @@ export default function Home() {
       <Link href="/?modalName=login" style={linkStyle}>
         Ouvrir la modale de connexion
       </Link>
+      {/* 
+      <DemoComponent
+        // key={componentName}
+        directory="forms/auth"
+        componentName="auth-register-form"
+      /> */}
     </main>
   );
 }

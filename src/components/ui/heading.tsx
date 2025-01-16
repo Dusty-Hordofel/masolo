@@ -19,3 +19,5 @@ export const Heading = ({
   const Tag = size;
   return <Tag className={cn(headingStyles[size], className)}>{children}</Tag>;
 };
+
+
