@@ -9,6 +9,7 @@ interface HeadingAndSubheadingProps {
   subheadingAppearance?: "default" | "secondary";
   spacing?: "small" | "medium" | "large";
   className?: string;
+  textClassName?: string;
 }
 
 export const HeadingAndSubheading = ({
@@ -18,6 +19,7 @@ export const HeadingAndSubheading = ({
   subheadingAppearance = "secondary",
   spacing = "medium",
   className,
+  textClassName,
 }: HeadingAndSubheadingProps) => {
   const spacingStyles = {
     small: "mb-2",
@@ -30,7 +32,7 @@ export const HeadingAndSubheading = ({
       <Heading size={headingSize}>{heading}</Heading>
       <Text
         appearance={subheadingAppearance}
-        className={cn(spacingStyles[spacing])}
+        className={cn(spacingStyles[spacing], textClassName)}
       >
         {subheading}
       </Text>

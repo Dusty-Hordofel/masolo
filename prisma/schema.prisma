@@ -13,14 +13,131 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  SUPER_ADMIN // Full control over the platform
+  ADMIN // Manages user and seller accounts, platform settings
+  MODERATOR // Handles reviews, Q&A, and content moderation
+  MARKETING_MANAGER // Creates and manages campaigns and promotions
+  FINANCE_MANAGER // Oversees transactions, refunds, and payouts
+  CUSTOMER_SUPPORT // Provides support to customers
+  SELLER_SUPPORT // Provides support to sellers
+  DATA_ANALYST // Analyzes user behavior, sales trends
+  LOGISTICS_PARTNER // Manages warehousing, shipping, and returns
+  SUPPLIER // Supplies inventory directly to the platform
+  SELLER // Third-party seller managing their products
+  USER // Regular customer browsing and shopping
+  PREMIUM_USER // Customers with access to premium services
+  FRAUD_SPECIALIST // Detects and prevents fraud
+  COMPLIANCE_OFFICER // Ensures compliance with laws and regulations
+}
+
+model User {
+  id                      String                 @id @default(auto()) @map("_id") @db.ObjectId
+  name                    String?
+  email                   String?                @unique
+  emailVerified           DateTime?
+  role                    UserRole               @default(USER)
+  image                   String?
+  password                String?
+  accounts                Account[]
+  sessions                Session[]
+  isTwoFactorEnabled      Boolean                @default(false)
+  twoFactorConfirmation   TwoFactorConfirmation?
+  twoFactorConfirmationId String?                @db.ObjectId
+  lastLogin               DateTime?              @updatedAt
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+  Store                   Store[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique @map("session_token")
+  userId       String   @db.ObjectId
+  expires      DateTime @map("expiresAt")
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime @map("expiresAt")
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+
 model Product {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   price       Float   @default(0) @map("price")
   description String?
   inventory   Float   @default(0)
-  images      Json
-  storeId     String // Référence à une autre collection (par exemple, Store)
+  images      Json?
+  storeId     String? // Reference to another collection (e.g. Store)
 
-  @@map("products") // Correspond au nom de la collection MongoDB
+  @@map("products") // Corresponds to the name of the MongoDB collection, note that MongoDB uses it by default.
+}
+
+model Store {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String  @unique @map("store_name")
+  industry    String?
+  description String?
+  slug        String  @unique @map("slug")
+  owner       User?   @relation(fields: [ownerId], references: [id])
+  ownerId     String? @db.ObjectId
+
+  @@map("stores")
 }

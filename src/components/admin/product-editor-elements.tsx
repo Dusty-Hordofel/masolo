@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { HeadingAndSubheading } from "./heading-and-subheading";
 import { ProductEditorSharedProps } from "@/@types/admin/admin.products.interface";
 import DynamicFormField from "../forms/dynamic-form-field";
@@ -13,6 +13,7 @@ import {
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { createProduct } from "@/server-actions/products";
 
 const ProductEditorElements = ({
   displayType,
@@ -22,15 +23,69 @@ const ProductEditorElements = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  const defaultValues: ProductFormData = {
+    name: "",
+    price: 0,
+    description: "",
+    inventory: 0,
+    images: [], // Tableau vide par défaut
+    storeId: undefined, // Undefined si aucune boutique n'est sélectionnée
+  };
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<ProductFormData>({ resolver: zodResolver(ProductSchema) });
+    formState: { errors, isSubmitting },
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(ProductSchema),
+    defaultValues,
+  });
 
-  const handleProductSubmit = (values: ProductFormData) => {
-    console.log("🚀 ~ handleProductSubmit ~ values:", values);
+  const handleProductSubmit = async (data: ProductFormData) => {
+    const result = await createProduct(data);
+    console.log("🚀 ~ handleProductSubmit ~ result:", result);
+    // console.log("🚀 ~ handleProductSubmit ~ values:", data);
+    // const response = await fetch("/api/V1/product", {
+    //   method: "POST",
+    //   body: JSON.stringify(data),
+    // });
+    // const result = await response.json();
+    // console.log("🚀 ~ result ~ result:", result);
+    // // {
+    // create new product
+    // as unknown as {
+    //   error: boolean;
+    //   message: string;
+    //   action: string;
+    //   productId?: string;
+    // };
+    // console.log(data);
+    // if (data.productId) {
+    //   router.push(
+    //     `${secondLevelNestedRoutes.product.base}/${data.productId}`
+    //   );
+    // }
+    // setFormValues(defaultValues);
+    // }
+    // try {
+    //   const result = await createProduct(data); // Appel à la Server Action
+    //   console.log("Produit créé :", result); // Log pour confirmation
+    // } catch (e: any) {
+    //   console.error("Erreur :", e.message || "Une erreur est survenue");
+    //   // setError(e.message || "Une erreur est survenue");
+    // }
+    // finally {
+    //   // setIsSubmitting(false);
+    // }
   };
+
+  const navigateOnCloseModal = useCallback(() => {
+    if (displayType === "modal") {
+      router.back();
+    } else {
+      router.push("/account/selling/products");
+    }
+  }, [router, displayType]);
 
   return (
     <>
@@ -70,7 +125,7 @@ const ProductEditorElements = ({
             placeholder: "Enter a product description*",
           }}
         />
-        <div className="flex">
+        <div className="flex  gap-x-4">
           <DynamicFormField
             inputType="input"
             label="Price"
@@ -96,8 +151,12 @@ const ProductEditorElements = ({
             }}
           />
         </div>
-        <div className="flex items-center gap-2 ml-auto">
-          <Button type="button" variant="outline">
+        <div className=" flex justify-end items-center gap-x-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={navigateOnCloseModal}
+          >
             Cancel
           </Button>
           <Button
@@ -105,8 +164,13 @@ const ProductEditorElements = ({
             disabled={isLoading}
             className="flex gap-2 items-center justify-center"
           >
-            {!!isLoading && <Loader2 size={18} className="animate-spin" />}
+            {/* {!!isLoading && <Loader2 size={18} className="animate-spin" />} */}
             Create
+            {isSubmitting ? (
+              <Loader2 size={18} className="animate-spin" />
+            ) : (
+              "Create"
+            )}
           </Button>
         </div>
       </form>
