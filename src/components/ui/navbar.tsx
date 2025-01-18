@@ -10,6 +10,8 @@ import { ProductSearch } from "../storefront/product-search";
 import { IconWithText } from "./icon-with-text";
 import { Truck } from "lucide-react";
 import { ShoppingCartHeader } from "./shopping-cart-header";
+import { MenuItems } from "./menu-items";
+
 // import { MenuItems } from "./menu-items";
 
 type Props = {};
@@ -74,7 +76,9 @@ const NavBar = ({
         </ContentWrapper>
         <Line className="hidden md:block" />
         <ContentWrapper className="hidden md:block py-0">
-          <div className="-ml-4 mt-1">{/* <MenuItems /> */}</div>
+          <div className="-ml-4 mt-1">
+            <MenuItems />
+          </div>
         </ContentWrapper>
       </nav>
     </>

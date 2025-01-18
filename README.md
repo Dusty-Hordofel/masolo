@@ -30,4 +30,4 @@ $
 
 ### 8. AdminLayout - 1
 
-### 8. AdminLayout - 2
+### 8. AdminLayout - 2 (MenuItems)

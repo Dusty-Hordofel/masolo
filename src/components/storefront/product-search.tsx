@@ -90,7 +90,7 @@ export function ProductSearch() {
   // Active le raccourci Cmd+K
   useKeyboardShortcut(toggleDialog);
 
-  // Mémoïse les résultats pour éviter des recalculs inutiles
+  // Mémorise les résultats pour éviter des recalculs inutiles
   const renderedResults = useMemo(() => {
     if (isLoading) {
       return <LoadingSkeleton className="w-full h-12" />;
