@@ -31,3 +31,5 @@ $
 ### 8. AdminLayout - 1
 
 ### 8. AdminLayout - 2 (MenuItems)
+
+### 8. AdminLayout - 3 and Footer

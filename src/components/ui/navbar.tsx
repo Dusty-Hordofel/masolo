@@ -81,6 +81,15 @@ const NavBar = ({
           </div>
         </ContentWrapper>
       </nav>
+      {showSecondAnnouncementBar && (
+        <AnnouncementBar
+          columns={1}
+          description="New summer sale - limited time only!"
+          backgroundColor="bg-blue-900"
+          textColor="text-secondary"
+        />
+      )}
+      <Line />
     </>
   );
 };
