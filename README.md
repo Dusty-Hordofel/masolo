@@ -34,4 +34,6 @@ $
 
 ### 8. AdminLayout - 3 and Footer
 
-### 9. User Authentication - 3
+### 9. User Authentication - 3 (Google)
+
+### 10. User Authentication - 4 (Update user session)

@@ -4,6 +4,7 @@ import Google from "next-auth/providers/google";
 import prismadb from "./lib/prismadb";
 import { Store, UserRole } from "@prisma/client";
 import { getUserById } from "./services/prisma/user.service";
+import { StoreService } from "./services/prisma/store.service";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prismadb),
@@ -22,17 +23,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt" },
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         const dbUser = await getUserById(user.id as string);
-
-        // await prismadb.user.findUnique({
-        //   where: { id: user.id },
-        //   include: { store: true },
-        // });
-
-        console.log("🚀 ~ jwt ~ dbUser:USER", dbUser);
-
         const stores = await prismadb.store.findMany({
           where: { ownerId: user.id },
         });
@@ -51,11 +44,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
       }
 
+      // Update when `update()` is called
+      if (trigger === "update") {
+        const stores = await StoreService.getUserStores(token.id as string);
+        token.store = stores;
+      }
+
       return token;
     },
 
-    async session({ session, token }) {
-      // console.log("🚀 ~ session ~ session:SESS", session);
+    async session({ session, token, user, trigger }) {
       if (token) {
         session.user = {
           ...session.user,

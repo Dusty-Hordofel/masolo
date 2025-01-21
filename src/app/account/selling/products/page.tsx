@@ -15,10 +15,7 @@ const ProductsPage = (props: Props) => {
           heading="Products"
           subheading="View and manage your products"
         />
-        <Link
-          href="/account/selling/product/new"
-          // className={cn(buttonVariants({ variant: "default" }), "font-medium")}
-        >
+        <Link href="/account/selling/product/new">
           <Button>
             New Product <Plus size={18} className="ml-2" />
           </Button>
