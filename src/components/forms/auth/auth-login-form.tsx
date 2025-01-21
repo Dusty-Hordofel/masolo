@@ -37,9 +37,13 @@ function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
   });
 
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+
   const toggleLoading = (key: keyof typeof loading, value: boolean) => {
     setLoading((prev) => ({ ...prev, [key]: value }));
   };
+
+  console.log(process.env.GOOGLE_CLIENT_SECRET);
+  console.log(process.env.GOOGLE_CLIENT_SECRET);
 
   async function handleRegisterSubmit(data: LoginFormData) {
     console.log("🚀 ~ AuthForm ~ data:", data);
@@ -47,7 +51,7 @@ function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={handleSubmit(handleRegisterSubmit)} className="space-y-4">
+      {/* <form onSubmit={handleSubmit(handleRegisterSubmit)} className="space-y-4">
         <DynamicFormField
           inputType="input"
           showLabel
@@ -60,7 +64,12 @@ function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
             disabled: false,
           }}
         >
-          <Mail size={16} strokeWidth={2} aria-hidden="true" />
+          <Mail
+            size={16}
+            strokeWidth={2}
+            aria-hidden="true"
+            className="absolute top-10 right-3"
+          />
         </DynamicFormField>
 
         <DynamicFormField
@@ -83,9 +92,9 @@ function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
         </DynamicFormField>
 
         <SubmitButton label="Continuer" isSubmitting={isSubmitting} />
-      </form>
+      </form> */}
 
-      <AuthDivider />
+      {/* <AuthDivider /> */}
       <AuthSocialButtons
         isSubmitting={isSubmitting}
         loading={loading}

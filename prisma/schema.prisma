@@ -47,7 +47,7 @@ model User {
   lastLogin               DateTime?              @updatedAt
   createdAt               DateTime               @default(now())
   updatedAt               DateTime               @updatedAt
-  Store                   Store[]
+  store                   Store[]
 
   @@map("users")
 }

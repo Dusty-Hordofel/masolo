@@ -12,7 +12,15 @@ export const getUserByEmail = async (email: string) => {
 
 export const getUserById = async (id: string) => {
   try {
-    const user = await prismadb.user.findUnique({ where: { id } });
+    // const user = await prismadb.user.findUnique({ where: { id } });
+    const user = await prismadb.user.findUnique({
+      where: { id },
+    });
+
+    // await prismadb.user.findUnique({
+    //   where: { id: user.id },
+    //   include: { store: true },
+    // });
 
     return user;
   } catch (error) {

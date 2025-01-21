@@ -14,8 +14,12 @@ const PasswordToggleButton = ({
 }: PasswordToggleButtonProps) => {
   return (
     <button
+      // className={cn(
+      //   "absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 bg-yellow-300",
+      //   hasError ? "text-destructive" : "text-muted-foreground/80"
+      // )}
       className={cn(
-        "absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+        "absolute top-10 right-3",
         hasError ? "text-destructive" : "text-muted-foreground/80"
       )}
       type="button"
