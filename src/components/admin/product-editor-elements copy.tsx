@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { HeadingAndSubheading } from "./heading-and-subheading";
 import { ProductEditorSharedProps } from "@/@types/admin/admin.products.interface";
 import DynamicFormField from "../forms/dynamic-form-field";
@@ -24,7 +24,7 @@ import {
   singleLevelNestedRoutes,
 } from "@/app/data/routes";
 import { Image, Product } from "@prisma/client";
-import ImageUploader4 from "./image-uploader-4";
+import ImageUploader3 from "./image-uploader-3";
 
 export type ProductImage = {
   publicId: string;
@@ -44,6 +44,7 @@ const ProductEditorElements = ({
     price: initialValues?.price || 0,
     description: initialValues?.description || "",
     inventory: initialValues?.inventory || 0,
+    // images: (initialValues?.images as [] as ProductImage[]) || [],
     storeId: (initialValues?.storeId as string) || undefined,
   };
 
@@ -59,11 +60,18 @@ const ProductEditorElements = ({
   });
 
   const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
-
-  const currentProductImages = useMemo(
-    () => [...(initialValues?.images || []), ...uploadedImages],
-    [initialValues?.images, uploadedImages]
+  const [initialProductImages, setInitialProductImages] = useState<Image[]>(
+    initialValues?.images || []
   );
+
+  const [currentProductImages, setCurrentProductImages] = useState<Image[]>([
+    ...initialProductImages,
+    ...uploadedImages,
+  ]);
+
+  useEffect(() => {
+    setCurrentProductImages([...initialProductImages, ...uploadedImages]);
+  }, [initialProductImages, uploadedImages]); // Dépendances cruciales
 
   useEffect(() => {
     if (initialValues) {
@@ -97,30 +105,21 @@ const ProductEditorElements = ({
     });
   };
 
-  const closeModal = useCallback(() => {
-    router[displayType === "modal" ? "back" : "push"](
-      singleLevelNestedRoutes.account.products
-    );
-  }, [router, displayType]);
+  // const navigateOnCloseModal = useCallback(() => {
+  //   if (displayType === "modal") {
+  //     router.back();
+  //   } else {
+  //     router.push("/account/selling/products");
+  //   }
+  // }, [router, displayType]); // Mo nommage
 
-  const handleDeleteProduct = async (id: string) => {
-    if (!id) return;
-
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this product?"
-    );
-    if (!confirmed) return;
-
-    const deletedProduct = await deleteProduct(id);
-    if (deletedProduct.success) {
-      router.refresh();
+  const dismissModal = useCallback(() => {
+    if (displayType === "modal") {
+      router.back();
+    } else {
       router.push(singleLevelNestedRoutes.account.products);
     }
-    toast({
-      title: deletedProduct.title,
-      description: deletedProduct.description,
-    });
-  };
+  }, [router, displayType]);
 
   return (
     <>
@@ -168,11 +167,11 @@ const ProductEditorElements = ({
             {productStatus === "existing-product" &&
               initialValues &&
               initialValues.images && (
-                <ImageUploader4
+                <ImageUploader3
                   productId={initialValues?.id as string}
                   setUploadedImages={setUploadedImages}
                   currentProductImages={currentProductImages}
-                  setCurrentProductImages={setUploadedImages}
+                  setCurrentProductImages={setCurrentProductImages}
                 />
               )}
           </div>
@@ -211,13 +210,25 @@ const ProductEditorElements = ({
             <Button
               type="button"
               variant="destructiveOutline"
-              onClick={() => handleDeleteProduct(initialValues.id)}
+              onClick={async () => {
+                if (initialValues && initialValues.id) {
+                  const deletedProduct = await deleteProduct(initialValues.id);
+                  if (deletedProduct.success) {
+                    router.refresh();
+                    router.push(singleLevelNestedRoutes.account.products);
+                  }
+                  toast({
+                    title: deletedProduct.title,
+                    description: deletedProduct.description,
+                  });
+                }
+              }}
             >
               Delete
             </Button>
           )}
           <div className="flex items-center gap-2 ml-auto">
-            <Button type="button" variant="outline" onClick={closeModal}>
+            <Button type="button" variant="outline" onClick={dismissModal}>
               Cancel
             </Button>
             <Button
