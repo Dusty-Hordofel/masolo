@@ -1,13 +1,64 @@
+import { secondLevelNestedRoutes } from "@/app/data/routes";
 import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
+import { InfoCard } from "@/components/admin/info-card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Plus } from "lucide-react";
+import { Plus, Store } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import DataTable from "./data-table";
+import { columns } from "./columns";
 
 type Props = {};
 
+const invoices = [
+  {
+    invoice: "INV001",
+    paymentStatus: "Paid",
+    totalAmount: "$250.00",
+    paymentMethod: "Credit Card",
+  },
+  {
+    invoice: "INV002",
+    paymentStatus: "Pending",
+    totalAmount: "$150.00",
+    paymentMethod: "PayPal",
+  },
+  {
+    invoice: "INV003",
+    paymentStatus: "Unpaid",
+    totalAmount: "$350.00",
+    paymentMethod: "Bank Transfer",
+  },
+  {
+    invoice: "INV004",
+    paymentStatus: "Paid",
+    totalAmount: "$450.00",
+    paymentMethod: "Credit Card",
+  },
+  {
+    invoice: "INV005",
+    paymentStatus: "Paid",
+    totalAmount: "$550.00",
+    paymentMethod: "PayPal",
+  },
+  {
+    invoice: "INV006",
+    paymentStatus: "Pending",
+    totalAmount: "$200.00",
+    paymentMethod: "Bank Transfer",
+  },
+  {
+    invoice: "INV007",
+    paymentStatus: "Unpaid",
+    totalAmount: "$300.00",
+    paymentMethod: "Credit Card",
+  },
+];
+
 const ProductsPage = (props: Props) => {
+  const productsList = [];
+  // const productsList = await getData();
   return (
     <>
       <div className="flex items-start justify-between">
@@ -22,30 +73,25 @@ const ProductsPage = (props: Props) => {
         </Link>
       </div>
 
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-        consequuntur animi nisi fugit repellendus reprehenderit, non atque, qui
-        pariatur esse eveniet. Error officiis soluta libero natus optio vel quae
-        est explicabo maiores ipsa quidem, molestias aliquid expedita
-        repudiandae nisi praesentium ipsum repellendus id porro harum ullam
-        consequuntur fugit? Hic nisi voluptatibus perspiciatis fuga dolorum
-        fugiat consequatur dolore ut sunt, ex, molestias cupiditate optio sit
-        magni maxime dolores possimus adipisci! Officia nobis modi libero quos
-        aperiam iure voluptate eaque totam pariatur. Facere fugit autem expedita
-        cupiditate nisi ex ullam velit ipsa excepturi fugiat, ipsum quidem amet
-        pariatur dolorem impedit sint facilis! Laborum, ab saepe, laboriosam
-        temporibus inventore vero animi non, natus quis tenetur fugit? At ea
-        corrupti quos qui repudiandae saepe magnam error similique sit
-        distinctio deleniti voluptatum rem nostrum tempora culpa ratione, iure
-        excepturi, quibusdam nesciunt vitae! Assumenda alias reprehenderit
-        natus, dolores tempora deserunt vel accusamus ex, doloremque delectus
-        id! Laborum, ea hic eligendi recusandae velit debitis quasi
-        exercitationem minus ratione. Officiis fuga facere dolores eos magnam?
-        Ad dolores nam neque alias. Aliquam dolores aspernatur sit tempore,
-        perferendis voluptatem ut laborum iste omnis repudiandae, modi, esse
-        inventore. Alias veritatis nobis consectetur itaque numquam officiis?
-        Qui itaque error similique voluptas est!
-      </p>
+      {/* {productsList.length === 0 ? (
+        <InfoCard
+          heading="You don't have any products yet"
+          subheading="Create your first product to get started"
+          icon={<Store size={36} className="text-gray-600" />}
+          button={
+            <Link href={secondLevelNestedRoutes.product.new}>
+              <Button size="sm">Create</Button>
+            </Link>
+          }
+        />
+      ) : ( */}
+      <>
+        {/* <div className="pt-4">
+          <DataTable columns={columns} data={productsList} />
+        </div> */}
+      </>
+      {/* )} */}
+      {/* <DataTable data={invoices} columns={columns} /> */}
     </>
   );
 };
