@@ -38,6 +38,6 @@ $
 
 ### 10. User Authentication - 4 (Update user session)
 
-### 11. Products
+### 11.1. Products
 
-### 11.1. Products (download and delete)
+### 11.2. Products (download and delete)
