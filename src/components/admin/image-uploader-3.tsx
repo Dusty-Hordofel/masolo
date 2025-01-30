@@ -8,28 +8,18 @@ import { Button } from "../ui/button";
 import { deleteProductImage } from "@/server-actions/products";
 import { toast } from "@/hooks/use-toast.hook";
 
-const ImageUploader2 = ({
+const ImageUploader3 = ({
   productId,
-  uploadedImages,
   setUploadedImages,
-  productImages,
-  existingImages,
-  setProductImages,
+  currentProductImages,
+  setCurrentProductImages,
 }: {
   productId: string;
-  uploadedImages: Image[];
-  existingImages: Image[];
-  productImages: Image[];
+  currentProductImages: Image[];
+  setCurrentProductImages: React.Dispatch<React.SetStateAction<Image[]>>;
   setUploadedImages: React.Dispatch<React.SetStateAction<Image[]>>;
-  setProductImages: React.Dispatch<React.SetStateAction<Image[]>>;
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [allProductImages, setAllProductImages] = useState<Image[]>([
-    ...existingImages,
-    ...uploadedImages,
-  ]);
-
-  console.log("🚀 ~ allProductImages:NIOSO", allProductImages);
   const { isUploading, uploadFiles } = useFileUploadToCloudinary(
     productId,
     setUploadedImages
@@ -60,7 +50,7 @@ const ImageUploader2 = ({
   const handleDeleteProductImage = async (id: string) => {
     const deleteledProductImage = await deleteProductImage(id);
     if (deleteledProductImage.success) {
-      setAllProductImages((prev) => prev.filter((i) => i.id !== id));
+      setCurrentProductImages((prev) => prev.filter((i) => i.id !== id));
 
       toast({
         title: deleteledProductImage?.title,
@@ -70,19 +60,20 @@ const ImageUploader2 = ({
   };
 
   return (
-    <>
-      <div className="bg-red-400 w-full">
-        <div className="mt-2 border border-border p-4 rounded-md flex items-center justify-start gap-2 flex-wrap bg-yellow-300 ">
-          <div className="flex flex-wrap gap-4 bg-red-400">
-            {productImages &&
-              productImages.length > 0 &&
-              // [...existingImages, ...uploadedImages]
-
-              allProductImages.map((image, index) => (
-                <div key={index} className="relative">
+    <div>
+      <label htmlFor="product-images" className="font-semibold">
+        Images
+      </label>
+      <div className="w-full">
+        <div className="mt-2 border border-border p-4 rounded-md flex items-center justify-start gap-2 flex-wrap ">
+          <div className="flex flex-wrap gap-4">
+            {currentProductImages &&
+              currentProductImages.length > 0 &&
+              currentProductImages.map((image, index) => (
+                <div key={image.id} className="relative">
                   <img
                     src={image.secureUrl}
-                    alt={`Uploaded ${index + 1}`}
+                    alt={`Uploaded ${image.id}`}
                     style={{
                       width: "144px",
                       height: "144px",
@@ -141,8 +132,8 @@ const ImageUploader2 = ({
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
-export default ImageUploader2;
+export default ImageUploader3;

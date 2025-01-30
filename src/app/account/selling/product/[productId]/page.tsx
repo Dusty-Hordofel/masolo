@@ -8,23 +8,23 @@ interface ProductPageParams {
   productId: string;
 }
 
-type Product =
-  | {
-      name: string;
-      id: string;
-      price: number;
-      description: string | null;
-      inventory: number;
-      storeId: string | null;
-      createdAt: Date;
-      updatedAt: Date;
-      images: {
-        publicId: string;
-        secureUrl: string;
-        alt: string;
-      }[];
-    }
-  | undefined;
+// type Product =
+//   | {
+//       name: string;
+//       id: string;
+//       price: number;
+//       description: string | null;
+//       inventory: number;
+//       storeId: string | null;
+//       createdAt: Date;
+//       updatedAt: Date;
+//       images: {
+//         publicId: string;
+//         secureUrl: string;
+//         alt: string;
+//       }[];
+//     }
+//   | undefined;
 
 const ProductPage = async ({ params }: { params: ProductPageParams }) => {
   const productDetails = (await getProductDetails(

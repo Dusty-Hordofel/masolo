@@ -62,7 +62,8 @@ const DynamicFormField = ({
           >
             <span
               className={cn(
-                "inline-flex bg-background px-2",
+                // "inline-block mb-1 font-semibold"
+                "inline-flex bg-background px-2 mb-1 font-semibold",
                 !!error && "text-destructive"
               )}
             >

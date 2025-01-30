@@ -23,8 +23,8 @@ import {
   secondLevelNestedRoutes,
   singleLevelNestedRoutes,
 } from "@/app/data/routes";
-import ImageUploader2 from "./image-uploader-2";
 import { Image, Product } from "@prisma/client";
+import ImageUploader3 from "./image-uploader-3";
 
 export type ProductImage = {
   publicId: string;
@@ -44,7 +44,7 @@ const ProductEditorElements = ({
     price: initialValues?.price || 0,
     description: initialValues?.description || "",
     inventory: initialValues?.inventory || 0,
-    images: (initialValues?.images as [] as ProductImage[]) || [],
+    // images: (initialValues?.images as [] as ProductImage[]) || [],
     storeId: (initialValues?.storeId as string) || undefined,
   };
 
@@ -59,14 +59,19 @@ const ProductEditorElements = ({
     defaultValues,
   });
 
-  const [uploadedImages, setUploadedImages] = useState<Image[] | []>([]);
-  const [productImages, setProductImages] = useState<Image[] | undefined>(
-    initialValues?.images
+  const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
+  const [initialProductImages, setInitialProductImages] = useState<Image[]>(
+    initialValues?.images || []
   );
 
-  console.log("🚀 ~ productImages:TALA", productImages);
+  const [currentProductImages, setCurrentProductImages] = useState<Image[]>([
+    ...initialProductImages,
+    ...uploadedImages,
+  ]);
 
-  console.log("🚀 ~ productImages:", productImages);
+  useEffect(() => {
+    setCurrentProductImages([...initialProductImages, ...uploadedImages]);
+  }, [initialProductImages, uploadedImages]); // Dépendances cruciales
 
   useEffect(() => {
     if (initialValues) {
@@ -77,13 +82,15 @@ const ProductEditorElements = ({
   const handleProductSubmit = async (formValues: ProductFormData) => {
     let data;
     if (initialValues && initialValues.id) {
-      const response = await updateProduct({
+      data = await updateProduct({
         id: initialValues.id,
-        // images: [...adaptImages(initialValues.images), initialValues],
         ...formValues,
       });
 
-      console.log("🚀 ~ handleProductSubmit ~ response:ROR0", response);
+      if (data.success) {
+        router.refresh();
+        router.push(singleLevelNestedRoutes.account.products);
+      }
     } else {
       data = await createNewProduct(formValues);
       if (data.productId) {
@@ -92,20 +99,19 @@ const ProductEditorElements = ({
         );
       }
     }
-
     toast({
       title: data?.title,
       description: data?.description,
     });
   };
 
-  const navigateOnCloseModal = useCallback(() => {
-    if (displayType === "modal") {
-      router.back();
-    } else {
-      router.push("/account/selling/products");
-    }
-  }, [router, displayType]);
+  // const navigateOnCloseModal = useCallback(() => {
+  //   if (displayType === "modal") {
+  //     router.back();
+  //   } else {
+  //     router.push("/account/selling/products");
+  //   }
+  // }, [router, displayType]); // Mo nommage
 
   const dismissModal = useCallback(() => {
     if (displayType === "modal") {
@@ -130,70 +136,74 @@ const ProductEditorElements = ({
         }
       />
       <form onSubmit={handleSubmit(handleProductSubmit)}>
-        <DynamicFormField
-          inputType="input"
-          label="Product Name"
-          name="name"
-          register={register}
-          errors={errors}
-          type="text"
-          fieldProps={{
-            placeholder: "Enter a product name*",
-            disabled: false,
-          }}
-        />
-        <DynamicFormField
-          inputType="textarea"
-          label="Description"
-          name="description"
-          register={register}
-          errors={errors}
-          lines={8}
-          fieldProps={{
-            placeholder: "Enter a product description*",
-          }}
-        />
-
-        <div className="flex flex-wrap">
-          {productStatus === "existing-product" &&
-            initialValues &&
-            initialValues.images && (
-              <ImageUploader2
-                productId={initialValues?.id as string}
-                uploadedImages={uploadedImages}
-                existingImages={initialValues.images}
-                setUploadedImages={setUploadedImages}
-                productImages={productImages}
-                setProductImages={setProductImages}
-              />
-            )}
-        </div>
-
-        <div className="flex  gap-x-4">
+        <div className="flex flex-col gap-6 mt-2 mb-6">
           <DynamicFormField
+            showLabel
             inputType="input"
-            label="Price"
-            name="price"
+            label="Product Name"
+            name="name"
             register={register}
             errors={errors}
-            type="number"
+            type="text"
             fieldProps={{
-              placeholder: "Enter a product price*",
+              placeholder: "Enter a product name*",
               disabled: false,
             }}
           />
           <DynamicFormField
-            inputType="input"
-            label="Quantity In Stock"
-            name="inventory"
+            showLabel
+            inputType="textarea"
+            label="Description"
+            name="description"
             register={register}
             errors={errors}
-            type="number"
+            lines={8}
             fieldProps={{
-              placeholder: "Enter a product quantity*",
-              disabled: false,
+              placeholder: "Enter a product description*",
             }}
           />
+
+          <div className="flex flex-wrap">
+            {productStatus === "existing-product" &&
+              initialValues &&
+              initialValues.images && (
+                <ImageUploader3
+                  productId={initialValues?.id as string}
+                  setUploadedImages={setUploadedImages}
+                  currentProductImages={currentProductImages}
+                  setCurrentProductImages={setCurrentProductImages}
+                />
+              )}
+          </div>
+
+          <div className="flex  gap-x-4">
+            <DynamicFormField
+              showLabel
+              inputType="input"
+              label="Price"
+              name="price"
+              register={register}
+              errors={errors}
+              type="number"
+              fieldProps={{
+                placeholder: "Enter a product price*",
+                disabled: false,
+              }}
+            />
+            <DynamicFormField
+              showLabel
+              inputType="input"
+              label="Quantity In Stock"
+              name="inventory"
+              register={register}
+              errors={errors}
+              type="number"
+              fieldProps={{
+                placeholder: "Enter a product quantity*",
+                disabled: false,
+              }}
+            />
+          </div>
         </div>
         <div className="flex justify-between items-center">
           {!!initialValues && (
@@ -211,7 +221,6 @@ const ProductEditorElements = ({
                     title: deletedProduct.title,
                     description: deletedProduct.description,
                   });
-                  // }
                 }
               }}
             >

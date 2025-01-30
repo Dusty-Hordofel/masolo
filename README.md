@@ -41,3 +41,5 @@ $
 ### 11.1. Products
 
 ### 11.2. Products (download and delete)
+
+### 11.3. Products (update product configuration)

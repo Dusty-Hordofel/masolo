@@ -30,7 +30,7 @@ const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUD_SECRET as string;
 
 export const useFileUploadToCloudinary = (
   productId: string,
-  setUploadedFiles: React.Dispatch<React.SetStateAction<Image[] | []>>
+  setUploadedImages: React.Dispatch<React.SetStateAction<Image[] | []>>
 ) => {
   const [isUploading, setIsUploading] = useState(false);
 
@@ -58,7 +58,7 @@ export const useFileUploadToCloudinary = (
             alt: data.original_filename.replace(/_/g, " "),
           });
 
-          // setUploadedFiles((prev) => [...prev, ...results]);
+          // setUploadedImages((prev) => [...prev, ...results]);
         }
       }
 
@@ -74,7 +74,7 @@ export const useFileUploadToCloudinary = (
       const newImages = await getNewImages(productId, results);
       console.log("🚀 ~ uploadFiles ~ newImages:SIKA3", newImages);
       if (newImages.length > 0) {
-        setUploadedFiles((prev) => [...prev, ...newImages]);
+        setUploadedImages((prev) => [...prev, ...newImages]);
       }
 
       return {
