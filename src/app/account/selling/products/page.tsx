@@ -8,6 +8,7 @@ import Link from "next/link";
 import React from "react";
 import DataTable from "./data-table";
 import { columns } from "./columns";
+import { getProducts } from "@/server-actions/products";
 
 type Props = {};
 
@@ -56,9 +57,15 @@ const invoices = [
   },
 ];
 
-const ProductsPage = (props: Props) => {
-  const productsList = [];
-  // const productsList = await getData();
+// async function getData() {
+//   return getProducts;
+// }
+
+const ProductsPage = async (props: Props) => {
+  // const productsList = [];
+  const products = await getProducts();
+  console.log("🚀 ~ ProductsPage ~ products:", products);
+
   return (
     <>
       <div className="flex items-start justify-between">
@@ -91,7 +98,7 @@ const ProductsPage = (props: Props) => {
         </div> */}
       </>
       {/* )} */}
-      {/* <DataTable data={invoices} columns={columns} /> */}
+      <DataTable data={products} columns={columns} />
     </>
   );
 };

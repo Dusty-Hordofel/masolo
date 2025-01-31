@@ -153,4 +153,13 @@ export const ProductService = {
       };
     }
   },
+
+  async getProductsByStore(storeId: string) {},
+  async getProducts() {
+    const products = await prismadb.product.findMany({
+      include: { images: true },
+    });
+
+    return products;
+  },
 };

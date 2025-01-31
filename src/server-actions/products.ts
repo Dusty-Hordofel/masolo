@@ -140,3 +140,6 @@ export async function getNewImages(productId: string, results: UploadedFile[]) {
     throw error;
   }
 }
+export async function getProducts() {
+  return await ProductService.getProducts();
+}

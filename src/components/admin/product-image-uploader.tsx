@@ -5,19 +5,15 @@ import { useFileUploadToCloudinary } from "./use-file-upload";
 import { XIcon } from "lucide-react";
 import { Image } from "@prisma/client";
 import { Button } from "../ui/button";
-import { deleteProductImage } from "@/server-actions/products";
-import { toast } from "@/hooks/use-toast.hook";
 
 const ProductImageUploader = ({
   productId,
   setUploadedImages,
   currentProductImages,
-  setCurrentProductImages,
   handleDeleteProductImage,
 }: {
   productId: string;
   currentProductImages: Image[];
-  setCurrentProductImages: React.Dispatch<React.SetStateAction<Image[]>>;
   setUploadedImages: React.Dispatch<React.SetStateAction<Image[]>>;
   handleDeleteProductImage: (id: string) => Promise<void>;
 }) => {
@@ -48,18 +44,6 @@ const ProductImageUploader = ({
       alert("Une erreur est survenue lors du téléversement.");
     }
   };
-
-  // const handleDeleteProductImage = async (id: string) => {
-  //   const deleteledProductImage = await deleteProductImage(id);
-  //   if (deleteledProductImage.success) {
-  //     setCurrentProductImages((prev) => prev.filter((i) => i.id !== id));
-
-  //     toast({
-  //       title: deleteledProductImage?.title,
-  //       description: deleteledProductImage?.description,
-  //     });
-  //   }
-  // };
 
   return (
     <div>
@@ -92,9 +76,6 @@ const ProductImageUploader = ({
                     onClick={async () =>
                       await handleDeleteProductImage(image.id)
                     }
-                    // onClick={async () =>
-                    //   await handleDeleteProductImage(image.id)
-                    // }
                   >
                     <XIcon className="w-5 h-5" />
                   </button>
