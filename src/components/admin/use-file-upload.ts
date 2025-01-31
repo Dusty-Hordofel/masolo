@@ -1,23 +1,12 @@
 "use client";
 
-// import prismadb from "@/lib/prismadb";
 import {
   getProductDetails,
   addProductImages,
   getNewImages,
 } from "@/server-actions/products";
-// import { Prisma } from "@prisma/client";
-// import { JsonValue } from "@prisma/client/runtime/library";
-// import { Description } from "@radix-ui/react-toast";
 import { useState } from "react";
-import { ProductImage } from "./product-editor-elements";
-import prismadb from "@/lib/prismadb";
 import { Image, Product } from "@prisma/client";
-
-// interface UseFileUploadProps {
-//   cloudinaryUrl: string; // URL Cloudinary
-//   uploadPreset: string; // Preset pour Cloudinary
-// }
 
 export interface UploadedFile {
   publicId: string; // ID public retourné par Cloudinary

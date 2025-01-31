@@ -1,21 +1,22 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import { HeadingAndSubheading } from "./heading-and-subheading";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { HeadingAndSubheading } from "../heading-and-subheading";
 import { ProductEditorSharedProps } from "@/@types/admin/admin.products.interface";
-import DynamicFormField from "../forms/dynamic-form-field";
+import DynamicFormField from "../../forms/dynamic-form-field";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ProductFormData,
   ProductSchema,
 } from "@/schemas/products/product.schema";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { Loader2, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   createNewProduct,
   deleteProduct,
+  deleteProductImage,
   updateProduct,
 } from "@/server-actions/products";
 import { toast } from "@/hooks/use-toast.hook";
@@ -24,7 +25,7 @@ import {
   singleLevelNestedRoutes,
 } from "@/app/data/routes";
 import { Image, Product } from "@prisma/client";
-import ImageUploader3 from "./image-uploader-3";
+import ImageUploader4 from "../product-image-uploader";
 
 export type ProductImage = {
   publicId: string;
@@ -44,7 +45,6 @@ const ProductEditorElements = ({
     price: initialValues?.price || 0,
     description: initialValues?.description || "",
     inventory: initialValues?.inventory || 0,
-    // images: (initialValues?.images as [] as ProductImage[]) || [],
     storeId: (initialValues?.storeId as string) || undefined,
   };
 
@@ -60,18 +60,13 @@ const ProductEditorElements = ({
   });
 
   const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
-  const [initialProductImages, setInitialProductImages] = useState<Image[]>(
-    initialValues?.images || []
-  );
+  const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
 
-  const [currentProductImages, setCurrentProductImages] = useState<Image[]>([
-    ...initialProductImages,
-    ...uploadedImages,
-  ]);
-
-  useEffect(() => {
-    setCurrentProductImages([...initialProductImages, ...uploadedImages]);
-  }, [initialProductImages, uploadedImages]); // Dépendances cruciales
+  const currentProductImages = useMemo(() => {
+    return [...(initialValues?.images || []), ...uploadedImages].filter(
+      (img) => !deletedImageIds.includes(img.id) // Exclure les images supprimées
+    );
+  }, [initialValues?.images, uploadedImages, deletedImageIds]);
 
   useEffect(() => {
     if (initialValues) {
@@ -105,21 +100,42 @@ const ProductEditorElements = ({
     });
   };
 
-  // const navigateOnCloseModal = useCallback(() => {
-  //   if (displayType === "modal") {
-  //     router.back();
-  //   } else {
-  //     router.push("/account/selling/products");
-  //   }
-  // }, [router, displayType]); // Mo nommage
+  const closeModal = useCallback(() => {
+    router[displayType === "modal" ? "back" : "push"](
+      singleLevelNestedRoutes.account.products
+    );
+  }, [router, displayType]);
 
-  const dismissModal = useCallback(() => {
-    if (displayType === "modal") {
-      router.back();
-    } else {
+  const handleDeleteProduct = async (id: string) => {
+    if (!id) return;
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (!confirmed) return;
+
+    const deletedProduct = await deleteProduct(id);
+    if (deletedProduct.success) {
+      router.refresh();
       router.push(singleLevelNestedRoutes.account.products);
     }
-  }, [router, displayType]);
+    toast({
+      title: deletedProduct.title,
+      description: deletedProduct.description,
+    });
+  };
+
+  const handleDeleteProductImage = async (id: string) => {
+    const deleteledProductImage = await deleteProductImage(id);
+    if (deleteledProductImage.success) {
+      setDeletedImageIds((prev) => [...prev, id]);
+
+      toast({
+        title: deleteledProductImage?.title,
+        description: deleteledProductImage?.description,
+      });
+    }
+  };
 
   return (
     <>
@@ -167,11 +183,12 @@ const ProductEditorElements = ({
             {productStatus === "existing-product" &&
               initialValues &&
               initialValues.images && (
-                <ImageUploader3
+                <ImageUploader4
                   productId={initialValues?.id as string}
                   setUploadedImages={setUploadedImages}
                   currentProductImages={currentProductImages}
-                  setCurrentProductImages={setCurrentProductImages}
+                  setCurrentProductImages={setUploadedImages}
+                  handleDeleteProductImage={handleDeleteProductImage}
                 />
               )}
           </div>
@@ -210,25 +227,13 @@ const ProductEditorElements = ({
             <Button
               type="button"
               variant="destructiveOutline"
-              onClick={async () => {
-                if (initialValues && initialValues.id) {
-                  const deletedProduct = await deleteProduct(initialValues.id);
-                  if (deletedProduct.success) {
-                    router.refresh();
-                    router.push(singleLevelNestedRoutes.account.products);
-                  }
-                  toast({
-                    title: deletedProduct.title,
-                    description: deletedProduct.description,
-                  });
-                }
-              }}
+              onClick={() => handleDeleteProduct(initialValues.id)}
             >
               Delete
             </Button>
           )}
           <div className="flex items-center gap-2 ml-auto">
-            <Button type="button" variant="outline" onClick={dismissModal}>
+            <Button type="button" variant="outline" onClick={closeModal}>
               Cancel
             </Button>
             <Button

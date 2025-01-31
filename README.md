@@ -43,3 +43,7 @@ $
 ### 11.2. Products (download and delete)
 
 ### 11.3. Products (update product configuration)
+
+### 11.4. Products (refactor)
+
+### 11.5. Products (refactor)
