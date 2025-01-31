@@ -49,3 +49,5 @@ $
 ### 11.5. Products (refactor)
 
 ### 11.6. Product Array
+
+### 12. Home Page
