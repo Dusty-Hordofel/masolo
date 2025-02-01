@@ -21,12 +21,16 @@ export const ProductService = {
       }
 
       // Extraire les images et le reste des données
-      const { images = [], ...rest } = validatedProduct.data;
+      // const { images = [], ...rest } = validatedProduct.data;
+      const { name, price, inventory, description } = validatedProduct.data;
 
       // Créer le produit avec Prisma
       const newProduct = await prismadb.product.create({
         data: {
-          ...rest,
+          name,
+          price,
+          inventory,
+          description,
           storeId: storeId,
           // store: {
           //   connect: { id: storeId }, // Connecte le produit au Store existant
@@ -98,13 +102,13 @@ export const ProductService = {
     }
   },
   async updateProduct(productValues: Omit<Product, "storeId">) {
-    console.log("LOMO", productValues);
+    // console.log("LOMO", productValues);
     try {
       // Validation des valeurs du produit
       // ProductSchema.parse(productValues);
 
       // Récupération de l'utilisateur courant
-      const user = await currentUser();
+      // const user = await currentUser();
       // if (!user?.store.length) {
       //   throw new Error("L'utilisateur n'est pas associé à un magasin.");
       // }

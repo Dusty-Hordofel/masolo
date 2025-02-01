@@ -21,7 +21,7 @@ import { routes } from "@/app/data/routes";
 
 export const ShoppingCartHeader = async () => {
   // Récupération de l'ID du panier
-  const cartId = cookies().get("cartId")?.value;
+  // const cartId = cookies().get("cartId")?.value;
   // const cartIdNumber = cartId ? Number(cartId) : null;
 
   // Récupération des détails du panier
