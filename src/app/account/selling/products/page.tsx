@@ -1,70 +1,15 @@
-import { secondLevelNestedRoutes } from "@/app/data/routes";
 import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
-import { InfoCard } from "@/components/admin/info-card";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Plus, Store } from "lucide-react";
+// import { InfoCard } from "@/components/admin/info-card";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import DataTable from "./data-table";
 import { columns } from "./columns";
 import { getProducts } from "@/server-actions/products";
 
-type Props = {};
-
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
-
-// async function getData() {
-//   return getProducts;
-// }
-
-const ProductsPage = async (props: Props) => {
-  // const productsList = [];
+const ProductsPage = async () => {
   const products = await getProducts();
-  console.log("🚀 ~ ProductsPage ~ products:", products);
 
   return (
     <>

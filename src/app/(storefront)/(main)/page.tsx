@@ -10,13 +10,13 @@ import { FeatureBanner } from "../components/feature-banner";
 import {
   AlarmClock,
   DollarSign,
-  FastForward,
+  // FastForward,
   Phone,
   Truck,
   User,
-  Wind,
+  // Wind,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { routes } from "@/app/data/routes";
 import prismadb from "@/lib/prismadb";
 

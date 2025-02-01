@@ -1,4 +1,3 @@
-import { signIn } from "@/auth";
 import AuthFooter from "@/components/forms/auth/auth-footer";
 import AuthHeader from "@/components/forms/auth/auth-header";
 import AuthLoginForm from "@/components/forms/auth/auth-login-form";
@@ -9,8 +8,6 @@ export const metadata = {
 };
 
 export default function LoginPage() {
-  console.log(process.env.GOOGLE_CLIENT_SECRET);
-
   return (
     <div className="container grid h-screen w-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="hidden h-full bg-muted lg:block" />

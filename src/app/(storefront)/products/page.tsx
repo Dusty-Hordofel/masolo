@@ -1,5 +1,5 @@
 import { ProductWithImages } from "@/@types/admin/admin.products.interface";
-import { CollectionBody } from "@/components/storefront/collection-body";
+// import { CollectionBody } from "@/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
 // import { CollectionPagePagination } from "@/components/storefront/collection-page-pagination";
 import { Store } from "@prisma/client";

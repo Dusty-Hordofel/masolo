@@ -1,12 +1,8 @@
 "use client";
 
-import {
-  getProductDetails,
-  addProductImages,
-  getNewImages,
-} from "@/server-actions/products";
+import { addProductImages, getNewImages } from "@/server-actions/products";
 import { useState } from "react";
-import { Image, Product } from "@prisma/client";
+import { Image } from "@prisma/client";
 
 export interface UploadedFile {
   publicId: string; // ID public retourné par Cloudinary

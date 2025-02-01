@@ -1,16 +1,16 @@
-import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog";
+// import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog";
 // import { ParagraphFormatter } from "@/components/paragraph-formatter";
-import { Heading } from "@/components/ui/heading";
-import { Text } from "@/components/ui/text";
+// import { Heading } from "@/components/ui/heading";
+// import { Text } from "@/components/ui/text";
 // import { db } from "@/db/db";
 // import { Product, products } from "@/db/schema";
-import { currencyFormatter } from "@/lib/currency";
+// import { currencyFormatter } from "@/lib/currency";
 // import { eq } from "drizzle-orm";
-import { ImageOff } from "lucide-react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+// import { ImageOff } from "lucide-react";
+// import Image from "next/image";
+// import { Button } from "@/components/ui/button";
 // import { QuickViewModalWrapper } from "@/components/storefront/quickview-modal-wrapper";
-import Link from "next/link";
+// import Link from "next/link";
 import { QuickViewModalWrapper } from "@/components/storefront/quickview-modal-wrapper";
 // import { routes } from "@/lib/routes";
 
