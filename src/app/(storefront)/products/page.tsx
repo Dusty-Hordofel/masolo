@@ -1,7 +1,7 @@
 import { ProductWithImages } from "@/@types/admin/admin.products.interface";
 import { CollectionBody } from "@/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
-import { CollectionPagePagination } from "@/components/storefront/collection-page-pagination";
+// import { CollectionPagePagination } from "@/components/storefront/collection-page-pagination";
 import { Store } from "@prisma/client";
 // import { db } from "@/db/db";
 // import { Product, Store, stores } from "@/db/schema";
@@ -80,7 +80,7 @@ export default async function StorefrontProductsPage(context: {
           faucibus et molestie ac feugiat sed.
         </p>
       </CollectionHeaderWrapper>
-      <CollectionBody
+      {/* <CollectionBody
         storeAndProduct={storeAndProduct}
         activeSellers={await getActiveSellers()}
       >
@@ -88,17 +88,17 @@ export default async function StorefrontProductsPage(context: {
           productsPerPage={PRODUCTS_PER_PAGE}
           sellerParams={context.searchParams.seller as string}
         />
-      </CollectionBody>
+      </CollectionBody> */}
     </div>
   );
 }
 
-const getActiveSellers = async () => {
-  return await db
-    .select({
-      id: stores.id,
-      name: stores.name,
-      slug: stores.slug,
-    })
-    .from(stores);
-};
+// const getActiveSellers = async () => {
+//   return await db
+//     .select({
+//       id: stores.id,
+//       name: stores.name,
+//       slug: stores.slug,
+//     })
+//     .from(stores);
+// };
