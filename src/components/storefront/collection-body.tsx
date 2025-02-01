@@ -33,10 +33,10 @@ export const CollectionBody = (
 
   const Sidebar = (
     <ProductSidebar
-      uniqueStoresList={props.activeSellers
-        .map((item) => item.name ?? "")
-        .filter((item) => item !== "")}
-      selectedSellers={selectedSellers}
+    // uniqueStoresList={props.activeSellers
+    //   .map((item) => item.name ?? "")
+    //   .filter((item) => item !== "")}
+    // selectedSellers={selectedSellers}
     />
   );
 

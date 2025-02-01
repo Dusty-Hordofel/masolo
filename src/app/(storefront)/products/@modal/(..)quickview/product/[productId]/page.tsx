@@ -14,9 +14,11 @@
 import { QuickViewModalWrapper } from "@/components/storefront/quickview-modal-wrapper";
 // import { routes } from "@/lib/routes";
 
-export default async function StorefrontProductQuickView(props: {
-  params: { productId: string };
-}) {
+// props: {
+//   params: { productId: string };
+// }
+
+export default async function StorefrontProductQuickView() {
   // const product = (await db
   //   .select()
   //   .from(products)

@@ -1,6 +1,6 @@
-import Image from "next/image";
+// import Image from "next/image";
 import { Text } from "../ui/text";
-import { ImageOff } from "lucide-react";
+// import { ImageOff } from "lucide-react";
 // import { routes } from "@/lib/routes";
 import Link from "next/link";
 import { currencyFormatter } from "@/lib/currency";
@@ -9,7 +9,7 @@ import { Button } from "../ui/button";
 import { ProductImage } from "../product-image";
 import { routes } from "@/app/data/routes";
 import { ProductForm } from "./product-form";
-import { ProductAndStore } from "@/app/(storefront)/products/page";
+// import { ProductAndStore } from "@/app/(storefront)/products/page";
 // import { ProductForm } from "./product-form";
 // import { addToCart } from "@/server-actions/add-to-cart";
 

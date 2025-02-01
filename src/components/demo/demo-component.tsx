@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { readComponentSource } from "./read-component-source";
 import CopyButton from "./copy-button";
-import InputDemo1 from "@/components/inputs/input-01";
 
 export default async function DemoComponent({
   directory,

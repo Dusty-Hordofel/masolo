@@ -17,15 +17,18 @@ import {
   secondLevelNestedRoutes,
   singleLevelNestedRoutes,
 } from "@/app/data/routes";
-import { Image, Product } from "@prisma/client";
+import {
+  Image,
+  // , Product
+} from "@prisma/client";
 import {
   ProductEditorSharedProps,
-  ProductWithImages,
+  // ProductWithImages,
 } from "@/@types/admin/admin.products.interface";
 
 export function useProductEditor({
   displayType,
-  productStatus,
+  // productStatus,
   initialValues,
 }: ProductEditorSharedProps) {
   const router = useRouter();

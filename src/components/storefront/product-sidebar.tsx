@@ -9,36 +9,38 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { anchorTags } from "@/app/data/routes";
 // import { anchorTags } from "@/lib/routes";
 
-export const ProductSidebar = (props: {
-  uniqueStoresList: string[];
-  selectedSellers: string[];
-}) => {
-  const [isSellerListExpanded, setIsSellerListExpanded] = useState(false);
-  const searchParams = useSearchParams();
-  const seller = searchParams.get("seller");
-  const pathname = usePathname();
-  const router = useRouter();
+export const ProductSidebar = () =>
+  //   props: {
+  //   uniqueStoresList: string[];
+  //   selectedSellers: string[];
+  // }
+  {
+    const [isSellerListExpanded, setIsSellerListExpanded] = useState(false);
+    const searchParams = useSearchParams();
+    const seller = searchParams.get("seller");
+    const pathname = usePathname();
+    const router = useRouter();
 
-  return (
-    <div>
-      <div className="flex items-center justify-between gap-2 w-full">
-        <Heading size="h3">Filters</Heading>
-        {seller && (
-          <Button
-            size="sm"
-            variant="link"
-            className="text-muted-foreground"
-            onClick={() => {
-              router.push(`${pathname}`);
-            }}
-          >
-            Clear filters
-          </Button>
-        )}
-      </div>
-      <div className="mt-4">
-        <Heading size="h4">Sellers</Heading>
-        {/* {props.uniqueStoresList.slice(0, 5).map((store, i) => (
+    return (
+      <div>
+        <div className="flex items-center justify-between gap-2 w-full">
+          <Heading size="h3">Filters</Heading>
+          {seller && (
+            <Button
+              size="sm"
+              variant="link"
+              className="text-muted-foreground"
+              onClick={() => {
+                router.push(`${pathname}`);
+              }}
+            >
+              Clear filters
+            </Button>
+          )}
+        </div>
+        <div className="mt-4">
+          <Heading size="h4">Sellers</Heading>
+          {/* {props.uniqueStoresList.slice(0, 5).map((store, i) => (
           <ProductSidebar.Checkbox
             key={i}
             label={store}
@@ -46,7 +48,7 @@ export const ProductSidebar = (props: {
             selectedSellers={props.selectedSellers}
           />
         ))} */}
-        {/* {isSellerListExpanded &&
+          {/* {isSellerListExpanded &&
           props.uniqueStoresList
             .slice(5)
             .map((store, i) => (
@@ -57,26 +59,26 @@ export const ProductSidebar = (props: {
                 selectedSellers={props.selectedSellers}
               />
             ))} */}
-        <Button
-          variant="secondary"
-          size="sm"
-          className="w-full mt-2"
-          onClick={() => setIsSellerListExpanded((prev) => !prev)}
-        >
-          {isSellerListExpanded ? (
-            <div className="flex items-center justify-center gap-2">
-              Collapse sellers <ChevronUp size={18} className="mt-[2px]" />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center gap-2">
-              Show more sellers <ChevronDown size={18} className="mt-[2px]" />
-            </div>
-          )}
-        </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="w-full mt-2"
+            onClick={() => setIsSellerListExpanded((prev) => !prev)}
+          >
+            {isSellerListExpanded ? (
+              <div className="flex items-center justify-center gap-2">
+                Collapse sellers <ChevronUp size={18} className="mt-[2px]" />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-2">
+                Show more sellers <ChevronDown size={18} className="mt-[2px]" />
+              </div>
+            )}
+          </Button>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 const FilterGroup = (props: { heading: string }) => {
   return (

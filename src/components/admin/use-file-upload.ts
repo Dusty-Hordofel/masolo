@@ -47,7 +47,8 @@ export const useFileUploadToCloudinary = (
         }
       }
 
-      const addedProduct = await addProductImages(productId, results);
+      // const addedProduct =
+      await addProductImages(productId, results);
       // console.log(
       //   "🚀 ~ uploadFiles ~ addedProduct:ADDED-PRODUCT",
       //   addedProduct
