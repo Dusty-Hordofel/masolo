@@ -9,8 +9,6 @@ import { z } from "zod";
 
 export const ProductService = {
   async createProduct(productData: ProductFormData, storeId: string) {
-    console.log("🚀 ~ createProduct ~ storeId:", storeId);
-    console.log("🚀 ~ createProduct ~ productData:PDO", productData);
     try {
       const validatedProduct = ProductSchema.safeParse(productData);
 
@@ -36,15 +34,12 @@ export const ProductService = {
           // images,
         },
       });
-      console.log("🚀 ~ createNewProduct ~ newProduct:", validatedProduct.data);
-      // console.log("🚀 ~ createNewProduct ~ newProduct:", newProduct);
 
       return {
         success: true,
         title: "Product created",
         description: "Success, your new product has been created",
         productId: newProduct.id,
-        // productId: newProduct.id,
       };
     } catch (error) {
       console.log("🚀 ~ createProduct ~ error:", error);
@@ -159,7 +154,7 @@ export const ProductService = {
     }
   },
 
-  async getProductsByStore(storeId: string) {},
+  // async getProductsByStore(storeId: string) {},
   async getProducts() {
     const products = await prismadb.product.findMany({
       include: { images: true },

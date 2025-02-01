@@ -24,7 +24,8 @@ export const deleteImageFromCloudinary = async (public_id: string) => {
   }
 };
 
-export const uploadImagesToCloudinary = async (file: File) => {};
+// TODO: refactor
+// export const uploadImagesToCloudinary = async (file: File) => {};
 
 export const uploadImageToCloudinary = async (file: File) => {
   const formData = new FormData();
