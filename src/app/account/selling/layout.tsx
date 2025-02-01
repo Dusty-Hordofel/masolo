@@ -5,6 +5,7 @@ import { PropsWithChildren } from "react";
 
 export default async function SellerLayout(props: PropsWithChildren) {
   const user = await currentUser();
+  console.log("🚀 ~ SellerLayout ~ user:MA", user);
 
   if (!user || user.role !== "USER") return redirect("/auth/login");
 

@@ -11,8 +11,11 @@ import { deleteImageFromCloudinary } from "@/services/cloudinary/cloudinary.serv
 import { ProductService } from "@/services/prisma/product.sevice";
 import { Product } from "@prisma/client";
 
-export async function createNewProduct(productData: ProductFormData) {
-  return await ProductService.createProduct(productData);
+export async function createNewProduct(
+  productData: ProductFormData,
+  storeId: string
+) {
+  return await ProductService.createProduct(productData, storeId);
   // try {
   //   const validatedProduct = ProductSchema.safeParse(productData);
 

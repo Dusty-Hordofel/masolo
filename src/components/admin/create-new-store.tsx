@@ -20,7 +20,7 @@ export const CreateNewStore = () => {
   const router = useRouter();
   const { data: session, update } = useSession();
 
-  console.log("🚀 ~ CreateNewStore ~ session:POPO", session);
+  // console.log("🚀 ~ CreateNewStore ~ session:POPO", session);
   const { toast } = useToast();
 
   const defaultValues: StoreSchemaFormData = {

@@ -40,7 +40,7 @@ export function useProductEditor({
     price: initialValues?.price || 0,
     description: initialValues?.description || "",
     inventory: initialValues?.inventory || 0,
-    storeId: initialValues?.storeId || undefined,
+    // storeId: initialValues?.storeId || undefined,
   };
 
   const {
@@ -72,13 +72,19 @@ export function useProductEditor({
   const handleProductSubmit = async (formValues: ProductFormData) => {
     let data;
     if (initialValues?.id) {
-      data = await updateProduct({ id: initialValues.id, ...formValues });
+      data = await updateProduct({
+        id: initialValues.id,
+        ...formValues,
+      });
       if (data.success) {
         router.refresh();
         router.push(singleLevelNestedRoutes.account.products);
       }
     } else {
-      data = await createNewProduct(formValues);
+      data = await createNewProduct(
+        formValues,
+        "112fd1bd-26dc-4996-a25a-b0ecb28c4998"
+      );
       if (data.productId) {
         router.push(
           `${secondLevelNestedRoutes.product.base}/${data.productId}`

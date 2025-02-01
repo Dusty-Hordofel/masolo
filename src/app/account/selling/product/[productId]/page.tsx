@@ -32,15 +32,6 @@ const ProductPage = async ({ params }: { params: ProductPageParams }) => {
   )) as ProductWithImages;
   console.log("🚀 ~ ProductPage ~ productDetails:", productDetails);
 
-  // const newImages = await getNewImages(params.productId);
-  // console.log("🚀 ~ uploadFiles ~ newImages:SIKA", newImages);
-
-  // const images = await prismadb.image.findMany({
-  //   where: { productId: params.productId },
-  //   select: { id: true, createdAt: true },
-  // });
-  // console.log("🚀 ~ ProductPage ~ images:", images);
-
   return (
     <ProductEditor
       productStatus="existing-product"

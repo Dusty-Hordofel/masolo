@@ -24,29 +24,20 @@ export const ProductSchema = z.object({
       "L'inventaire doit être un nombre valide"
     )
     .default(0),
-  // images: z
-  //   .array(
-  //     z.object({
-  //       publicId: z.string().url("L'ID de l'image doit être valide"),
-  //       secureUrl: z.string().url("L'URL de l'image doit être valide"),
-  //       alt: z.string().optional(), // Texte alternatif optionnel
-  //     })
-  //   )
-  //   .default([]), // Définit une valeur par défaut à un tableau vide
   images: z
     .array(
       z.object({
         publicId: z.string().url("L'ID de l'image doit être valide"),
         secureUrl: z.string().url("L'URL de l'image doit être valide"),
-        alt: z.string().optional(), // Texte alternatif optionnel
+        alt: z.string(), // Texte alternatif optionnel
       })
     )
     .optional(),
-  storeId: z
-    .string()
-    .regex(/^[a-f\d]{24}$/i, "ID de magasin invalide")
-    .optional()
-    .nullable(),
+  // storeId: z
+  //   .string()
+  //   .regex(/^[a-f\d]{24}$/i, "ID de magasin invalide")
+  //   .optional()
+  //   .nullable(),
 });
 
 export type ProductFormData = z.infer<typeof ProductSchema>;

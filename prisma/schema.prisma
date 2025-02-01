@@ -131,14 +131,29 @@ model TwoFactorConfirmation {
   @@unique([userId])
 }
 
+// model Product {
+//   id          String   @id @default(uuid())
+//   name        String
+//   price       Float    @default(0)
+//   description String?
+//   inventory   Int      @default(0)
+//   storeId     String? //@map("store_id")
+//   images      Image[] // Relation avec le modèle Image
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+
+//   @@map("products")
+// }
+
 model Product {
   id          String   @id @default(uuid())
   name        String
   price       Float    @default(0)
   description String?
   inventory   Int      @default(0)
-  storeId     String?
-  images      Image[] // Relation avec le modèle Image
+  storeId     String   @map("store_id")
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade) // Relation avec Store
+  images      Image[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -153,6 +168,31 @@ model Image {
   productId String   @map("product_id")
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now()) // Date d'insertion automatique
+}
+
+// model Store {
+//   id          String  @id @default(uuid())
+//   name        String  @unique @map("store_name")
+//   industry    String?
+//   description String?
+//   slug        String  @unique @map("slug")
+//   owner       User?   @relation(fields: [ownerId], references: [id])
+//   ownerId     String?
+
+//   @@map("stores")
+// }
+
+model Store {
+  id          String    @id @default(uuid())
+  name        String    @unique @map("store_name")
+  industry    String?
+  description String?
+  slug        String    @unique @map("slug")
+  owner       User?     @relation(fields: [ownerId], references: [id])
+  ownerId     String?
+  products    Product[] // Ajout de la relation inverse avec Product
+
+  @@map("stores")
 }
 
 // model Product {
@@ -177,15 +217,3 @@ model Image {
 //   productId String  @map("product_id")
 //   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 // }
-
-model Store {
-  id          String  @id @default(uuid())
-  name        String  @unique @map("store_name")
-  industry    String?
-  description String?
-  slug        String  @unique @map("slug")
-  owner       User?   @relation(fields: [ownerId], references: [id])
-  ownerId     String?
-
-  @@map("stores")
-}

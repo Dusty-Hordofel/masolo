@@ -8,7 +8,8 @@ import { Product } from "@prisma/client";
 import { z } from "zod";
 
 export const ProductService = {
-  async createProduct(productData: ProductFormData) {
+  async createProduct(productData: ProductFormData, storeId: string) {
+    console.log("🚀 ~ createProduct ~ storeId:", storeId);
     console.log("🚀 ~ createProduct ~ productData:PDO", productData);
     try {
       const validatedProduct = ProductSchema.safeParse(productData);
@@ -28,6 +29,10 @@ export const ProductService = {
       const newProduct = await prismadb.product.create({
         data: {
           ...rest,
+          storeId: storeId,
+          // store: {
+          //   connect: { id: storeId }, // Connecte le produit au Store existant
+          // },
           // images,
         },
       });
