@@ -1,6 +1,6 @@
 "use client";
-import { ProductAndStore } from "@/app/(storefront)/(main)/products/page";
-import { ProductSidebar } from "./product-sidebar";
+// import { ProductAndStore } from "@/app/(storefront)/(main)/products/page";
+// import { ProductSidebar } from "./product-sidebar";
 import { ProductCard } from "./product-card";
 import { PropsWithChildren } from "react";
 import { useSearchParams } from "next/navigation";
@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { SlidersHorizontal } from "lucide-react";
 import { EmptyStateWrapper } from "../ui/empty-state-wrapper";
+import { ProductAndStore } from "@/app/(storefront)/products/page";
+import { ProductSidebar } from "./product-sidebar";
 
 export const CollectionBody = (
   props: PropsWithChildren<{
