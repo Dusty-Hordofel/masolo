@@ -14,9 +14,13 @@ import { useForm } from "react-hook-form";
 // import PasswordToggleButton from "./password-toggle-button";
 // import SubmitButton from "./submit-button";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+// interface UserAuthFormProps
+// extends React.HTMLAttributes<HTMLDivElement> {}
 
-function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
+function AuthLoginForm({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   const {
     // register,
     // watch,

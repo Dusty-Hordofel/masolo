@@ -41,6 +41,7 @@ const ProductImageUploader = ({
         setSelectedFiles([]);
       }
     } catch (error) {
+      console.log("🚀 ~ handleUpload ~ error:", error);
       alert("Une erreur est survenue lors du téléversement.");
     }
   };
@@ -55,7 +56,7 @@ const ProductImageUploader = ({
           <div className="flex flex-wrap gap-4">
             {currentProductImages &&
               currentProductImages.length > 0 &&
-              currentProductImages.map((image, index) => (
+              currentProductImages.map((image) => (
                 <div key={image.id} className="relative">
                   <img
                     src={image.secureUrl}

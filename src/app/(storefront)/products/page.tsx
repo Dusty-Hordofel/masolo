@@ -15,10 +15,11 @@ export type ProductAndStore = {
 
 // const PRODUCTS_PER_PAGE = 6;
 
-export default async function StorefrontProductsPage(context: {
-  params: { slug: string };
-  searchParams: { page: string; seller: string };
-}) {
+// context: {
+//   params: { slug: string };
+//   searchParams: { page: string; seller: string };
+// }
+export default async function StorefrontProductsPage() {
   // const storeAndProduct = (await db
   //   .select({
   //     product: products,

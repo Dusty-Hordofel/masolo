@@ -1,4 +1,4 @@
-import { currentUser } from "@/lib/auth";
+// import { currentUser } from "@/lib/auth";
 import prismadb from "@/lib/prismadb";
 import {
   ProductFormData,

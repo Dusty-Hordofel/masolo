@@ -14,8 +14,6 @@ import { MenuItems } from "./menu-items";
 
 // import { MenuItems } from "./menu-items";
 
-type Props = {};
-
 const NavBar = ({
   showSecondAnnouncementBar,
 }: {

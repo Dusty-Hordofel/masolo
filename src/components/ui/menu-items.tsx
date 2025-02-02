@@ -59,7 +59,7 @@ export function MenuItems() {
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
-                  <a
+                  <Link
                     className="flex h-full w-full select-none flex-col justify-end rounded-md no-underline outline-none focus:shadow-md bg-sport overflow-hidden"
                     href="/"
                   >
@@ -71,7 +71,7 @@ export function MenuItems() {
                         Contact our customer support team 24/7
                       </p>
                     </div>
-                  </a>
+                  </Link>
                 </NavigationMenuLink>
               </li>
               <ListItem href={routes.products} title="New Arrivals">

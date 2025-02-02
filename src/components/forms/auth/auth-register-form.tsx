@@ -18,9 +18,12 @@ import AuthDivider from "./auth-divider";
 import SubmitButton from "./submit-button";
 import PasswordToggleButton from "./password-toggle-button";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+// interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-function AuthRegisterForm({ className, ...props }: UserAuthFormProps) {
+function AuthRegisterForm({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   const {
     register,
     watch,
