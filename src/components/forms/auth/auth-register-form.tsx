@@ -1,26 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
+// import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff } from "lucide-react";
+// import { Eye, EyeOff } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { RegisterFormData, RegisterSchema } from "@/schemas/user/auth";
 import DynamicFormField from "../dynamic-form-field";
-import { Loader2, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import AuthSocialButtons from "./auth-social-buttons";
 import PasswordRequirements from "./password-requirements";
 import AuthDivider from "./auth-divider";
 import SubmitButton from "./submit-button";
 import PasswordToggleButton from "./password-toggle-button";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+// interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-function AuthRegisterForm({ className, ...props }: UserAuthFormProps) {
+function AuthRegisterForm({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   const {
     register,
     watch,

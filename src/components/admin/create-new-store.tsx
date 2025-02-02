@@ -14,9 +14,13 @@ import {
 import { createStore } from "@/server-actions/store";
 import { useToast } from "@/hooks/use-toast.hook";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 export const CreateNewStore = () => {
   const router = useRouter();
+  const { data: session, update } = useSession();
+
+  // console.log("🚀 ~ CreateNewStore ~ session:POPO", session);
   const { toast } = useToast();
 
   const defaultValues: StoreSchemaFormData = {
@@ -36,8 +40,23 @@ export const CreateNewStore = () => {
 
   const handleStoreSubmit = async (data: StoreSchemaFormData) => {
     const res = await createStore(data);
+
     if (!res.error) {
       reset();
+
+      const newSession = {
+        ...session,
+        user: {
+          ...session?.user,
+          store: [...(session?.user.store || []), res.newStore],
+        },
+      };
+
+      await update(newSession);
+
+      // Trigger the server-side update without modifying the session locally
+      // await update();
+
       router.refresh();
     }
     toast({

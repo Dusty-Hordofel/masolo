@@ -1,9 +1,12 @@
+import { currentUser } from "@/lib/auth";
 import prismadb from "@/lib/prismadb";
 import { StoreSchemaFormData } from "@/schemas/stores/stores.schema";
 import { createSlug } from "@/utils";
 
 export const StoreService = {
   async createStore(storeValues: StoreSchemaFormData) {
+    const user = await currentUser();
+
     try {
       const existingStore = await prismadb.store.findFirst({
         where: {
@@ -24,15 +27,17 @@ export const StoreService = {
         data: {
           ...storeValues,
           slug: createSlug(storeValues.name),
+          owner: {
+            connect: { id: user?.id },
+          },
         },
       });
-
-      console.log("🚀 ~ createStore ~ newStore:31", newStore);
 
       return {
         success: true,
         title: "Store created",
         description: "Success, your store has been created",
+        newStore,
       };
     } catch (err) {
       console.log(err);
@@ -44,33 +49,16 @@ export const StoreService = {
       };
     }
   },
+  async getUserStores(userId: string) {
+    try {
+      const stores = await prismadb.store.findMany({
+        where: { ownerId: userId },
+      });
+
+      return stores;
+    } catch (error) {
+      console.error("Error fetching user stores:", error);
+      return [];
+    }
+  },
 };
-
-// export const StoreService = {
-//   async createStore(data: StoreSchemaFormData) {
-//     const existingStore = await prismadb.store.findFirst({
-//       where: { name: data.name },
-//     });
-
-//     if (existingStore) {
-//       return {
-//         error: true,
-//         title: "Store already exists",
-//         description: "Please choose another name.",
-//       };
-//     }
-
-//     await prismadb.store.create({
-//       data: {
-//         ...data,
-//         slug: createSlug(data.name),
-//       },
-//     });
-
-//     return {
-//       success: true,
-//       title: "Store created",
-//       description: "Your store has been created successfully.",
-//     };
-//   },
-// };

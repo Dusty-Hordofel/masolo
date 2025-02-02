@@ -1,9 +1,12 @@
+"use client";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { cn } from "@/lib/utils";
 import { signIn } from "next-auth/react";
+// import { signIn } from "@/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 type AuthSocialButtonsProps = {
   toggleLoading: (key: "general" | "google" | "github", value: boolean) => void;
@@ -35,11 +38,13 @@ const AuthSocialButtons = ({
   loading,
   isSubmitting,
 }: AuthSocialButtonsProps) => {
+  const pathname = usePathname();
+
   const handleSignIn = (provider: string) => {
+    const callbackUrl = pathname === "/auth/login" ? "/" : pathname;
+
     toggleLoading(provider as "google" | "github", true);
-    signIn(provider, {
-      callbackUrl: `${window.location.origin}`,
-    });
+    signIn(provider, { callbackUrl });
   };
 
   return (

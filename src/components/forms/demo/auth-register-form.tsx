@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+// interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const RegisterSchema = z.object({
   lastName: z.string().min(2, "Required"),
@@ -54,7 +54,10 @@ export const RegisterSchema = z.object({
 
 export type RegisterFormData = z.infer<typeof RegisterSchema>;
 
-function AuthRegisterForm({ className, ...props }: UserAuthFormProps) {
+function AuthRegisterForm({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   const {
     register,
     watch,
@@ -179,25 +182,62 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 
-interface DynamicFormFieldProps {
+// interface DynamicFormFieldProps {
+//   inputType: "select" | "input" | "textarea" | "file" | "test";
+//   type?: "text" | "email" | "password" | "number";
+//   name: string;
+//   label?: string;
+//   disabled?: boolean;
+//   options?: Item[];
+//   previewUrl?: any;
+//   // previewUrl?: string;//revois le type
+//   className?: string;
+//   lines?: number;
+//   register: UseFormRegister<any>;
+//   errors: FieldErrors<FieldValues>;
+//   fieldProps?: InputProps | TextareaProps | SelectProps;
+//   showLabel?: boolean;
+//   showError?: boolean;
+//   children?: ReactNode;
+// }
+
+// import React, { ReactNode } from "react";
+// import {
+//   UseFormRegister,
+//   FieldErrors,
+//   Path,
+//   FieldValues,
+// } from "react-hook-form";
+// import { Input } from "@/components/ui/input";
+// import { Textarea } from "@/components/ui/textarea";
+// import { Item } from "@/@types/admin/admin.item.interface";
+// import { cn } from "@/lib/utils";
+
+// type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+// type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+// type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
+
+interface DynamicFormFieldProps<T extends FieldValues> {
   inputType: "select" | "input" | "textarea" | "file" | "test";
   type?: "text" | "email" | "password" | "number";
-  name: string;
+  // name: string;
+  name: Path<T>; // Assurer que "name" est une clé valide du formulaire
   label?: string;
   disabled?: boolean;
   options?: Item[];
   previewUrl?: string;
   className?: string;
   lines?: number;
-  register: UseFormRegister<any>;
+  register: UseFormRegister<T>;
   errors: FieldErrors<FieldValues>;
   fieldProps?: InputProps | TextareaProps | SelectProps;
   showLabel?: boolean;
+  floatingLabel?: boolean;
   showError?: boolean;
   children?: ReactNode;
 }
 
-const DynamicFormField = ({
+const DynamicFormField = <T extends FieldValues>({
   inputType,
   label,
   register,
@@ -208,19 +248,13 @@ const DynamicFormField = ({
   type,
   options,
   fieldProps,
-  showLabel = false,
   children,
   showError = true,
-}: DynamicFormFieldProps) => {
+  showLabel = false,
+  floatingLabel = false,
+}: DynamicFormFieldProps<T>) => {
   const error = errors[name];
   const errorMessage = error ? (error.message as string) : "";
-
-  const baseStyles =
-    "origin-left absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all";
-  const focusStyles =
-    "group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground";
-  const placeholderStyles =
-    "has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground";
 
   switch (inputType) {
     case "textarea":
@@ -232,7 +266,8 @@ const DynamicFormField = ({
           >
             <span
               className={cn(
-                "inline-flex bg-background px-2",
+                // "inline-block mb-1 font-semibold"
+                "inline-flex bg-background px-2 mb-1 font-semibold",
                 !!error && "text-destructive"
               )}
             >
@@ -307,11 +342,18 @@ const DynamicFormField = ({
           <div className="group relative">
             <label
               htmlFor={`input-${label}`}
-              className={cn(!showLabel && "sr-only", "floating-label")}
+              className={cn(
+                showLabel &&
+                  !floatingLabel &&
+                  "inline-block mb-1 font-semibold",
+                !showLabel && "sr-only",
+                showLabel && floatingLabel && "floating-label"
+              )}
             >
               <span
                 className={cn(
-                  "inline-flex bg-background px-2",
+                  "inline-flex bg-background",
+                  showLabel && floatingLabel && "px-2",
                   !!error && "text-destructive"
                 )}
               >
@@ -350,6 +392,8 @@ const DynamicFormField = ({
   }
 };
 
+// export default DynamicFormField;
+
 interface ErrorMessageProps<T extends FieldValues> {
   error: FieldErrors<T>[Path<T>];
   type?: "text" | "email" | "password" | "number" | "checkbox" | "file";
@@ -369,6 +413,26 @@ const ErrorMessage = <T extends FieldValues>({
     </div>
   );
 };
+
+interface ErrorMessageProps<T extends FieldValues> {
+  error: FieldErrors<T>[Path<T>];
+  type?: "text" | "email" | "password" | "number" | "checkbox" | "file";
+  errorMessage: string;
+}
+
+// const ErrorMessage = <T extends FieldValues>({
+//   type,
+//   error,
+//   errorMessage,
+// }: ErrorMessageProps<T>) => {
+//   return (
+//     <div className={cn(error ? "h-6" : "h-2")}>
+//       {error && type !== "checkbox" && (
+//         <p className="px-4 pt-[6px] text-xs text-destructive">{errorMessage}</p>
+//       )}
+//     </div>
+//   );
+// };
 
 type SubmitButtonProps = {
   label: string;
@@ -582,4 +646,3 @@ const AuthDivider = () => {
     </div>
   );
 };
-

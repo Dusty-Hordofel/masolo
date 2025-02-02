@@ -40,6 +40,5 @@ export default async function RootLayout({
         </SessionProvider>
       </body>
     </html>
-    //{" "}
   );
 }
