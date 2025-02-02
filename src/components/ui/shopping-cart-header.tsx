@@ -1,5 +1,5 @@
 import { ShoppingCart } from "lucide-react";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 import {
   SheetDescription,
   SheetHeader,

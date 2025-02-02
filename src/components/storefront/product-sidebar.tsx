@@ -95,7 +95,7 @@ const FilterCheckbox = (props: {
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const page = searchParams.get("page");
+  // const page = searchParams.get("page");
   const seller = searchParams.get("seller");
   const pathname = usePathname();
 

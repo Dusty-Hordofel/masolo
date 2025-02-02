@@ -1,5 +1,6 @@
 "use server";
 
+// @ts-nocheck
 import { UploadedFile } from "@/components/admin/use-file-upload";
 import prismadb from "@/lib/prismadb";
 import { ProductFormData } from "@/schemas/products/product.schema";

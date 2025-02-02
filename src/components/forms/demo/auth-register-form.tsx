@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+// interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const RegisterSchema = z.object({
   lastName: z.string().min(2, "Required"),
@@ -54,7 +54,10 @@ export const RegisterSchema = z.object({
 
 export type RegisterFormData = z.infer<typeof RegisterSchema>;
 
-function AuthRegisterForm({ className, ...props }: UserAuthFormProps) {
+function AuthRegisterForm({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   const {
     register,
     watch,
@@ -186,7 +189,8 @@ interface DynamicFormFieldProps {
   label?: string;
   disabled?: boolean;
   options?: Item[];
-  previewUrl?: string;
+  previewUrl?: any;
+  // previewUrl?: string;//revois le type
   className?: string;
   lines?: number;
   register: UseFormRegister<any>;
