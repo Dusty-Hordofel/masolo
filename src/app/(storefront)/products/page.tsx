@@ -8,11 +8,13 @@ import { Store } from "@prisma/client";
 // import { products } from "@/db/schema";
 // import { eq, inArray } from "drizzle-orm";
 
-export type ProductAndStore = {
-  product: ProductWithImages;
-  store: Omit<Store, "description" | "industry">;
-};
+// export type ProductAndStore = {
+//   product: ProductWithImages;
+//   store: Omit<Store, "description" | "industry">;
+// };
 
+export type ProductAndStore = ProductWithImages &
+  Omit<Store, "description" | "industry">;
 // const PRODUCTS_PER_PAGE = 6;
 
 // context: {

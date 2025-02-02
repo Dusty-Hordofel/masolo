@@ -1,6 +1,5 @@
 "use server";
 
-// @ts-nocheck
 import { UploadedFile } from "@/components/admin/use-file-upload";
 import prismadb from "@/lib/prismadb";
 import { ProductFormData } from "@/schemas/products/product.schema";
@@ -19,7 +18,7 @@ export async function getProductDetails(id: string): Promise<Product> {
   return await ProductService.productDetails(id);
 }
 
-export async function updateProduct(product: any) {
+export async function updateProduct(product: Omit<Product, "storeId">) {
   return await ProductService.updateProduct(product);
 }
 

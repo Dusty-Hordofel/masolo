@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { ReactNode } from "react";
 import {
   UseFormRegister,
@@ -15,17 +14,18 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 
-interface DynamicFormFieldProps {
+interface DynamicFormFieldProps<T extends FieldValues> {
   inputType: "select" | "input" | "textarea" | "file" | "test";
   type?: "text" | "email" | "password" | "number";
-  name: string;
+  // name: string;
+  name: Path<T>; // Assurer que "name" est une clé valide du formulaire
   label?: string;
   disabled?: boolean;
   options?: Item[];
   previewUrl?: string;
   className?: string;
   lines?: number;
-  register: UseFormRegister<any>;
+  register: UseFormRegister<T>;
   errors: FieldErrors<FieldValues>;
   fieldProps?: InputProps | TextareaProps | SelectProps;
   showLabel?: boolean;
@@ -34,7 +34,7 @@ interface DynamicFormFieldProps {
   children?: ReactNode;
 }
 
-const DynamicFormField = ({
+const DynamicFormField = <T extends FieldValues>({
   inputType,
   label,
   register,
@@ -49,7 +49,7 @@ const DynamicFormField = ({
   showError = true,
   showLabel = false,
   floatingLabel = false,
-}: DynamicFormFieldProps) => {
+}: DynamicFormFieldProps<T>) => {
   const error = errors[name];
   const errorMessage = error ? (error.message as string) : "";
 

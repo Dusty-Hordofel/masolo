@@ -15,8 +15,8 @@ import { cn } from "@/lib/utils";
 
 export const ProductForm = (props: {
   // addToCartAction: typeof addToCart;
-  availableInventory: string | null;
-  productId: number;
+  availableInventory: number | null;
+  productId: string;
   productName: string | null;
   disableQuantitySelector?: boolean;
   buttonSize?: "default" | "sm";

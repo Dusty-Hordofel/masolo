@@ -63,7 +63,7 @@ export const CollectionBody = (
         <div className="grid col-span-12 lg:col-span-9 grid-cols-12 gap-6 h-fit">
           {props.storeAndProduct.map(
             (product, i) =>
-              (selectedSellers.includes(product.store.slug ?? "") ||
+              (selectedSellers.includes(product.slug ?? "") ||
                 selectedSellers.length === 0) && (
                 <div
                   className="sm:col-span-6 md:col-span-4 col-span-12"
