@@ -100,7 +100,7 @@ export const ProductService = {
       };
     }
   },
-  async updateProduct(productValues: Omit<Product, "storeId">) {
+  async updateProduct(productValues: Omit<Product, "createdAt" | "updatedAt">) {
     // console.log("LOMO", productValues);
     try {
       // Validation des valeurs du produit
@@ -131,7 +131,7 @@ export const ProductService = {
       const dbRes = await prisma.product.updateMany({
         where: {
           id: productValues.id,
-          // storeId: updatedValues.storeId, // Vérifie que le produit appartient au bon magasin
+          storeId: productValues.storeId, // Vérifie que le produit appartient au bon magasin
         },
         data: {
           name: updatedValues.name,

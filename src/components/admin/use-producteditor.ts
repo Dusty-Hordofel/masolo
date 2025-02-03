@@ -77,6 +77,7 @@ export function useProductEditor({
     if (initialValues?.id) {
       data = await updateProduct({
         id: initialValues.id,
+        storeId: initialValues.storeId,
         ...formValues,
       });
       if (data.success) {

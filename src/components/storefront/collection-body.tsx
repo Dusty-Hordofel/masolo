@@ -16,10 +16,11 @@ import { SlidersHorizontal } from "lucide-react";
 import { EmptyStateWrapper } from "../ui/empty-state-wrapper";
 import { ProductAndStore } from "@/app/(storefront)/products/page";
 import { ProductSidebar } from "./product-sidebar";
+import { StoreAndProduct } from "@/@types/admin/admin.products.interface";
 
 export const CollectionBody = (
   props: PropsWithChildren<{
-    storeAndProduct: ProductAndStore[];
+    storeAndProduct: StoreAndProduct[];
     activeSellers: {
       id: number;
       name: string | null;
@@ -62,8 +63,9 @@ export const CollectionBody = (
       {props.storeAndProduct.length > 0 ? (
         <div className="grid col-span-12 lg:col-span-9 grid-cols-12 gap-6 h-fit">
           {props.storeAndProduct.map(
+            // product.slug
             (product, i) =>
-              (selectedSellers.includes(product.slug ?? "") ||
+              (selectedSellers.includes(product.id ?? "") ||
                 selectedSellers.length === 0) && (
                 <div
                   className="sm:col-span-6 md:col-span-4 col-span-12"

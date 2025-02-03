@@ -149,7 +149,7 @@ model Product {
   id          String   @id @default(uuid())
   name        String
   price       Float    @default(0)
-  description String?
+  description String
   inventory   Int      @default(0)
   storeId     String   @map("store_id")
   store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade) // Relation avec Store

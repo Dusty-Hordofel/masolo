@@ -10,12 +10,14 @@ import { ProductImage } from "../product-image";
 import { routes } from "@/app/data/routes";
 import { ProductForm } from "./product-form";
 import { ProductAndStore } from "@/app/(storefront)/products/page";
+import { StoreAndProduct } from "@/@types/admin/admin.products.interface";
 // import { ProductAndStore } from "@/app/(storefront)/products/page";
 // import { ProductForm } from "./product-form";
 // import { addToCart } from "@/server-actions/add-to-cart";
 
 export const ProductCard = (props: {
-  storeAndProduct: ProductAndStore;
+  storeAndProduct: StoreAndProduct;
+  // storeAndProduct: ProductAndStore;
   hideButtonActions?: boolean;
 }) => {
   console.log("🚀 ~ storeAndProduct:", props.storeAndProduct.id);

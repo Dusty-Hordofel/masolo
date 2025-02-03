@@ -13,9 +13,7 @@ export const ProductSchema = z.object({
     .default(0),
   description: z
     .string()
-    .max(500, "La description ne peut pas dépasser 500 caractères")
-    .optional()
-    .nullable(),
+    .max(500, "La description ne peut pas dépasser 500 caractères"),
   inventory: z
     .number()
     .min(0, "L'inventaire ne peut pas être négatif")
@@ -33,11 +31,6 @@ export const ProductSchema = z.object({
       })
     )
     .optional(),
-  // storeId: z
-  //   .string()
-  //   .regex(/^[a-f\d]{24}$/i, "ID de magasin invalide")
-  //   .optional()
-  //   .nullable(),
 });
 
 export type ProductFormData = z.infer<typeof ProductSchema>;

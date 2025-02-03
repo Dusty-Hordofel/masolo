@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 // import { Input } from "@/components/ui/input";
 import { routes } from "@/app/data/routes";
-import prismadb from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
   // const storeAndProduct = (await db
@@ -34,7 +34,7 @@ export default async function Home() {
   //   .leftJoin(stores, eq(products.storeId, stores.id))
   //   .limit(8)) as ProductAndStore[];
 
-  const storeAndProduct = await prismadb.product.findMany({
+  const storeAndProduct = await prisma.product.findMany({
     include: {
       images: true,
       store: true,

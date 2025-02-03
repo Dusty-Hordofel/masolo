@@ -18,7 +18,9 @@ export async function getProductDetails(id: string): Promise<Product> {
   return await ProductService.productDetails(id);
 }
 
-export async function updateProduct(product: Omit<Product, "storeId">) {
+export async function updateProduct(
+  product: Omit<Product, "createdAt" | "updatedAt">
+) {
   return await ProductService.updateProduct(product);
 }
 

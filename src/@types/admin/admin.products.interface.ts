@@ -1,6 +1,6 @@
 // import { Product } from "@prisma/client";
 
-import { Image, Product } from "@prisma/client";
+import { Image, Prisma, Product } from "@prisma/client";
 
 export type ProductWithImages = Product & {
   images: Image[];
@@ -13,6 +13,13 @@ export interface ProductEditorSharedProps {
   productStatus: "new-product" | "existing-product";
   initialValues?: ProductWithImages;
 }
+
+export type StoreAndProduct = Prisma.ProductGetPayload<{
+  include: {
+    images: true;
+    store: true;
+  };
+}>;
 
 // we can use the following properties to configure the editor instead of using ProductEditorSharedProps
 
