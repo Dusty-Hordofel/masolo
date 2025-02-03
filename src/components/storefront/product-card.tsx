@@ -16,7 +16,6 @@ import { ProductAndStore } from "@/app/(storefront)/products/page";
 
 export const ProductCard = (props: {
   storeAndProduct: ProductAndStore;
-  // storeAndProduct: any;
   hideButtonActions?: boolean;
 }) => {
   console.log("🚀 ~ storeAndProduct:", props.storeAndProduct.id);

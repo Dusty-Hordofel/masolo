@@ -1,13 +1,13 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
-import prismadb from "./lib/prisma";
+import { prisma } from "./lib/prisma";
 import { Store, UserRole } from "@prisma/client";
 import { getUserById } from "./services/prisma/user.service";
 import { StoreService } from "./services/prisma/store.service";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prismadb),
+  adapter: PrismaAdapter(prisma),
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -26,7 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user, trigger }) {
       if (user) {
         const dbUser = await getUserById(user.id as string);
-        const stores = await prismadb.store.findMany({
+        const stores = await prisma.store.findMany({
           where: { ownerId: user.id },
         });
 
