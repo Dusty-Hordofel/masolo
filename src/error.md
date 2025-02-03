@@ -70,7 +70,7 @@ declare module "next-auth" {
 Modifiez votre fichier de configuration NextAuth pour inclure la propriété role dans le token et la session.
 
 export default NextAuth({
-  adapter: PrismaAdapter(prismadb),
+  adapter: PrismaAdapter(prisma),
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,

@@ -1,5 +1,3 @@
-// import { Product } from "@prisma/client";
-
 import { Image, Prisma, Product } from "@prisma/client";
 
 export type ProductWithImages = Product & {

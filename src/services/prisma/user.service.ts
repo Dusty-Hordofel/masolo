@@ -17,7 +17,7 @@ export const getUserById = async (id: string) => {
       where: { id },
     });
 
-    // await prismadb.user.findUnique({
+    // await prisma.user.findUnique({
     //   where: { id: user.id },
     //   include: { store: true },
     // });

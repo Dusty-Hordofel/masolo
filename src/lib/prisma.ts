@@ -13,8 +13,8 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 //   var prisma: PrismaClient | undefined;
 // }
 
-// const prismadb = globalThis.prisma || new PrismaClient();
+// const prisma = globalThis.prisma || new PrismaClient();
 
-// if (process.env.NODE_ENV !== "production") globalThis.prisma = prismadb;
+// if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
 
-// export default prismadb;
+// export default prisma;

@@ -9,7 +9,7 @@ import { Line } from "./line";
 import { ProductSearch } from "../storefront/product-search";
 import { IconWithText } from "./icon-with-text";
 import { Truck } from "lucide-react";
-import { ShoppingCartHeader } from "./shopping-cart-header";
+// import { ShoppingCartHeader } from "./shopping-cart-header";
 import { MenuItems } from "./menu-items";
 
 // import { MenuItems } from "./menu-items";
