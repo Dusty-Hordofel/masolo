@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 // import { Input } from "@/components/ui/input";
 import { routes } from "@/app/data/routes";
-import prismadb from "@/lib/prismadb";
+import prismadb from "@/lib/prisma";
 
 export default async function Home() {
   // const storeAndProduct = (await db

@@ -1,4 +1,4 @@
-import prismadb from "@/lib/prismadb";
+import prismadb from "@/lib/prisma";
 
 export async function getVerificationTokenByEmail(email: string) {
   if (!email || typeof email !== "string") {

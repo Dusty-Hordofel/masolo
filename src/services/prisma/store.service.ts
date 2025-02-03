@@ -1,5 +1,5 @@
 import { currentUser } from "@/lib/auth";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prisma";
 import { StoreSchemaFormData } from "@/schemas/stores/stores.schema";
 import { createSlug } from "@/utils";
 
@@ -8,7 +8,7 @@ export const StoreService = {
     const user = await currentUser();
 
     try {
-      const existingStore = await prismadb.store.findFirst({
+      const existingStore = await prisma.store.findFirst({
         where: {
           name: storeValues.name,
         },
@@ -23,7 +23,7 @@ export const StoreService = {
         };
       }
 
-      const newStore = await prismadb.store.create({
+      const newStore = await prisma.store.create({
         data: {
           ...storeValues,
           slug: createSlug(storeValues.name),
@@ -51,7 +51,7 @@ export const StoreService = {
   },
   async getUserStores(userId: string) {
     try {
-      const stores = await prismadb.store.findMany({
+      const stores = await prisma.store.findMany({
         where: { ownerId: userId },
       });
 

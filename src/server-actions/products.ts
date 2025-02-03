@@ -1,7 +1,7 @@
 "use server";
 
 import { UploadedFile } from "@/components/admin/use-file-upload";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prisma";
 import { ProductFormData } from "@/schemas/products/product.schema";
 import { deleteImageFromCloudinary } from "@/services/cloudinary/cloudinary.service";
 import { ProductService } from "@/services/prisma/product.sevice";
@@ -32,7 +32,7 @@ export async function addProductImages(
 ) {
   try {
     // Étape 1 : Récupérer le produit existant
-    const existingProduct = (await prismadb.product.findUnique({
+    const existingProduct = (await prisma.product.findUnique({
       where: { id: productId },
     })) as Product;
 
@@ -40,7 +40,7 @@ export async function addProductImages(
       throw new Error(`Product with ID ${productId} not found.`);
     }
 
-    const updatedProduct = await prismadb.image.createMany({
+    const updatedProduct = await prisma.image.createMany({
       data: productImages.map((productImage) => ({
         ...productImage,
         productId, // Assurez-vous d'inclure la clé étrangère
@@ -58,7 +58,7 @@ export async function addProductImages(
 export async function deleteProductImage(imageId: string) {
   try {
     // Récupérer l'image avant de la supprimer
-    const image = await prismadb.image.findUnique({
+    const image = await prisma.image.findUnique({
       where: { id: imageId },
     });
 
@@ -70,7 +70,7 @@ export async function deleteProductImage(imageId: string) {
     await deleteImageFromCloudinary(image.publicId);
 
     // Supprimer l'image de la base de données
-    await prismadb.image.delete({
+    await prisma.image.delete({
       where: { id: imageId },
     });
 
@@ -89,7 +89,7 @@ export async function deleteProductImage(imageId: string) {
 
 export async function getNewImages(productId: string, results: UploadedFile[]) {
   try {
-    const newImages = await prismadb.image.findMany({
+    const newImages = await prisma.image.findMany({
       where: { productId },
       orderBy: { createdAt: "desc" },
       // take: 2,

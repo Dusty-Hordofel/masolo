@@ -1,5 +1,5 @@
 import { getVerificationTokenByEmail } from "@/services/prisma/token.service";
-import prismadb from "./prismadb";
+import prismadb from "./prisma";
 
 export const generateToken = (length = 6): string => {
   let otp = "";

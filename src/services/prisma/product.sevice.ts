@@ -1,5 +1,4 @@
-// import { currentUser } from "@/lib/auth";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prisma";
 import {
   ProductFormData,
   ProductSchema,
@@ -25,7 +24,7 @@ export const ProductService = {
       const { name, price, inventory, description } = validatedProduct.data;
 
       // Créer le produit avec Prisma
-      const newProduct = await prismadb.product.create({
+      const newProduct = await prisma.product.create({
         data: {
           name,
           price,
@@ -57,7 +56,7 @@ export const ProductService = {
   },
 
   async productDetails(id: string) {
-    const product = await prismadb.product.findUnique({
+    const product = await prisma.product.findUnique({
       where: { id },
       include: { images: true },
     });
@@ -83,7 +82,7 @@ export const ProductService = {
 
       if (!productId) throw new Error("No product id provided");
 
-      await prismadb.product.delete({
+      await prisma.product.delete({
         where: { id: productId },
       });
 
@@ -129,7 +128,7 @@ export const ProductService = {
       };
 
       // Mise à jour du produit avec Prisma
-      const dbRes = await prismadb.product.updateMany({
+      const dbRes = await prisma.product.updateMany({
         where: {
           id: productValues.id,
           // storeId: updatedValues.storeId, // Vérifie que le produit appartient au bon magasin
@@ -160,7 +159,7 @@ export const ProductService = {
 
   // async getProductsByStore(storeId: string) {},
   async getProducts() {
-    const products = await prismadb.product.findMany({
+    const products = await prisma.product.findMany({
       include: { images: true },
     });
 

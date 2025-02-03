@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
-import prismadb from "./lib/prismadb";
+import prismadb from "./lib/prisma";
 import { Store, UserRole } from "@prisma/client";
 import { getUserById } from "./services/prisma/user.service";
 import { StoreService } from "./services/prisma/store.service";

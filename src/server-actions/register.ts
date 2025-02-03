@@ -2,7 +2,7 @@
 
 import { ErrorCode } from "@/constants/error-codes";
 import { sendVerificationEmail } from "@/lib/mail";
-import prismadb from "@/lib/prismadb";
+import { prisma } from "@/lib/prisma";
 import { generateEmailVerificationToken } from "@/lib/tokens";
 import { RegisterFormData, RegisterSchema } from "@/schemas/user/auth";
 import { getUserByEmail } from "@/services/prisma/user.service";
@@ -37,7 +37,7 @@ export const register = async (registerData: RegisterFormData) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await prismadb.user.create({
+  const newUser = await prisma.user.create({
     data: {
       name: lastName + " " + firstName,
       email,
