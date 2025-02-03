@@ -15,7 +15,7 @@ export default function LoginPage() {
         <div className="mx-auto px-9 flex w-full flex-col justify-center space-y-6 max-w-[480px]">
           <AuthHeader
             title="Enter your email to join us or sign in."
-            description=""
+            // description=""
           />
           <AuthLoginForm />
           <AuthFooter type="register" />
