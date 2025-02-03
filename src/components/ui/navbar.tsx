@@ -67,9 +67,7 @@ const NavBar = ({
                 />
               </Link>
             </li>
-            <li>
-              <ShoppingCartHeader />
-            </li>
+            <li>{/* <ShoppingCartHeader /> */}</li>
           </ul>
         </ContentWrapper>
         <Line className="hidden md:block" />
