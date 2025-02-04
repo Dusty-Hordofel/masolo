@@ -121,7 +121,6 @@ export const ProductCartActions = (props: {
   );
 };
 
-// 🎯 Gestion dynamique des boutons avec le Strategy Pattern
 const getActionButton = (
   availableInventory: number | null,
   isPreOrderAvailable: boolean,
@@ -187,7 +186,6 @@ export const AddToCartButton = ({
   );
 };
 
-// 🎯 Sous-composants
 const QuantitySelector = ({
   quantity,
   setQuantity,
