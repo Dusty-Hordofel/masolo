@@ -12,7 +12,7 @@ export const ProductCard = (props: {
   hideButtonActions?: boolean;
 }) => {
   console.log("🚀 ~ storeAndProduct:", props.storeAndProduct.id);
-  const productPageLink = `${routes.product}/${props.storeAndProduct.id}`;
+  const productPageLink = `${routes.products}/${props.storeAndProduct.id}`;
 
   return (
     <div key={props.storeAndProduct.id}>
