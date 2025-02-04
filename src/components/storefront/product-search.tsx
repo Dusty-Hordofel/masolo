@@ -16,12 +16,6 @@ import { Button } from "../ui/button";
 import { ProductImage } from "../ui/product-image";
 import { LoadingSkeleton } from "../ui/loading-skeleton";
 
-export type ProductImages = {
-  id: string;
-  alt: string;
-  url: string;
-};
-
 const useProductSearch = (initialSearch = "") => {
   const [searchTerm, setSearchTerm] = useState(initialSearch);
   const [results, setResults] = useState<

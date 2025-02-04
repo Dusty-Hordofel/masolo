@@ -6,14 +6,13 @@ import { currencyFormatter } from "@/lib/currency";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductImage } from "@/components/product-image";
-import { addToCart } from "@/server-actions/add-to-cart";
+import { addToCart, getCart } from "@/server-actions/add-to-cart";
 import { getProductDetails } from "@/server-actions/products";
 import { ProductWithImages } from "@/@types/admin/admin.products.interface";
 import { getStoreByProductId } from "@/server-actions/store";
 import { routes, productsQueryParams } from "@/app/data/routes";
 import { FeatureIcons } from "@/components/storefront/feature-icons";
 import { ProductCartActions } from "@/components/storefront/product-card-2";
-// import { ProductCartActions } from "@/components/storefront/product-card-2.tsx.jsx";
 
 export default async function StorefrontProductDetails({
   params,
@@ -25,6 +24,9 @@ export default async function StorefrontProductDetails({
   )) as ProductWithImages;
 
   const store = await getStoreByProductId(product.id);
+
+  const cart = await getCart("6e181af9-083e-4a44-ac56-e9228a024463");
+  console.log("🚀 ~ test:LOKO", cart);
 
   return (
     <div className="flex flex-col gap-8">
