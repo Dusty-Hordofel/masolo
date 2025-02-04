@@ -131,31 +131,18 @@ model TwoFactorConfirmation {
   @@unique([userId])
 }
 
-// model Product {
-//   id          String   @id @default(uuid())
-//   name        String
-//   price       Float    @default(0)
-//   description String?
-//   inventory   Int      @default(0)
-//   storeId     String? //@map("store_id")
-//   images      Image[] // Relation avec le modèle Image
-//   createdAt   DateTime @default(now())
-//   updatedAt   DateTime @updatedAt
-
-//   @@map("products")
-// }
-
 model Product {
-  id          String   @id @default(uuid())
-  name        String
-  price       Float    @default(0)
-  description String
-  inventory   Int      @default(0)
-  storeId     String   @map("store_id")
-  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade) // Relation avec Store
-  images      Image[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                  String   @id @default(uuid())
+  name                String
+  price               Float    @default(0)
+  description         String
+  inventory           Int      @default(0)
+  isPreOrderAvailable Boolean  @default(false)
+  storeId             String   @map("store_id")
+  store               Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  images              Image[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   @@map("products")
 }
@@ -195,25 +182,43 @@ model Store {
   @@map("stores")
 }
 
-// model Product {
-//   id          String   @id @default(uuid())
-//   name        String
-//   price       Float    @default(0)
-//   description String?
-//   inventory   Int      @default(0)
-//   storeId     String?
-//   images      Image[] // Relation avec le modèle Image
-//   createdAt   DateTime @default(now())
-//   updatedAt   DateTime @updatedAt
+model Cart {
+  id              String  @id @default(uuid())
+  items           Json?
+  paymentIntentId String?
+  clientSecret    String?
+  isClosed        Boolean @default(false)
+}
 
-//   @@map("products")
+// model Payment {
+//   id                     Int     @id @default(autoincrement())
+//   storeId                Int?
+//   stripeAccountId        String?
+//   stripeAccountCreatedAt Int?
+//   stripeAccountExpiresAt Int?
+//   detailsSubmitted       Boolean @default(false)
 // }
 
-// model Image {
-//   id        String  @id @default(uuid())
-//   publicId  String
-//   secureUrl String
-//   alt       String?
-//   productId String  @map("product_id")
-//   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+// model Order {
+//   id                        Int     @id @default(autoincrement())
+//   prettyOrderId             Int?
+//   storeId                   Int?
+//   items                     Json?
+//   total                     Decimal @default(0.00)
+//   stripePaymentIntentId     String? @unique
+//   stripePaymentIntentStatus String?
+//   name                      String?
+//   email                     String?
+//   createdAt                 Int?
+//   addressId                 Int?
+// }
+
+// model Address {
+//   id         Int     @id @default(autoincrement())
+//   line1      String?
+//   line2      String?
+//   city       String?
+//   state      String?
+//   postalCode String?
+//   country    String?
 // }

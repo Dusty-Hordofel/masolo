@@ -1,17 +1,8 @@
 import { ProductWithImages } from "@/@types/admin/admin.products.interface";
-// import { CollectionBody } from "@/components/storefront/collection-body";
 import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
-// import { CollectionPagePagination } from "@/components/storefront/collection-page-pagination";
+import { getStoreAndProduct } from "@/server-actions/store";
 import { Store } from "@prisma/client";
-// import { db } from "@/db/db";
-// import { Product, Store, stores } from "@/db/schema";
-// import { products } from "@/db/schema";
-// import { eq, inArray } from "drizzle-orm";
-
-// export type ProductAndStore = {
-//   product: ProductWithImages;
-//   store: Omit<Store, "description" | "industry">;
-// };
+import ProductCard2 from "@/components/storefront/product-card-2";
 
 export type ProductAndStore = ProductWithImages &
   Omit<Store, "description" | "industry">;
@@ -47,6 +38,12 @@ export default async function StorefrontProductsPage() {
   //       ? (Number(context.searchParams.page) - 1) * PRODUCTS_PER_PAGE
   //       : 0
   //   )) as ProductAndStore[];
+
+  const storeAndProduct = await getStoreAndProduct();
+  console.log(
+    "🚀 ~ StorefrontProductsPage ~ storeAndProduct:44",
+    storeAndProduct
+  );
 
   return (
     <div>
@@ -92,6 +89,9 @@ export default async function StorefrontProductsPage() {
           sellerParams={context.searchParams.seller as string}
         />
       </CollectionBody> */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-auto mt-4">
+        <ProductCard2 storeAndProduct={storeAndProduct} />
+      </div>
     </div>
   );
 }

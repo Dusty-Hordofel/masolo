@@ -53,3 +53,5 @@ $
 ### 12. Home Page
 
 ### 13. Home Page
+
+### 14. Products details, addToCartButton

@@ -61,4 +61,49 @@ export const StoreService = {
       return [];
     }
   },
+
+  async getStoreAndProduct() {
+    try {
+      const storeAndProduct = await prisma.product.findMany({
+        include: {
+          images: true,
+          store: true,
+          // store: {
+          //   select: {
+          //     id: true,
+          //     name: true,
+          //     slug: true,
+          //   },
+          // },
+        },
+        take: 8, // Équivaut à LIMIT 8 en SQL
+      });
+      console.log("🚀 ~ Home ~ storeAndProduct:", storeAndProduct);
+
+      return storeAndProduct;
+    } catch (error) {
+      console.error("Error fetching  product stores:", error);
+      return [];
+    }
+  },
+
+  async getStore() {
+    try {
+      const store = await prisma.store.findFirst({
+        include: {
+          products: {
+            include: {
+              images: true,
+            },
+          },
+        },
+      });
+      console.log("��� ~ getStore ~ store:", store);
+
+      return store;
+    } catch (error) {
+      console.error("Error fetching  store:", error);
+      return null;
+    }
+  },
 };

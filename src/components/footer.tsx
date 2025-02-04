@@ -17,7 +17,7 @@ export const Footer = () => {
                 href="https://github.com/jackblatch"
                 className="text-white border-b pb-[1px] border-secondary"
               >
-                @jackblatch
+                @hordofel
               </a>
               .
             </p>

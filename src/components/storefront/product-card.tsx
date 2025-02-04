@@ -41,12 +41,12 @@ export const ProductCard = (props: {
             </Button>
           </Link>
           <ProductForm
-            // addToCartAction={addToCart}
-            disableQuantitySelector={true}
-            availableInventory={props.storeAndProduct.inventory}
-            productId={props.storeAndProduct.id}
-            productName={props.storeAndProduct.name}
-            buttonSize="sm"
+          // addToCartAction={addToCart}
+          // disableQuantitySelector={true}
+          // availableInventory={props.storeAndProduct.inventory}
+          // productId={props.storeAndProduct.id}
+          // productName={props.storeAndProduct.name}
+          // buttonSize="sm"
           />
         </div>
       )}
