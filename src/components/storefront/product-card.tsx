@@ -14,7 +14,7 @@ import Link from "next/link";
 import { toast } from "@/hooks/use-toast.hook";
 import { ToastAction } from "@/components/ui/toast";
 import { routes } from "@/app/data/routes";
-import { cn, handleInputQuantity } from "@/lib/utils";
+import { cn /*, handleInputQuantity*/ } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Text } from "@/components/ui/text";
