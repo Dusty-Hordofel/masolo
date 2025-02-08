@@ -1,13 +1,13 @@
-import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
+// import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
 import { Heading } from "@/components/ui/heading";
 import React from "react";
 
 type UserAuthHeaderProps = {
   title: string;
-  description: string;
+  // description: string;
 };
 
-const AuthHeader = ({ title, description }: UserAuthHeaderProps) => {
+const AuthHeader = ({ title }: UserAuthHeaderProps) => {
   return (
     <div className="flex flex-col space-y-2 text-center">
       <Heading size="h1" className="text-3xl lg:text-[28px] text-start">

@@ -2,26 +2,33 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
+// import { signIn } from "next-auth/react";
 
 import { cn } from "@/lib/utils";
 import { LoginFormData, LoginSchema } from "@/schemas/user/auth";
-import DynamicFormField from "../dynamic-form-field";
-import { Mail } from "lucide-react";
+// import DynamicFormField from "../dynamic-form-field";
+// import { Mail } from "lucide-react";
 import AuthSocialButtons from "./auth-social-buttons";
 import { useForm } from "react-hook-form";
-import AuthDivider from "./auth-divider";
-import PasswordToggleButton from "./password-toggle-button";
-import SubmitButton from "./submit-button";
+// import AuthDivider from "./auth-divider";
+// import PasswordToggleButton from "./password-toggle-button";
+// import SubmitButton from "./submit-button";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+// interface UserAuthFormProps
+// extends React.HTMLAttributes<HTMLDivElement> {}
 
-function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
+function AuthLoginForm({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   const {
-    register,
-    watch,
-    handleSubmit,
-    formState: { errors, isSubmitting },
+    // register,
+    // watch,
+    // handleSubmit,
+    formState: {
+      // errors,
+      isSubmitting,
+    },
   } = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -29,25 +36,26 @@ function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
     },
   });
 
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+  // const [isVisible, setIsVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState({
     general: false,
     google: false,
     github: false,
   });
 
-  const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+  // const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+
   const toggleLoading = (key: keyof typeof loading, value: boolean) => {
     setLoading((prev) => ({ ...prev, [key]: value }));
   };
 
-  async function handleRegisterSubmit(data: LoginFormData) {
-    console.log("🚀 ~ AuthForm ~ data:", data);
-  }
+  // async function handleRegisterSubmit(data: LoginFormData) {
+  //   console.log("🚀 ~ AuthForm ~ data:", data);
+  // }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={handleSubmit(handleRegisterSubmit)} className="space-y-4">
+      {/* <form onSubmit={handleSubmit(handleRegisterSubmit)} className="space-y-4">
         <DynamicFormField
           inputType="input"
           showLabel
@@ -60,7 +68,12 @@ function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
             disabled: false,
           }}
         >
-          <Mail size={16} strokeWidth={2} aria-hidden="true" />
+          <Mail
+            size={16}
+            strokeWidth={2}
+            aria-hidden="true"
+            className="absolute top-10 right-3"
+          />
         </DynamicFormField>
 
         <DynamicFormField
@@ -83,9 +96,9 @@ function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
         </DynamicFormField>
 
         <SubmitButton label="Continuer" isSubmitting={isSubmitting} />
-      </form>
+      </form> */}
 
-      <AuthDivider />
+      {/* <AuthDivider /> */}
       <AuthSocialButtons
         isSubmitting={isSubmitting}
         loading={loading}

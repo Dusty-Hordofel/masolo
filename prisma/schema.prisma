@@ -4,13 +4,23 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "mongodb"
+//   url      = env("DATABASE_URL")
+// }
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  // relationMode = "prisma"
 }
 
 enum UserRole {
@@ -32,7 +42,7 @@ enum UserRole {
 }
 
 model User {
-  id                      String                 @id @default(auto()) @map("_id") @db.ObjectId
+  id                      String                 @id @default(uuid())
   name                    String?
   email                   String?                @unique
   emailVerified           DateTime?
@@ -43,18 +53,21 @@ model User {
   sessions                Session[]
   isTwoFactorEnabled      Boolean                @default(false)
   twoFactorConfirmation   TwoFactorConfirmation?
-  twoFactorConfirmationId String?                @db.ObjectId
+  twoFactorConfirmationId String?
+  // twoFactorConfirmationId String?                @db.ObjectId
   lastLogin               DateTime?              @updatedAt
   createdAt               DateTime               @default(now())
   updatedAt               DateTime               @updatedAt
-  Store                   Store[]
+  store                   Store[]
 
   @@map("users")
 }
 
 model Account {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String  @db.ObjectId
+  // id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  id                String  @id @default(uuid())
+  userId            String
+  // userId            String  @db.ObjectId
   type              String
   provider          String
   providerAccountId String  @map("provider_account_id")
@@ -73,9 +86,9 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(uuid())
   sessionToken String   @unique @map("session_token")
-  userId       String   @db.ObjectId
+  userId       String
   expires      DateTime @map("expiresAt")
   user         User     @relation(fields: [userId], references: [id])
 
@@ -83,7 +96,7 @@ model Session {
 }
 
 model VerificationToken {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  id      String   @id @default(uuid())
   email   String
   token   String   @unique
   expires DateTime @map("expiresAt")
@@ -92,7 +105,7 @@ model VerificationToken {
 }
 
 model PasswordResetToken {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  id      String   @id @default(uuid())
   email   String
   token   String   @unique
   expires DateTime
@@ -101,7 +114,7 @@ model PasswordResetToken {
 }
 
 model TwoFactorToken {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  id      String   @id @default(uuid())
   email   String
   token   String   @unique
   expires DateTime
@@ -110,34 +123,111 @@ model TwoFactorToken {
 }
 
 model TwoFactorConfirmation {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(uuid())
 
-  userId String @db.ObjectId
+  userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
 }
 
 model Product {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  price       Float   @default(0) @map("price")
-  description String?
-  inventory   Float   @default(0)
-  images      Json?
-  storeId     String? // Reference to another collection (e.g. Store)
+  id                  String   @id @default(uuid())
+  name                String
+  price               Float    @default(0)
+  description         String
+  inventory           Int      @default(0)
+  isPreOrderAvailable Boolean  @default(false)
+  storeId             String   @map("store_id")
+  store               Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  images              Image[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
-  @@map("products") // Corresponds to the name of the MongoDB collection, note that MongoDB uses it by default.
+  @@map("products")
 }
 
+model Image {
+  id        String   @id @default(uuid())
+  publicId  String
+  secureUrl String
+  alt       String
+  productId String   @map("product_id")
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) // Date d'insertion automatique
+}
+
+// model Store {
+//   id          String  @id @default(uuid())
+//   name        String  @unique @map("store_name")
+//   industry    String?
+//   description String?
+//   slug        String  @unique @map("slug")
+//   owner       User?   @relation(fields: [ownerId], references: [id])
+//   ownerId     String?
+
+//   @@map("stores")
+// }
+
 model Store {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String  @unique @map("store_name")
+  id          String    @id @default(uuid())
+  name        String    @unique @map("store_name")
   industry    String?
   description String?
-  slug        String  @unique @map("slug")
-  owner       User?   @relation(fields: [ownerId], references: [id])
-  ownerId     String? @db.ObjectId
+  slug        String    @unique @map("slug")
+  owner       User?     @relation(fields: [ownerId], references: [id])
+  ownerId     String?
+  products    Product[] // Ajout de la relation inverse avec Product
 
   @@map("stores")
 }
+
+model Cart {
+  id              String     @id @default(uuid())
+  cartItems       CartItem[]
+  // items           Json?
+  paymentIntentId String?
+  clientSecret    String?
+  isClosed        Boolean    @default(false)
+}
+
+model CartItem {
+  // id     String @id @default(uuid())
+  id     String @id // L'ID sera directement l'ID du produit
+  qty    Int    @default(0)
+  cartId String @map("cart_id")
+  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+}
+
+// model Payment {
+//   id                     Int     @id @default(autoincrement())
+//   storeId                Int?
+//   stripeAccountId        String?
+//   stripeAccountCreatedAt Int?
+//   stripeAccountExpiresAt Int?
+//   detailsSubmitted       Boolean @default(false)
+// }
+
+// model Order {
+//   id                        Int     @id @default(autoincrement())
+//   prettyOrderId             Int?
+//   storeId                   Int?
+//   items                     Json?
+//   total                     Decimal @default(0.00)
+//   stripePaymentIntentId     String? @unique
+//   stripePaymentIntentStatus String?
+//   name                      String?
+//   email                     String?
+//   createdAt                 Int?
+//   addressId                 Int?
+// }
+
+// model Address {
+//   id         Int     @id @default(autoincrement())
+//   line1      String?
+//   line2      String?
+//   city       String?
+//   state      String?
+//   postalCode String?
+//   country    String?
+// }

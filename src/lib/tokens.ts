@@ -1,5 +1,5 @@
 import { getVerificationTokenByEmail } from "@/services/prisma/token.service";
-import prismadb from "./prismadb";
+import { prisma } from "./prisma";
 
 export const generateToken = (length = 6): string => {
   let otp = "";
@@ -19,14 +19,14 @@ export const generateEmailVerificationToken = async (email: string) => {
   const existingToken = await getVerificationTokenByEmail(email);
 
   if (existingToken) {
-    await prismadb.verificationToken.delete({
+    await prisma.verificationToken.delete({
       where: {
         id: existingToken.id,
       },
     });
   }
 
-  const verificationToken = await prismadb.verificationToken.create({
+  const verificationToken = await prisma.verificationToken.create({
     data: {
       email,
       token: sixDigitCode,

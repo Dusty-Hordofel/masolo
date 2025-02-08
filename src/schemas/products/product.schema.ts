@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const ProductSchema = z.object({
+  id: z.string().optional(), // Validation pour un ObjectId MongoDB
   name: z
     .string()
     .min(1, "Le nom est requis")
@@ -12,9 +13,7 @@ export const ProductSchema = z.object({
     .default(0),
   description: z
     .string()
-    .max(500, "La description ne peut pas dépasser 500 caractères")
-    .optional()
-    .nullable(),
+    .max(500, "La description ne peut pas dépasser 500 caractères"),
   inventory: z
     .number()
     .min(0, "L'inventaire ne peut pas être négatif")
@@ -26,15 +25,12 @@ export const ProductSchema = z.object({
   images: z
     .array(
       z.object({
-        url: z.string().url("L'URL de l'image doit être valide"),
-        alt: z.string().optional(), // Texte alternatif optionnel
+        publicId: z.string().url("L'ID de l'image doit être valide"),
+        secureUrl: z.string().url("L'URL de l'image doit être valide"),
+        alt: z.string(), // Texte alternatif optionnel
       })
     )
     .optional(),
-  storeId: z
-    .string()
-    .regex(/^[a-f\d]{24}$/i, "ID de magasin invalide")
-    .optional(), // Validation pour un ObjectId MongoDB
 });
 
 export type ProductFormData = z.infer<typeof ProductSchema>;
