@@ -216,6 +216,7 @@ const PreOrderButton = ({
   const [isPending, startTransition] = useTransition();
   return (
     <Button
+      disabled={isPending}
       size="default"
       className="w-36 bg-blue-500 hover:bg-blue-600 text-white"
       onClick={() => {

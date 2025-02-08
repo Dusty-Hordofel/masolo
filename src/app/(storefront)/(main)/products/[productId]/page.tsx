@@ -6,7 +6,7 @@ import { currencyFormatter } from "@/lib/currency";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductImage } from "@/components/product-image";
-import { addToCart, getCart } from "@/server-actions/add-to-cart";
+import { addToCart } from "@/server-actions/add-to-cart";
 import { getProductDetails } from "@/server-actions/products";
 import { ProductWithImages } from "@/@types/admin/admin.products.interface";
 import { getStoreByProductId } from "@/server-actions/store";

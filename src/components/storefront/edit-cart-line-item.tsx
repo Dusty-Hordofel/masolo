@@ -17,22 +17,14 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { handleInputQuantity } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast.hook";
-import {
-  updateCart,
-  updateCartItemQuantity,
-} from "@/server-actions/add-to-cart";
-import { revalidatePath } from "next/cache";
+import { updateCartItemQuantity } from "@/server-actions/add-to-cart";
 
 const EditCartLineItem = ({ productInCart, product }: any) => {
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const [quantity, setQuantity] = useState<string | number>(
     productInCart?.qty ?? 1
   );
-  console.log("🚀 ~ EditCartLineItem ~ quantity:", quantity);
-  console.log(
-    "🚀 ~ EditCartLineItem ~ productInCart:PROD IN CART",
-    productInCart
-  );
+
   return (
     <div>
       <AlertDialog>
@@ -82,7 +74,9 @@ const EditCartLineItem = ({ productInCart, product }: any) => {
             >
               Remove from cart
             </Button>
-            <AlertDialogCancel onClick={() => setIsOpen((prev) => !prev)}>
+            <AlertDialogCancel
+            // onClick={() => setIsOpen((prev) => !prev)}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction

@@ -2,7 +2,6 @@ import { ProductWithImages } from "@/@types/admin/admin.products.interface";
 import { ProductBanner } from "@/components/storefront/product-banner";
 import { getStoreAndProduct } from "@/server-actions/store";
 import { Store } from "@prisma/client";
-import { ProductCard } from "@/components/storefront/product-card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Heading } from "@/components/ui/heading";
 import ProductList from "@/components/storefront/product-list";

@@ -9,7 +9,6 @@ import { FeatureBanner } from "../components/feature-banner";
 import { AlarmClock, DollarSign, Phone, Truck, User } from "lucide-react";
 
 import { routes } from "@/app/data/routes";
-import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
   return (
