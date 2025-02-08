@@ -4,6 +4,8 @@ export type ProductWithImages = Product & {
   images: Image[];
 };
 
+
+
 export type ImageProps = Pick<Image, "secureUrl" | "alt" | "publicId">;
 
 export interface ProductEditorSharedProps {

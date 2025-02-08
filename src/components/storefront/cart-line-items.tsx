@@ -7,21 +7,27 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { currencyFormatter } from "@/lib/currency";
+// import { routes } from "@/lib/routes";
+// import { CartItem, CartLineItemDetails } from "@/lib/types";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { ProductImage } from "../product-image";
-import { routes } from "@/app/data/routes";
-import { EditCartLineItem } from "./edit-cart-line-item";
 import {
   CartItem,
   CartLineItemDetails,
 } from "@/@types/cart/cart.item.interface";
+import { routes } from "@/app/data/routes";
+import { getCartTest } from "@/server-actions/add-to-cart";
+import EditCartLineItem from "./edit-cart-line-item";
+// import { EditCartLineItem } from "./edit-cart-line-item";
 
 export const CartLineItems = (props: {
   cartItems: CartItem[];
-  products: CartLineItemDetails[];
+  products: getCartTest[];
   variant: "cart" | "checkout";
 }) => {
+  // console.log("🚀 ~ products:PRODO2", props.products);
+
   return (
     <Table>
       <TableHeader>
@@ -51,7 +57,7 @@ export const CartLineItems = (props: {
             <TableRow key={product.id}>
               <TableCell className="font-medium">
                 <ProductImage
-                  src={product.images[0]?.url}
+                  src={product.images[0]?.secureUrl}
                   alt={product.images[0]?.alt}
                   sizes="50px"
                   height="h-[50px]"
@@ -60,7 +66,7 @@ export const CartLineItems = (props: {
               </TableCell>
               <TableCell className="max-w-[200px] w-[200px] truncate">
                 {props.variant === "cart" ? (
-                  <Link href={`${routes.products}/${product.id}`}>
+                  <Link href={`${routes.product}/${product.id}`}>
                     <Button className="m-0 p-0 h-auto" variant="link">
                       {product.name}
                     </Button>

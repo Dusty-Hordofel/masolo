@@ -78,7 +78,7 @@ export const StoreService = {
         },
         take: 8, // Équivaut à LIMIT 8 en SQL
       });
-      console.log("🚀 ~ Home ~ storeAndProduct:", storeAndProduct);
+      // console.log("🚀 ~ Home ~ storeAndProduct:", storeAndProduct);
 
       return storeAndProduct;
     } catch (error) {

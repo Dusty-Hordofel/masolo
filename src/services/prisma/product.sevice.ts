@@ -60,7 +60,7 @@ export const ProductService = {
       where: { id },
       include: { images: true },
     });
-    console.log("🚀 ~ productDetails ~ product:", product);
+    // console.log("🚀 ~ productDetails ~ product:", product);
 
     if (!product) {
       throw new Error("Product not found");
@@ -71,7 +71,7 @@ export const ProductService = {
       images: product.images ?? [], // Si les images sont null, définissez un tableau vide
     };
 
-    return product as Product;
+    // return product as Product;
   },
 
   async deleteProduct(productId: string | undefined) {

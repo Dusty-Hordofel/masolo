@@ -183,11 +183,20 @@ model Store {
 }
 
 model Cart {
-  id              String  @id @default(uuid())
-  items           Json?
+  id              String     @id @default(uuid())
+  cartItems       CartItem[]
+  // items           Json?
   paymentIntentId String?
   clientSecret    String?
-  isClosed        Boolean @default(false)
+  isClosed        Boolean    @default(false)
+}
+
+model CartItem {
+  // id     String @id @default(uuid())
+  id     String @id // L'ID sera directement l'ID du produit
+  qty    Int    @default(0)
+  cartId String @map("cart_id")
+  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
 }
 
 // model Payment {

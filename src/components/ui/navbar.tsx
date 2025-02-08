@@ -11,6 +11,7 @@ import { IconWithText } from "./icon-with-text";
 import { Truck } from "lucide-react";
 // import { ShoppingCartHeader } from "./shopping-cart-header";
 import { MenuItems } from "./menu-items";
+import { ShoppingCartHeader } from "../shopping-cart-header";
 
 // import { MenuItems } from "./menu-items";
 
@@ -67,7 +68,9 @@ const NavBar = ({
                 />
               </Link>
             </li>
-            <li>{/* <ShoppingCartHeader /> */}</li>
+            <li>
+              <ShoppingCartHeader />
+            </li>
           </ul>
         </ContentWrapper>
         <Line className="hidden md:block" />

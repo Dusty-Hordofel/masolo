@@ -9,34 +9,38 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "../ui/button";
-import { CartItem, CartLineItemDetails } from "@/lib/types";
-import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { updateCart } from "@/server-actions/update-cart";
+import { Input } from "../ui/input";
 import { useState } from "react";
+import { Button } from "../ui/button";
 import { handleInputQuantity } from "@/lib/utils";
-import { toast } from "../ui/use-toast";
+import { toast } from "@/hooks/use-toast.hook";
+import {
+  updateCart,
+  updateCartItemQuantity,
+} from "@/server-actions/add-to-cart";
 
-export const EditCartLineItem = (props: {
-  productInCart: CartItem | undefined;
-  product: CartLineItemDetails;
-}) => {
+const EditCartLineItem = ({ productInCart, product }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [quantity, setQuantity] = useState<string | number>(
-    props.productInCart?.qty ?? 1
+    productInCart?.qty ?? 1
   );
-
+  console.log("🚀 ~ EditCartLineItem ~ quantity:", quantity);
+  console.log(
+    "🚀 ~ EditCartLineItem ~ productInCart:PROD IN CART",
+    productInCart
+  );
   return (
-    <>
-      <AlertDialog open={isOpen}>
-        <Button onClick={() => setIsOpen((prev) => !prev)} variant="outline">
-          Edit
-        </Button>
+    <div>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="outline">Edit</Button>
+        </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Edit {props.product.name}</AlertDialogTitle>
+            <AlertDialogTitle>Edit {product.name}</AlertDialogTitle>
             <AlertDialogDescription>
               Change the quantity or remove this item from your cart.
             </AlertDialogDescription>
@@ -54,17 +58,25 @@ export const EditCartLineItem = (props: {
             <Button
               variant="destructiveOutline"
               className="mr-auto"
-              onClick={() => {
-                setIsOpen((prev) => !prev);
-                if (props.productInCart) {
-                  void updateCart({
-                    ...props.productInCart,
-                    qty: 0,
+              onClick={async () => {
+                // setIsOpen((prev) => !prev);
+                if (productInCart) {
+                  // void updateCart({
+                  //   ...productInCart,
+                  //   qty: 0,
+                  // });
+                  // updateCart({},{})
+
+                  const yoyo = await updateCartItemQuantity({
+                    id: product.id,
+                    qty: Number(quantity),
                   });
-                  toast({
-                    title: "Cart updated",
-                    description: `${props.product.name} has been removed from your cart.`,
-                  });
+                  console.log("🚀 ~ onClick={ ~ yoyo:", yoyo);
+
+                  // toast({
+                  //   title: "Cart updated",
+                  //   description: `${product.name} has been removed from your cart.`,
+                  // });
                 }
               }}
             >
@@ -74,17 +86,26 @@ export const EditCartLineItem = (props: {
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              disabled={!props.productInCart}
+              disabled={!productInCart}
               onClick={() => {
                 setIsOpen((prev) => !prev);
-                if (props.productInCart) {
-                  void updateCart({
-                    ...props.productInCart,
+                if (productInCart) {
+                  //   void updateCartItemQuantity({
+                  //     id: product.id,
+                  //     qty: Number(quantity),
+                  //   });
+                  //   void updateCart({
+                  //     ...props.productInCart,
+                  //     qty: Number(quantity),
+                  //   });
+                  void updateCartItemQuantity({
+                    id: product.id,
                     qty: Number(quantity),
                   });
+
                   toast({
                     title: "Cart updated",
-                    description: `${props.product.name} has been updated in your cart.`,
+                    description: `${product.name} has been updated in your cart.`,
                   });
                 }
               }}
@@ -94,6 +115,8 @@ export const EditCartLineItem = (props: {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </div>
   );
 };
+
+export default EditCartLineItem;
