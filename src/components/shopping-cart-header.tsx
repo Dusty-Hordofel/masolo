@@ -14,13 +14,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "./ui/button";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
 import { Heading } from "./ui/heading";
 import { EmptyState } from "./ui/empty-state";
 import { CartLineItems } from "./storefront/cart-line-items";
-import { prisma } from "@/lib/prisma";
-import { CartItem } from "@/@types/cart/cart.item.interface";
 
 export const ShoppingCartHeader = async () => {
   const cartId = cookies().get("cartId")?.value;
@@ -29,28 +25,10 @@ export const ShoppingCartHeader = async () => {
   const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
     String(cartId)
   );
-  // console.log(
-  //   "🚀 ~ ShoppingCartHeader ~ cartItemDetails:DETAILS",
-  //   cartItemDetails
-  // );
 
   const numberOfCartItems =
     !!cartItems &&
     cartItems.reduce((acc, item) => (acc += Number(item.qty)), 0);
-
-  // console.log("🚀 ~ ShoppingCartHeader ~ cartItems:", cartItems);
-  console.log(
-    "🚀 ~ ShoppingCartHeader ~ numberOfCartItems:",
-    numberOfCartItems
-  );
-
-  // const cartId = cookies().get("cartId")?.value;
-
-  // if (isNaN(Number(cartId))) {
-  //   throw new Error("Invalid cartId");
-  // }
-
-  // console.log("🚀 ~ ShoppingCartHeader ~ dbCartItems:CART", parsedCartItems);
 
   return (
     <Sheet>

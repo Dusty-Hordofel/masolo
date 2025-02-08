@@ -1,8 +1,6 @@
 import React from "react";
 
-type Props = {};
-
-const ProductFiltersSidebar = (props: Props) => {
+const ProductFiltersSidebar = () => {
   return (
     <div className="hidden p-6 rounded-md border-border border lg:block md:col-span-3">
       {/* {Sidebar} */}

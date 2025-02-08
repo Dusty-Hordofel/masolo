@@ -21,24 +21,6 @@ import { Text } from "@/components/ui/text";
 import { currencyFormatter } from "@/lib/currency";
 import { ProductImage } from "@/components/ui/product-image";
 
-// const ProductCard2 = ({
-//   storeAndProduct,
-//   hideButtonActions,
-// }: {
-//   storeAndProduct: StoreAndProduct[];
-//   hideButtonActions?: boolean;
-// }) => {
-//   return (
-//     <div className="">
-//       {storeAndProduct.map((product) => (
-//         <ProductCard product={product} />
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default ProductCard2;
-
 export const ProductCard = ({
   product,
   hideButtonActions,
@@ -177,6 +159,7 @@ export const AddToCartButton = ({
           ),
         });
       } catch (error) {
+        console.log("🚀 ~ startTransition ~ error:", error);
         toast({
           title: "Error",
           description: "Failed to add product to cart. Please try again.",

@@ -25,8 +25,8 @@ export default async function StorefrontProductDetails({
 
   const store = await getStoreByProductId(product.id);
 
-  const cart = await getCart("6e181af9-083e-4a44-ac56-e9228a024463");
-  // console.log("🚀 ~ test:LOKO", cart);
+  // const cart = await getCart("6e181af9-083e-4a44-ac56-e9228a024463");
+  // // console.log("🚀 ~ test:LOKO", cart);
 
   return (
     <div className="flex flex-col gap-8">
