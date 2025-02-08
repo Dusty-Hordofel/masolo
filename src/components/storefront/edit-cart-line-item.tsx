@@ -21,9 +21,7 @@ import { updateCartItemQuantity } from "@/server-actions/add-to-cart";
 
 const EditCartLineItem = ({ productInCart, product }: any) => {
   // const [isOpen, setIsOpen] = useState(false);
-  const [quantity, setQuantity] = useState<string | number>(
-    productInCart?.qty ?? 1
-  );
+  const [quantity, setQuantity] = useState<number>(productInCart?.qty ?? 1);
 
   return (
     <div>
@@ -43,7 +41,7 @@ const EditCartLineItem = ({ productInCart, product }: any) => {
             <Input
               type="number"
               value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
+              onChange={(e) => setQuantity(Number(e.target.value))}
               onBlur={(e) => handleInputQuantity(e, setQuantity, 0)}
             />
           </div>

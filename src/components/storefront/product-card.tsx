@@ -195,7 +195,7 @@ const QuantitySelector = ({
       id="quantity"
       value={quantity}
       onChange={(e) => setQuantity(e.target.value)}
-      onBlur={(e) => handleInputQuantity(e, setQuantity)}
+      // onBlur={(e) => handleInputQuantity(e, setQuantity)}
       type="number"
     />
   </div>
@@ -207,12 +207,19 @@ const SoldOutButton = () => (
   </Button>
 );
 
+interface PreOrderButtonProps {
+  addToCartAction: (data: { id: string; qty: number }) => Promise<void>;
+  productId: string;
+  productName: string;
+  quantity: number;
+}
+
 const PreOrderButton = ({
   addToCartAction,
   productId,
   productName,
   quantity,
-}: any) => {
+}: PreOrderButtonProps) => {
   const [isPending, startTransition] = useTransition();
   return (
     <Button
@@ -224,7 +231,7 @@ const PreOrderButton = ({
           addToCartAction({
             id: productId,
             qty: Number(quantity),
-            isPreOrder: true,
+            // isPreOrder: true,
           })
         );
         toast({
