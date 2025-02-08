@@ -21,6 +21,7 @@ import {
   updateCart,
   updateCartItemQuantity,
 } from "@/server-actions/add-to-cart";
+import { revalidatePath } from "next/cache";
 
 const EditCartLineItem = ({ productInCart, product }: any) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,13 +67,12 @@ const EditCartLineItem = ({ productInCart, product }: any) => {
                   //   qty: 0,
                   // });
                   // updateCart({},{})
-
-                  const yoyo = await updateCartItemQuantity({
-                    id: product.id,
-                    qty: Number(quantity),
-                  });
-                  console.log("🚀 ~ onClick={ ~ yoyo:", yoyo);
-
+                  // console.log("KATI", quantity);
+                  // const yoyo = await updateCartItemQuantity(
+                  //   product.id,
+                  //   Number(quantity)
+                  // );
+                  // console.log("🚀 ~ onClick={ ~ yoyo:", yoyo);
                   // toast({
                   //   title: "Cart updated",
                   //   description: `${product.name} has been removed from your cart.`,
@@ -88,7 +88,7 @@ const EditCartLineItem = ({ productInCart, product }: any) => {
             <AlertDialogAction
               disabled={!productInCart}
               onClick={() => {
-                setIsOpen((prev) => !prev);
+                // setIsOpen((prev) => !prev);
                 if (productInCart) {
                   //   void updateCartItemQuantity({
                   //     id: product.id,
@@ -98,10 +98,15 @@ const EditCartLineItem = ({ productInCart, product }: any) => {
                   //     ...props.productInCart,
                   //     qty: Number(quantity),
                   //   });
-                  void updateCartItemQuantity({
-                    id: product.id,
-                    qty: Number(quantity),
-                  });
+                  // void updateCartItemQuantity({
+                  //   id: product.id,
+                  //   qty: Number(quantity),
+                  // });
+
+                  console.log("KATI", quantity);
+                  void updateCartItemQuantity(product.id, Number(quantity));
+
+                  // console.log("🚀 ~ onClick={ ~ yoyo:", yoyo);
 
                   toast({
                     title: "Cart updated",

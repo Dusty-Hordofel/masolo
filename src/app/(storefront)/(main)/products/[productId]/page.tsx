@@ -12,7 +12,7 @@ import { ProductWithImages } from "@/@types/admin/admin.products.interface";
 import { getStoreByProductId } from "@/server-actions/store";
 import { routes, productsQueryParams } from "@/app/data/routes";
 import { FeatureIcons } from "@/components/storefront/feature-icons";
-import { ProductCartActions } from "@/components/storefront/product-card-2";
+import { ProductCartActions } from "@/components/storefront/product-card";
 
 export default async function StorefrontProductDetails({
   params,

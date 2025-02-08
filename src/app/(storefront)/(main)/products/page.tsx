@@ -1,53 +1,22 @@
 import { ProductWithImages } from "@/@types/admin/admin.products.interface";
-import { CollectionHeaderWrapper } from "@/components/storefront/collection-header-wrapper";
+import { ProductBanner } from "@/components/storefront/product-banner";
 import { getStoreAndProduct } from "@/server-actions/store";
 import { Store } from "@prisma/client";
-import ProductCard2 from "@/components/storefront/product-card-2";
+import { ProductCard } from "@/components/storefront/product-card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Heading } from "@/components/ui/heading";
+import ProductList from "@/components/storefront/product-list";
+import ProductFiltersSidebar from "@/components/storefront/product-filters-sidebar";
 
 export type ProductAndStore = ProductWithImages &
   Omit<Store, "description" | "industry">;
-// const PRODUCTS_PER_PAGE = 6;
 
-// context: {
-//   params: { slug: string };
-//   searchParams: { page: string; seller: string };
-// }
 export default async function StorefrontProductsPage() {
-  // const storeAndProduct = (await db
-  //   .select({
-  //     product: products,
-  //     store: {
-  //       id: stores.id,
-  //       name: stores.name,
-  //       slug: stores.slug,
-  //     },
-  //   })
-  //   .from(products)
-  //   .where(() => {
-  //     if (
-  //       context.searchParams.seller === undefined ||
-  //       context.searchParams.seller === ""
-  //     )
-  //       return;
-  //     return inArray(stores.slug, context.searchParams.seller.split("_"));
-  //   })
-  //   .leftJoin(stores, eq(products.storeId, stores.id))
-  //   .limit(PRODUCTS_PER_PAGE)
-  //   .offset(
-  //     !isNaN(Number(context.searchParams.page))
-  //       ? (Number(context.searchParams.page) - 1) * PRODUCTS_PER_PAGE
-  //       : 0
-  //   )) as ProductAndStore[];
-
   const storeAndProduct = await getStoreAndProduct();
-  console.log(
-    "🚀 ~ StorefrontProductsPage ~ storeAndProduct:44",
-    storeAndProduct
-  );
 
   return (
     <div>
-      <CollectionHeaderWrapper heading="Products">
+      <ProductBanner heading="Products">
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis at
@@ -79,29 +48,18 @@ export default async function StorefrontProductsPage() {
           neque sodales ut etiam sit. Lacinia quis vel eros donec. Massa sapien
           faucibus et molestie ac feugiat sed.
         </p>
-      </CollectionHeaderWrapper>
-      {/* <CollectionBody
-        storeAndProduct={storeAndProduct}
-        activeSellers={await getActiveSellers()}
-      >
-        <CollectionPagePagination
-          productsPerPage={PRODUCTS_PER_PAGE}
-          sellerParams={context.searchParams.seller as string}
-        />
-      </CollectionBody> */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-auto mt-4">
-        <ProductCard2 storeAndProduct={storeAndProduct} />
+      </ProductBanner>
+      <div className="md:grid md:grid-cols-12 md:mt-0 lg:mt-12 mt-12 md:gap-12">
+        <ProductFiltersSidebar />
+        {storeAndProduct.length > 0 ? (
+          <ProductList storeAndProduct={storeAndProduct} />
+        ) : (
+          <EmptyState height="h-[200px]">
+            <Heading size="h4">No products match your filters</Heading>
+            <p>Change your filters or try again later</p>
+          </EmptyState>
+        )}
       </div>
     </div>
   );
 }
-
-// const getActiveSellers = async () => {
-//   return await db
-//     .select({
-//       id: stores.id,
-//       name: stores.name,
-//       slug: stores.slug,
-//     })
-//     .from(stores);
-// };

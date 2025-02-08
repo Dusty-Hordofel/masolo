@@ -13,7 +13,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { SlidersHorizontal } from "lucide-react";
-import { EmptyStateWrapper } from "../ui/empty-state-wrapper";
+import { EmptyStateWrapper } from "../ui/empty-state";
 import { ProductSidebar } from "./product-sidebar";
 import { StoreAndProduct } from "@/@types/admin/admin.products.interface";
 

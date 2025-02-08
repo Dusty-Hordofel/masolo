@@ -5,14 +5,13 @@ import { Heading } from "../ui/heading";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-
 // import { LoadingSkeleton } from "../ui/loading-skeleton";
 import { anchorTags } from "@/app/data/routes";
 
 const mockImage =
   "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80";
 
-export const CollectionHeaderWrapper = (
+export const ProductBanner = (
   props: PropsWithChildren<{ heading: string }>
 ) => {
   const [showMore, setShowMore] = useState(false);

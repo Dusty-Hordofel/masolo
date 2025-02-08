@@ -17,7 +17,7 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Heading } from "./ui/heading";
-import { EmptyStateWrapper } from "./ui/empty-state-wrapper";
+import { EmptyState } from "./ui/empty-state";
 import { CartLineItems } from "./storefront/cart-line-items";
 import { prisma } from "@/lib/prisma";
 import { CartItem } from "@/@types/cart/cart.item.interface";
@@ -58,7 +58,7 @@ export const ShoppingCartHeader = async () => {
         <div className="relative">
           <ShoppingCart size={26} />
           {numberOfCartItems && numberOfCartItems > 0 ? (
-            <span className="bg-primary rounded-full w-6 h-6 text-white flex items-center justify-center text-sm absolute -top-2 -right-3">
+            <span className="bg-primary p-1 rounded-full aspect-square min-w-6 min-h-6 text-white flex items-center justify-center text-sm absolute -top-2 -right-3">
               {numberOfCartItems}
             </span>
           ) : null}
@@ -100,9 +100,9 @@ export const ShoppingCartHeader = async () => {
               ))}
             </div>
           ) : (
-            <EmptyStateWrapper height="h-[150px]">
+            <EmptyState height="h-[150px]">
               <Heading size="h4">Your cart is empty</Heading>
-            </EmptyStateWrapper>
+            </EmptyState>
           )}
         </SheetBody>
         <SheetFooter>

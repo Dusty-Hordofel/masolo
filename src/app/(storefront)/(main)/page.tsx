@@ -105,15 +105,7 @@ export default async function Home() {
               }
             >
               <Heading size="h3">Top Picks</Heading>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 overflow-auto mt-4">
-                {storeAndProduct.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    storeAndProduct={product}
-                    hideButtonActions={true}
-                  />
-                ))}
-              </div>
+
               <div className="mt-12 grid place-content-center">
                 <Link href={routes.products}>
                   <Button variant="default">View All Products</Button>

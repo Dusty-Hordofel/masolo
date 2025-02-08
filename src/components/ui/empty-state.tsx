@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { PropsWithChildren } from "react";
 
-export const EmptyStateWrapper = (
+export const EmptyState = (
   props: PropsWithChildren<{
     height: `${`h-[${number}px]`}`;
   }>
@@ -17,3 +17,5 @@ export const EmptyStateWrapper = (
     </div>
   );
 };
+
+export default EmptyState;
