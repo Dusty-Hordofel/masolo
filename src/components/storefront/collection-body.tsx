@@ -1,6 +1,4 @@
 "use client";
-// import { ProductAndStore } from "@/app/(storefront)/(main)/products/page";
-// import { ProductSidebar } from "./product-sidebar";
 import { ProductCard } from "./product-card";
 import { PropsWithChildren } from "react";
 import { useSearchParams } from "next/navigation";
@@ -13,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { SlidersHorizontal } from "lucide-react";
-import { EmptyStateWrapper } from "../ui/empty-state";
+import { EmptyState } from "../ui/empty-state";
 import { ProductSidebar } from "./product-sidebar";
 import { StoreAndProduct } from "@/@types/admin/admin.products.interface";
 
@@ -70,17 +68,17 @@ export const CollectionBody = (
                   className="sm:col-span-6 md:col-span-4 col-span-12"
                   key={i}
                 >
-                  <ProductCard storeAndProduct={product} />
+                  <ProductCard product={product} />
                 </div>
               )
           )}
           <div className="col-span-12">{props.children}</div>
         </div>
       ) : (
-        <EmptyStateWrapper height="h-[200px]">
+        <EmptyState height="h-[200px]">
           <Heading size="h4">No products match your filters</Heading>
           <p>Change your filters or try again later</p>
-        </EmptyStateWrapper>
+        </EmptyState>
       )}
     </div>
   );
