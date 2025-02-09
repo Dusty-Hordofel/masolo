@@ -244,7 +244,9 @@ const PreOrderButton = ({
   const [isPending, startTransition] = useTransition();
 
   const handlePreOrder = async () => {
-    const result = await addToCartAction({
+    // const result =
+
+    await addToCartAction({
       id: productId,
       qty: Number(quantity),
     });
