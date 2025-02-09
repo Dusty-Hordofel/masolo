@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function handleInputQuantity(
   e: React.FocusEvent<HTMLInputElement, Element>,
-  setQuantity: React.Dispatch<React.SetStateAction<string | number>>,
+  setQuantity: React.Dispatch<React.SetStateAction<number>>,
   defaultFallbackQuantity?: number
 ) {
   if (Number(e.target.value) < 1 || isNaN(Number(e.target.value))) {
@@ -20,7 +20,7 @@ export function handleInputQuantity(
 }
 
 export function convertSecondsToDate(seconds: number) {
-  const time = new Date(Date.UTC(1970, 0, 1)); // Epoch
+  const time = new Date(Date.UTC(1970, 0, 1));
   time.setUTCSeconds(seconds);
   return time;
 }
