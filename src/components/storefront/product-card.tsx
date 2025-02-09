@@ -85,10 +85,10 @@ export const ProductInformation = ({
 
 export const ProductCartActions = (props: {
   addToCartAction: typeof addToCart;
-  availableInventory: number | null;
+  availableInventory: number;
   isPreOrderAvailable?: boolean;
   productId: string;
-  productName: string | null;
+  productName: string;
   disableQuantitySelector?: boolean;
   buttonSize?: "default" | "sm";
 }) => {
@@ -115,10 +115,17 @@ export const ProductCartActions = (props: {
   );
 };
 
+interface ActionButtonProps {
+  addToCartAction: (data: { id: string; qty: number }) => Promise<any>;
+  productId: string;
+  productName: string;
+  quantity: number;
+}
+
 const getActionButton = (
   availableInventory: number | null,
   isPreOrderAvailable: boolean,
-  props: any
+  props: ActionButtonProps
 ) => {
   if (availableInventory && Number(availableInventory) > 0) {
     return <AddToCartButton {...props} />;
@@ -130,7 +137,11 @@ const getActionButton = (
 };
 
 interface AddToCartButtonProps {
-  addToCartAction: (data: { id: string; qty: number }) => Promise<void>;
+  addToCartAction: (data: { id: string; qty: number }) => Promise<{
+    success: boolean;
+    title: string;
+    description: string;
+  }>;
   productId: string;
   productName: string;
   quantity: number;
