@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Product } from "@prisma/client";
+import { Image, Product } from "@prisma/client";
 import Link from "next/link";
 import { routes } from "@/app/data/routes";
 import { Button } from "../ui/button";
@@ -19,7 +19,7 @@ import { LoadingSkeleton } from "../ui/loading-skeleton";
 const useProductSearch = (initialSearch = "") => {
   const [searchTerm, setSearchTerm] = useState(initialSearch);
   const [results, setResults] = useState<
-    (Pick<Product, "id" | "name" | "price"> & { images: ProductImages[] })[]
+    (Pick<Product, "id" | "name" | "price"> & { images: Image[] })[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [noResults, setNoResults] = useState(false);
@@ -103,7 +103,7 @@ export function ProductSearch() {
       >
         <div className="flex items-center gap-2">
           <ProductImage
-            src={product.images[0]?.url}
+            src={product.images[0]?.secureUrl}
             alt={product.images[0]?.alt || "Product Image"}
             sizes="50px"
             height="h-12"

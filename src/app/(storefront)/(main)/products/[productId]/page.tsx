@@ -6,7 +6,7 @@ import { currencyFormatter } from "@/lib/currency";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductImage } from "@/components/product-image";
-import { addToCart, getCart } from "@/server-actions/add-to-cart";
+import { addToCart } from "@/server-actions/add-to-cart";
 import { getProductDetails } from "@/server-actions/products";
 import { ProductWithImages } from "@/@types/admin/admin.products.interface";
 import { getStoreByProductId } from "@/server-actions/store";
@@ -25,8 +25,8 @@ export default async function StorefrontProductDetails({
 
   const store = await getStoreByProductId(product.id);
 
-  const cart = await getCart("6e181af9-083e-4a44-ac56-e9228a024463");
-  // console.log("🚀 ~ test:LOKO", cart);
+  // const cart = await getCart("6e181af9-083e-4a44-ac56-e9228a024463");
+  // // console.log("🚀 ~ test:LOKO", cart);
 
   return (
     <div className="flex flex-col gap-8">

@@ -18,21 +18,22 @@ import { Button } from "../ui/button";
 import { handleInputQuantity } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast.hook";
 import {
-  updateCart,
+  getCartTest,
   updateCartItemQuantity,
 } from "@/server-actions/add-to-cart";
-import { revalidatePath } from "next/cache";
+import { CartItem } from "@/@types/cart/cart.item.interface";
+// import { CartItem } from "@prisma/client";
 
-const EditCartLineItem = ({ productInCart, product }: any) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [quantity, setQuantity] = useState<string | number>(
-    productInCart?.qty ?? 1
-  );
-  console.log("🚀 ~ EditCartLineItem ~ quantity:", quantity);
-  console.log(
-    "🚀 ~ EditCartLineItem ~ productInCart:PROD IN CART",
-    productInCart
-  );
+const EditCartLineItem = ({
+  productInCart,
+  product,
+}: {
+  productInCart: CartItem | undefined;
+  product: getCartTest;
+}) => {
+  // const [isOpen, setIsOpen] = useState(false);
+  const [quantity, setQuantity] = useState<number>(productInCart?.qty ?? 1);
+
   return (
     <div>
       <AlertDialog>
@@ -51,7 +52,7 @@ const EditCartLineItem = ({ productInCart, product }: any) => {
             <Input
               type="number"
               value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
+              onChange={(e) => setQuantity(Number(e.target.value))}
               onBlur={(e) => handleInputQuantity(e, setQuantity, 0)}
             />
           </div>
@@ -82,7 +83,9 @@ const EditCartLineItem = ({ productInCart, product }: any) => {
             >
               Remove from cart
             </Button>
-            <AlertDialogCancel onClick={() => setIsOpen((prev) => !prev)}>
+            <AlertDialogCancel
+            // onClick={() => setIsOpen((prev) => !prev)}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction

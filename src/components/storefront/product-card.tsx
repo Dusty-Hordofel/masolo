@@ -21,24 +21,6 @@ import { Text } from "@/components/ui/text";
 import { currencyFormatter } from "@/lib/currency";
 import { ProductImage } from "@/components/ui/product-image";
 
-// const ProductCard2 = ({
-//   storeAndProduct,
-//   hideButtonActions,
-// }: {
-//   storeAndProduct: StoreAndProduct[];
-//   hideButtonActions?: boolean;
-// }) => {
-//   return (
-//     <div className="">
-//       {storeAndProduct.map((product) => (
-//         <ProductCard product={product} />
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default ProductCard2;
-
 export const ProductCard = ({
   product,
   hideButtonActions,
@@ -103,14 +85,14 @@ export const ProductInformation = ({
 
 export const ProductCartActions = (props: {
   addToCartAction: typeof addToCart;
-  availableInventory: number | null;
+  availableInventory: number;
   isPreOrderAvailable?: boolean;
   productId: string;
-  productName: string | null;
+  productName: string;
   disableQuantitySelector?: boolean;
   buttonSize?: "default" | "sm";
 }) => {
-  const [quantity, setQuantity] = useState<string | number>(1);
+  const [quantity, setQuantity] = useState<number>(1);
 
   return (
     <div
@@ -133,10 +115,21 @@ export const ProductCartActions = (props: {
   );
 };
 
+interface ActionButtonProps {
+  addToCartAction: (data: { id: string; qty: number }) => Promise<{
+    success: boolean;
+    title: string;
+    description: string;
+  }>;
+  productId: string;
+  productName: string;
+  quantity: number;
+}
+
 const getActionButton = (
   availableInventory: number | null,
   isPreOrderAvailable: boolean,
-  props: any
+  props: ActionButtonProps
 ) => {
   if (availableInventory && Number(availableInventory) > 0) {
     return <AddToCartButton {...props} />;
@@ -148,7 +141,11 @@ const getActionButton = (
 };
 
 interface AddToCartButtonProps {
-  addToCartAction: (data: { id: string; qty: number }) => Promise<void>;
+  addToCartAction: (data: { id: string; qty: number }) => Promise<{
+    success: boolean;
+    title: string;
+    description: string;
+  }>;
   productId: string;
   productName: string;
   quantity: number;
@@ -177,6 +174,7 @@ export const AddToCartButton = ({
           ),
         });
       } catch (error) {
+        console.log("🚀 ~ startTransition ~ error:", error);
         toast({
           title: "Error",
           description: "Failed to add product to cart. Please try again.",
@@ -202,8 +200,8 @@ const QuantitySelector = ({
   quantity,
   setQuantity,
 }: {
-  quantity: string | number;
-  setQuantity: Dispatch<SetStateAction<string | number>>;
+  quantity: number;
+  setQuantity: Dispatch<SetStateAction<number>>;
 }) => (
   <div className="flex flex-col gap-1 items-start">
     <Label htmlFor="quantity">Quantity</Label>
@@ -211,7 +209,9 @@ const QuantitySelector = ({
       className="w-24"
       id="quantity"
       value={quantity}
-      onChange={(e) => setQuantity(e.target.value)}
+      onChange={(e) =>
+        setQuantity(isNaN(Number(e.target.value)) ? 1 : Number(e.target.value))
+      }
       onBlur={(e) => handleInputQuantity(e, setQuantity)}
       type="number"
     />
@@ -224,35 +224,81 @@ const SoldOutButton = () => (
   </Button>
 );
 
+interface PreOrderButtonProps {
+  addToCartAction: (data: { id: string; qty: number }) => Promise<{
+    success: boolean;
+    title: string;
+    description: string;
+  }>;
+  productId: string;
+  productName: string;
+  quantity: number;
+}
+
 const PreOrderButton = ({
   addToCartAction,
   productId,
   productName,
   quantity,
-}: any) => {
+}: PreOrderButtonProps) => {
   const [isPending, startTransition] = useTransition();
+
+  const handlePreOrder = async () => {
+    // const result =
+
+    await addToCartAction({
+      id: productId,
+      qty: Number(quantity),
+    });
+
+    toast({
+      title: "Preorder placed",
+      description: `${quantity}x ${productName} has been preordered.`,
+      action: (
+        <Link href={routes.cart}>
+          <ToastAction altText="View cart">View</ToastAction>
+        </Link>
+      ),
+    });
+
+    // toast({
+    //   title: result.title, // Utilisez le title retourné de l'action
+    //   description: result.description, // Utilisez la description retournée
+    //   action: (
+    //     <Link href={routes.cart}>
+    //       <ToastAction altText="View cart">View</ToastAction>
+    //     </Link>
+    //   ),
+    // });
+  };
   return (
     <Button
+      disabled={isPending}
       size="default"
       className="w-36 bg-blue-500 hover:bg-blue-600 text-white"
       onClick={() => {
-        startTransition(() =>
-          addToCartAction({
-            id: productId,
-            qty: Number(quantity),
-            isPreOrder: true,
-          })
-        );
-        toast({
-          title: "Preorder placed",
-          description: `${quantity}x ${productName} has been preordered.`,
-          action: (
-            <Link href={routes.cart}>
-              <ToastAction altText="View cart">View</ToastAction>
-            </Link>
-          ),
+        startTransition(() => {
+          handlePreOrder(); // Appeler la fonction handlePreOrder séparée
         });
       }}
+      // onClick={() => {
+      //   startTransition(() =>
+      //     addToCartAction({
+      //       id: productId,
+      //       qty: Number(quantity),
+      //       // isPreOrder: true,
+      //     })
+      //   );
+      //   toast({
+      //     title: "Preorder placed",
+      //     description: `${quantity}x ${productName} has been preordered.`,
+      //     action: (
+      //       <Link href={routes.cart}>
+      //         <ToastAction altText="View cart">View</ToastAction>
+      //       </Link>
+      //     ),
+      //   });
+      // }}
     >
       Preorder
     </Button>

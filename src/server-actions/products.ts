@@ -19,7 +19,7 @@ export async function getProductDetails(id: string): Promise<Product> {
 }
 
 export async function updateProduct(
-  product: Omit<Product, "createdAt" | "updatedAt">
+  product: Omit<Product, "createdAt" | "updatedAt" | "isPreOrderAvailable">
 ) {
   return await ProductService.updateProduct(product);
 }

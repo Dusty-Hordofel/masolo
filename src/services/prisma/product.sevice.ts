@@ -100,7 +100,12 @@ export const ProductService = {
       };
     }
   },
-  async updateProduct(productValues: Omit<Product, "createdAt" | "updatedAt">) {
+  async updateProduct(
+    productValues: Omit<
+      Product,
+      "createdAt" | "updatedAt" | "isPreOrderAvailable"
+    >
+  ) {
     // console.log("LOMO", productValues);
     try {
       // Validation des valeurs du produit

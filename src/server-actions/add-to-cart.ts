@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { ProductWithImages } from "@/@types/admin/admin.products.interface";
 
-export async function addToCart(newCartItem: CartItem) {
+export async function addToCart(newCartItem: Omit<CartItem, "cartId">) {
   try {
     const cookieStore = cookies();
     const cartId = cookieStore.get("cartId")?.value;
@@ -31,17 +31,27 @@ export async function addToCart(newCartItem: CartItem) {
     cookieStore.set("cartId", newCart.id, { maxAge: 7 * 24 * 60 * 60 });
 
     revalidatePath("/");
-    return { success: true, message: "Cart created and item added." };
+    return {
+      success: true,
+      title: "Cart Created",
+      description:
+        "The cart has been successfully created and the item has been added to your cart.",
+    };
   } catch (error) {
     console.error("Error in addToCart:", error);
     return {
       success: false,
-      message: "An error occurred while adding to the cart.",
+      title: "Error occurred",
+      description:
+        "An unexpected error occurred while processing your request. Please try again later.",
     };
   }
 }
 
-export async function updateCart(cartId: string, newCartItem: CartItem) {
+export async function updateCart(
+  cartId: string,
+  newCartItem: Omit<CartItem, "cartId">
+) {
   try {
     const existingItem = await getCartItem(cartId, newCartItem.id);
 
@@ -54,12 +64,19 @@ export async function updateCart(cartId: string, newCartItem: CartItem) {
       await createCartItem(cartId, newCartItem);
     }
 
-    return { success: true, message: "Cart updated successfully." };
+    return {
+      success: true,
+      title: "Cart updated",
+      description:
+        "Your cart has been successfully updated with the selected item(s).",
+    };
   } catch (error) {
     console.error("Error updating cart:", error);
     return {
       success: false,
-      message: "An error occurred while updating the cart.",
+      title: "Error occurred",
+      description:
+        "An unexpected error occurred while processing your request. Please try again later.",
     };
   }
 }
@@ -162,7 +179,10 @@ export async function getCartItem(cartId: string, productId: string) {
   });
 }
 
-export async function createCartItem(cartId: string, newCartItem: CartItem) {
+export async function createCartItem(
+  cartId: string,
+  newCartItem: Omit<CartItem, "cartId">
+) {
   prisma.cartItem.create({
     data: {
       id: newCartItem.id,
@@ -186,7 +206,7 @@ export async function updateCartItemQuantity(
   revalidatePath("/");
 }
 
-export async function createCart(newCartItem: CartItem) {
+export async function createCart(newCartItem: Omit<CartItem, "cartId">) {
   const newCart = await prisma.cart.create({
     data: {
       cartItems: {

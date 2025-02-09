@@ -3,53 +3,14 @@ import { SlideShow } from "@/components/slideshow";
 import { Heading } from "@/components/ui/heading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PropsWithChildren } from "react";
-import { ProductCard } from "@/components/storefront/product-card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FeatureBanner } from "../components/feature-banner";
-import {
-  AlarmClock,
-  DollarSign,
-  // FastForward,
-  Phone,
-  Truck,
-  User,
-  // Wind,
-} from "lucide-react";
-// import { Input } from "@/components/ui/input";
+import { AlarmClock, DollarSign, Phone, Truck, User } from "lucide-react";
+
 import { routes } from "@/app/data/routes";
-import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
-  // const storeAndProduct = (await db
-  //   .select({
-  //     product: products,
-  //     store: {
-  //       id: stores.id,
-  //       name: stores.name,
-  //       slug: stores.slug,
-  //     },
-  //   })
-  //   .from(products)
-  //   .leftJoin(stores, eq(products.storeId, stores.id))
-  //   .limit(8)) as ProductAndStore[];
-
-  const storeAndProduct = await prisma.product.findMany({
-    include: {
-      images: true,
-      store: true,
-      // store: {
-      //   select: {
-      //     id: true,
-      //     name: true,
-      //     slug: true,
-      //   },
-      // },
-    },
-    take: 8, // Équivaut à LIMIT 8 en SQL
-  });
-  // console.log("🚀 ~ Home ~ storeAndProduct:", storeAndProduct);
-
   return (
     <div>
       <SlideShow />
