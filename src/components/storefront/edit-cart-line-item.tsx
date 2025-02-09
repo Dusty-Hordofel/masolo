@@ -17,9 +17,20 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { handleInputQuantity } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast.hook";
-import { updateCartItemQuantity } from "@/server-actions/add-to-cart";
+import {
+  getCartTest,
+  updateCartItemQuantity,
+} from "@/server-actions/add-to-cart";
+import { CartItem } from "@/@types/cart/cart.item.interface";
+// import { CartItem } from "@prisma/client";
 
-const EditCartLineItem = ({ productInCart, product }: any) => {
+const EditCartLineItem = ({
+  productInCart,
+  product,
+}: {
+  productInCart: CartItem | undefined;
+  product: getCartTest;
+}) => {
   // const [isOpen, setIsOpen] = useState(false);
   const [quantity, setQuantity] = useState<number>(productInCart?.qty ?? 1);
 

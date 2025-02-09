@@ -116,7 +116,11 @@ export const ProductCartActions = (props: {
 };
 
 interface ActionButtonProps {
-  addToCartAction: (data: { id: string; qty: number }) => Promise<any>;
+  addToCartAction: (data: { id: string; qty: number }) => Promise<{
+    success: boolean;
+    title: string;
+    description: string;
+  }>;
   productId: string;
   productName: string;
   quantity: number;
@@ -221,7 +225,11 @@ const SoldOutButton = () => (
 );
 
 interface PreOrderButtonProps {
-  addToCartAction: (data: { id: string; qty: number }) => Promise<void>;
+  addToCartAction: (data: { id: string; qty: number }) => Promise<{
+    success: boolean;
+    title: string;
+    description: string;
+  }>;
   productId: string;
   productName: string;
   quantity: number;
@@ -234,29 +242,61 @@ const PreOrderButton = ({
   quantity,
 }: PreOrderButtonProps) => {
   const [isPending, startTransition] = useTransition();
+
+  const handlePreOrder = async () => {
+    const result = await addToCartAction({
+      id: productId,
+      qty: Number(quantity),
+    });
+
+    toast({
+      title: "Preorder placed",
+      description: `${quantity}x ${productName} has been preordered.`,
+      action: (
+        <Link href={routes.cart}>
+          <ToastAction altText="View cart">View</ToastAction>
+        </Link>
+      ),
+    });
+
+    // toast({
+    //   title: result.title, // Utilisez le title retourné de l'action
+    //   description: result.description, // Utilisez la description retournée
+    //   action: (
+    //     <Link href={routes.cart}>
+    //       <ToastAction altText="View cart">View</ToastAction>
+    //     </Link>
+    //   ),
+    // });
+  };
   return (
     <Button
       disabled={isPending}
       size="default"
       className="w-36 bg-blue-500 hover:bg-blue-600 text-white"
       onClick={() => {
-        startTransition(() =>
-          addToCartAction({
-            id: productId,
-            qty: Number(quantity),
-            // isPreOrder: true,
-          })
-        );
-        toast({
-          title: "Preorder placed",
-          description: `${quantity}x ${productName} has been preordered.`,
-          action: (
-            <Link href={routes.cart}>
-              <ToastAction altText="View cart">View</ToastAction>
-            </Link>
-          ),
+        startTransition(() => {
+          handlePreOrder(); // Appeler la fonction handlePreOrder séparée
         });
       }}
+      // onClick={() => {
+      //   startTransition(() =>
+      //     addToCartAction({
+      //       id: productId,
+      //       qty: Number(quantity),
+      //       // isPreOrder: true,
+      //     })
+      //   );
+      //   toast({
+      //     title: "Preorder placed",
+      //     description: `${quantity}x ${productName} has been preordered.`,
+      //     action: (
+      //       <Link href={routes.cart}>
+      //         <ToastAction altText="View cart">View</ToastAction>
+      //       </Link>
+      //     ),
+      //   });
+      // }}
     >
       Preorder
     </Button>
