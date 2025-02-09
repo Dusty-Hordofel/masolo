@@ -14,7 +14,7 @@ import Link from "next/link";
 import { toast } from "@/hooks/use-toast.hook";
 import { ToastAction } from "@/components/ui/toast";
 import { routes } from "@/app/data/routes";
-import { cn /*, handleInputQuantity*/ } from "@/lib/utils";
+import { cn, handleInputQuantity } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Text } from "@/components/ui/text";
@@ -92,7 +92,7 @@ export const ProductCartActions = (props: {
   disableQuantitySelector?: boolean;
   buttonSize?: "default" | "sm";
 }) => {
-  const [quantity, setQuantity] = useState<string | number>(1);
+  const [quantity, setQuantity] = useState<number>(1);
 
   return (
     <div
@@ -185,8 +185,8 @@ const QuantitySelector = ({
   quantity,
   setQuantity,
 }: {
-  quantity: string | number;
-  setQuantity: Dispatch<SetStateAction<string | number>>;
+  quantity: number;
+  setQuantity: Dispatch<SetStateAction<number>>;
 }) => (
   <div className="flex flex-col gap-1 items-start">
     <Label htmlFor="quantity">Quantity</Label>
@@ -194,8 +194,10 @@ const QuantitySelector = ({
       className="w-24"
       id="quantity"
       value={quantity}
-      onChange={(e) => setQuantity(e.target.value)}
-      // onBlur={(e) => handleInputQuantity(e, setQuantity)}
+      onChange={(e) =>
+        setQuantity(isNaN(Number(e.target.value)) ? 1 : Number(e.target.value))
+      }
+      onBlur={(e) => handleInputQuantity(e, setQuantity)}
       type="number"
     />
   </div>
