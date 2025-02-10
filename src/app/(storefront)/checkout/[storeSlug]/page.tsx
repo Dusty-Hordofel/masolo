@@ -1,8 +1,6 @@
 import React from "react";
 
-type Props = {};
-
-const CheckoutPaage = (props: Props) => {
+const CheckoutPaage = () => {
   return <div>CheckoutPaage</div>;
 };
 
