@@ -10,9 +10,7 @@ import Link from "next/link";
 import React from "react";
 import { CheckoutButton } from "./components/checkout-button";
 
-type Props = {};
-
-const CartPage = async (props: Props) => {
+const CartPage = async () => {
   const cartId = cookies().get("cartId")?.value;
   const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
     String(cartId)
