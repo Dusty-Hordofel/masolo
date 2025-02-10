@@ -9,23 +9,14 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import React from "react";
 import { CheckoutButton } from "./components/checkout-button";
-import { getStoreById } from "@/server-actions/store";
 
 type Props = {};
 
 const CartPage = async (props: Props) => {
   const cartId = cookies().get("cartId")?.value;
-  console.log("🚀 ~ CartPage ~ cartId:", typeof cartId);
   const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
     String(cartId)
   );
-
-  //   const slug = await getStoreById("112fd1bd-26dc-4996-a25a-b0ecb28c4998");
-  //   console.log("🚀 ~ CartPage ~ slug:", slug);
-
-  //   console.log("🚀 ~ CartPage ~ uniqueStoreIds:", uniqueStoreIds);
-  //   console.log("🚀 ~ CartPage ~ cartItemDetails:C", cartItemDetails);
-  //   console.log("🚀 ~ CartPage ~ cartItems:C", cartItems);
 
   if (!String(cartId) || !cartItems.length) {
     return (

@@ -62,7 +62,7 @@ export function useProductEditor({
     if (initialValues) {
       reset(defaultValues);
     }
-  }, [initialValues, reset]);
+  }, [initialValues, defaultValues, reset]);
 
   // Filter images (exclude deleted ones)
   const currentProductImages = useMemo(() => {
