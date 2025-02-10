@@ -19,7 +19,7 @@ import { handleInputQuantity } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast.hook";
 import {
   getCartTest,
-  updateCartItemQuantity,
+  // updateCartItemQuantity,
 } from "@/server-actions/add-to-cart";
 import { CartItem } from "@/@types/cart/cart.item.interface";
 // import { CartItem } from "@prisma/client";
