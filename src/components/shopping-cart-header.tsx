@@ -20,10 +20,14 @@ import { CartLineItems } from "./storefront/cart-line-items";
 
 export const ShoppingCartHeader = async () => {
   const cartId = cookies().get("cartId")?.value;
-  console.log("🚀 ~ ShoppingCartHeader ~ cartId:", cartId);
+  console.log("🚀 ~ ShoppingCartHeader ~ cartId:LL", cartId);
 
   const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
     String(cartId)
+  );
+  console.log(
+    "🚀 ~ ShoppingCartHeader ~ cartItemDetails:DEDE",
+    cartItemDetails
   );
 
   const numberOfCartItems =

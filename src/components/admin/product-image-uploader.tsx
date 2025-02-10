@@ -58,19 +58,20 @@ const ProductImageUploader = ({
               currentProductImages.length > 0 &&
               currentProductImages.map((image) => (
                 <div key={image.id} className="relative">
-                  <img
-                    src={image.secureUrl}
-                    alt={`Uploaded ${image.id}`}
-                    style={{
-                      width: "144px",
-                      height: "144px",
-                      objectFit: "cover",
-                      borderRadius: "8px",
-                      border: "1px solid #ccc",
-                    }}
-                  />
+                  <picture>
+                    <img
+                      src={image.secureUrl}
+                      alt={`Uploaded ${image.id}`}
+                      style={{
+                        width: "144px",
+                        height: "144px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                        border: "1px solid #ccc",
+                      }}
+                    />
+                  </picture>
 
-                  <div className=""></div>
                   <button
                     type="button"
                     className="absolute top-2 right-2 bg-white rounded-full w-6 h-6 flex items-center justify-center"

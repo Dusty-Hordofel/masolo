@@ -12,6 +12,10 @@ export async function getStoreAndProduct() {
   return await StoreService.getStoreAndProduct();
 }
 
+export async function getStoreById(id: string) {
+  return await StoreService.getStoreById(id);
+}
+
 export async function getStoreByProductId(productId: string) {
   try {
     if (!productId) throw new Error("Product ID is required.");

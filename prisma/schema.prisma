@@ -191,12 +191,20 @@ model Cart {
   isClosed        Boolean    @default(false)
 }
 
+// model CartItem {
+//   // id     String @id @default(uuid())
+//   id     String @id // L'ID sera directement l'ID du produit
+//   qty    Int    @default(0)
+//   cartId String @map("cart_id")
+//   cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+// }
+
 model CartItem {
-  // id     String @id @default(uuid())
-  id     String @id // L'ID sera directement l'ID du produit
-  qty    Int    @default(0)
-  cartId String @map("cart_id")
-  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  id        String @id @default(uuid()) // ✅ Génère un ID unique pour chaque CartItem
+  productId String // ID du produit
+  qty       Int    @default(0)
+  cartId    String @map("cart_id")
+  cart      Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
 }
 
 // model Payment {

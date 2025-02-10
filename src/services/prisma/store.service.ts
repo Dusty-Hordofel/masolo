@@ -106,4 +106,25 @@ export const StoreService = {
       return null;
     }
   },
+
+  async getStoreById(id: string) {
+    try {
+      const store = await prisma.store.findFirst({
+        where: { id },
+        // include: {
+        //   products: {
+        //     include: {
+        //       images: true,
+        //     },
+        //   },
+        // },
+      });
+      // console.log("��� ~ getStoreBySlug ~ store:", store);
+
+      return store?.slug;
+    } catch (error) {
+      console.error("Error fetching  store by slug:", error);
+      return null;
+    }
+  },
 };
