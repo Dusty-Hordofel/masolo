@@ -87,7 +87,7 @@ export function useProductEditor({
     } else {
       data = await createNewProduct(
         formValues,
-        "112fd1bd-26dc-4996-a25a-b0ecb28c4998"
+        "b4d35aad-f0bd-41d7-827f-1c8a82bef234"
       );
       if (data.productId) {
         router.push(

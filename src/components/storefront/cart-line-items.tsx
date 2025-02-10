@@ -20,8 +20,8 @@ export const CartLineItems = (props: {
   products: getCartTest[];
   variant: "cart" | "checkout";
 }) => {
-  console.log("🚀 ~ cartItems:CART", props.cartItems);
-  console.log("🚀 ~ cartItems:PROD", props.products);
+  // console.log("🚀 ~ cartItems:CART", props.cartItems);
+  // console.log("🚀 ~ cartItems:PROD", props.products);
 
   return (
     <Table>
