@@ -116,11 +116,16 @@ export const ProductCartActions = (props: {
 };
 
 interface ActionButtonProps {
-  addToCartAction: (data: { id: string; qty: number }) => Promise<{
+  addToCartAction: (data: {
+    id: string;
+    qty: number;
+    productId: string;
+  }) => Promise<{
     success: boolean;
     title: string;
     description: string;
   }>;
+  id: string;
   productId: string;
   productName: string;
   quantity: number;
@@ -141,11 +146,16 @@ const getActionButton = (
 };
 
 interface AddToCartButtonProps {
-  addToCartAction: (data: { id: string; qty: number }) => Promise<{
+  addToCartAction: (data: {
+    id: string;
+    qty: number;
+    productId: string;
+  }) => Promise<{
     success: boolean;
     title: string;
     description: string;
   }>;
+  id: string;
   productId: string;
   productName: string;
   quantity: number;
@@ -153,6 +163,7 @@ interface AddToCartButtonProps {
 
 export const AddToCartButton = ({
   addToCartAction,
+  id,
   productId,
   productName,
   quantity,
@@ -162,7 +173,7 @@ export const AddToCartButton = ({
   const handleAddToCart = useCallback(() => {
     startTransition(async () => {
       try {
-        await addToCartAction({ id: productId, qty: quantity });
+        await addToCartAction({ id, productId, qty: quantity });
 
         toast({
           title: "Added to cart",
@@ -225,11 +236,16 @@ const SoldOutButton = () => (
 );
 
 interface PreOrderButtonProps {
-  addToCartAction: (data: { id: string; qty: number }) => Promise<{
+  addToCartAction: (data: {
+    id: string;
+    qty: number;
+    productId: string;
+  }) => Promise<{
     success: boolean;
     title: string;
     description: string;
   }>;
+  id: string;
   productId: string;
   productName: string;
   quantity: number;
@@ -237,6 +253,7 @@ interface PreOrderButtonProps {
 
 const PreOrderButton = ({
   addToCartAction,
+  id,
   productId,
   productName,
   quantity,
@@ -247,7 +264,8 @@ const PreOrderButton = ({
     // const result =
 
     await addToCartAction({
-      id: productId,
+      id,
+      productId,
       qty: Number(quantity),
     });
 

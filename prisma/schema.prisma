@@ -178,8 +178,21 @@ model Store {
   owner       User?     @relation(fields: [ownerId], references: [id])
   ownerId     String?
   products    Product[] // Ajout de la relation inverse avec Product
+  payments    Payment[]
+  // payments    Payment[]
 
   @@map("stores")
+}
+
+model Payment {
+  id                     Int     @id @default(autoincrement())
+  storeId                String? @map("store_id")
+  stripeAccountId        String?
+  stripeAccountCreatedAt Int?
+  stripeAccountExpiresAt Int?
+  detailsSubmitted       Boolean @default(false)
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: Cascade) // ✅ Relation avec Store
 }
 
 model Cart {
@@ -191,14 +204,6 @@ model Cart {
   isClosed        Boolean    @default(false)
 }
 
-// model CartItem {
-//   // id     String @id @default(uuid())
-//   id     String @id // L'ID sera directement l'ID du produit
-//   qty    Int    @default(0)
-//   cartId String @map("cart_id")
-//   cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
-// }
-
 model CartItem {
   id        String @id @default(uuid()) // ✅ Génère un ID unique pour chaque CartItem
   productId String // ID du produit
@@ -206,15 +211,6 @@ model CartItem {
   cartId    String @map("cart_id")
   cart      Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
 }
-
-// model Payment {
-//   id                     Int     @id @default(autoincrement())
-//   storeId                Int?
-//   stripeAccountId        String?
-//   stripeAccountCreatedAt Int?
-//   stripeAccountExpiresAt Int?
-//   detailsSubmitted       Boolean @default(false)
-// }
 
 // model Order {
 //   id                        Int     @id @default(autoincrement())

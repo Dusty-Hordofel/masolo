@@ -15,6 +15,22 @@ const CartPage = async () => {
   const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
     String(cartId)
   );
+  // console.log("🚀 ~ CartPage ~ cartItems:", cartItems);
+  // console.log("🚀 ~ CartPage ~ cartItemDetails:", cartItemDetails);
+
+  // const lolo = cartItemDetails.filter(
+  //   (item) => item.storeId === "b4d35aad-f0bd-41d7-827f-1c8a82bef234"
+  // );
+  // const cartQuantity = lolo.reduce((accum, curr) => {
+  //   const quantityInCart = cartItems.find(
+  //     (item) => item.productId === curr.id
+  //   )?.qty;
+  //   console.log("🚀 ~ cartQuantity ~ quantityInCart:", quantityInCart);
+
+  //   return accum + Number(curr.price) * (quantityInCart ?? 0);
+  // }, 0);
+  // console.log("🚀 ~ cartQuantity ~ cartQuantity:", cartQuantity);
+  // console.log("🚀 ~ CartPage ~ lolo:", lolo);
 
   if (!String(cartId) || !cartItems.length) {
     return (
@@ -84,7 +100,7 @@ const CartPage = async () => {
                     .filter((item) => item.storeId === storeId)
                     .reduce((accum, curr) => {
                       const quantityInCart = cartItems.find(
-                        (item) => item.id === curr.id
+                        (item) => item.productId === curr.id
                       )?.qty;
                       return accum + Number(curr.price) * (quantityInCart ?? 0);
                     }, 0)

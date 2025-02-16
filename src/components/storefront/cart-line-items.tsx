@@ -10,10 +10,11 @@ import { currencyFormatter } from "@/lib/currency";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { ProductImage } from "../product-image";
-import { CartItem } from "@/@types/cart/cart.item.interface";
+// import { CartItem } from "@/@types/cart/cart.item.interface";
 import { routes } from "@/app/data/routes";
 import { getCartTest } from "@/server-actions/add-to-cart";
 import EditCartLineItem from "./edit-cart-line-item";
+import { CartItem } from "@prisma/client";
 
 export const CartLineItems = (props: {
   cartItems: CartItem[];
@@ -46,8 +47,9 @@ export const CartLineItems = (props: {
       <TableBody>
         {props.products.map((product) => {
           const currentProductInCart = props.cartItems.find(
-            (item) => item.id === product.id
+            (item) => item.productId === product.id
           );
+
           return (
             <TableRow key={product.id}>
               <TableCell className="font-medium">

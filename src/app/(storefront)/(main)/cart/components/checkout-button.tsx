@@ -6,38 +6,43 @@ import { toast } from "@/hooks/use-toast.hook";
 import { getStoreById } from "@/server-actions/store";
 import { Loader2, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useTransition } from "react";
 
-export const CheckoutButton = ({ storeId }: { storeId: string }) => {
-  const [isLoading, setIsLoading] = useState(false);
+interface CheckoutButtonProps {
+  storeId: string;
+}
+
+export const CheckoutButton = ({ storeId }: CheckoutButtonProps) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const handleCheckout = useCallback(() => {
+    startTransition(async () => {
+      try {
+        const slug = await getStoreById(storeId);
+        router.push(`${routes.checkout}/${slug}`);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Unable to retrieve the store. Please try again",
+        });
+      }
+    });
+  }, [storeId, router]);
 
   return (
     <Button
       size="sm"
       className="ml-auto flex items-center gap-2 justify-center"
-      onClick={() => {
-        setIsLoading(true);
-        getStoreById(storeId)
-          .then((slug) => {
-            router.push(`${routes.checkout}/${slug}`);
-          })
-          .catch(() => {
-            toast({
-              title: "Sorry, an error occurred.",
-              description: "Something went wrong. Please try again later.",
-            });
-          })
-          .finally(() => setIsLoading(false));
-      }}
-      disabled={isLoading}
+      onClick={handleCheckout}
+      disabled={isPending}
     >
-      {isLoading ? (
+      {isPending ? (
         <Loader2 size={16} className="animate-spin" />
       ) : (
         <Lock size={16} />
       )}
-      <p>Checkout</p>
+      <span>Checkout</span>
     </Button>
   );
 };

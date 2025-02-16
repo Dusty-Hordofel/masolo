@@ -12,8 +12,11 @@ export async function getStoreAndProduct() {
   return await StoreService.getStoreAndProduct();
 }
 
-export async function getStoreById(id: string) {
-  return await StoreService.getStoreById(id);
+export async function getStoreById(slug: string) {
+  return await StoreService.getStoreById(slug);
+}
+export async function getStoreBySlug(slug: string) {
+  return await StoreService.getStoreBySlug(slug);
 }
 
 export async function getStoreByProductId(productId: string) {
