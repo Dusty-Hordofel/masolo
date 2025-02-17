@@ -9,13 +9,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 // import { singleLevelNestedRoutes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { hasConnectedStripeAccount } from "@/server-actions/stripe/account";
 // import { hasConnectedStripeAccount } from "@/server-actions/stripe/account";
 import { AlertCircle, ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 export const PaymentConnectionStatus = async () => {
-  const connectedStripeAccount = false;
-  // const connectedStripeAccount = await hasConnectedStripeAccount();
+  // const connectedStripeAccount = false;
+  const connectedStripeAccount = await hasConnectedStripeAccount();
+  console.log(
+    "🚀 ~ PaymentConnectionStatus ~ connectedStripeAccount:TALA",
+    connectedStripeAccount
+  );
 
   return (
     <DropdownMenu>

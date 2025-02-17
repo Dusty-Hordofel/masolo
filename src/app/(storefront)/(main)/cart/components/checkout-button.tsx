@@ -13,6 +13,7 @@ interface CheckoutButtonProps {
 }
 
 export const CheckoutButton = ({ storeId }: CheckoutButtonProps) => {
+  console.log("🚀 ~ CheckoutButton ~ storeId:", storeId);
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -20,6 +21,7 @@ export const CheckoutButton = ({ storeId }: CheckoutButtonProps) => {
     startTransition(async () => {
       try {
         const slug = await getStoreById(storeId);
+
         router.push(`${routes.checkout}/${slug}`);
       } catch (error) {
         toast({

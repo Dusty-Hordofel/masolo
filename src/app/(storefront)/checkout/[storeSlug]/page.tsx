@@ -58,25 +58,25 @@ const CheckoutPage = async ({ params }: { params: { storeSlug: string } }) => {
   console.log("🚀 ~ CheckoutPage ~ storeProducts:", storeProducts);
   console.log("🚀 ~ CheckoutPage ~ storeProducts:ID", store?.id);
 
-  // const storeStripeAccountId = store?.payments[0]?.stripeAccountId;
-  // if (
-  //   !storeStripeAccountId ||
-  //   !(await hasConnectedStripeAccount(store?.id, true))
-  // ) {
-  //   console.log("first", await hasConnectedStripeAccount(store?.id, true));
-  //   return (
-  //     <InfoCard
-  //       heading="Online payments not setup"
-  //       subheading="This seller does not have online payments setup yet. Please contact the seller directly to submit your order."
-  //       icon={<AlertCircle size={24} />}
-  //       button={
-  //         <Link href={routes.cart}>
-  //           <Button>Return to cart</Button>
-  //         </Link>
-  //       }
-  //     />
-  //   );
-  // }
+  const storeStripeAccountId = store?.payments[0]?.stripeAccountId;
+  if (
+    !storeStripeAccountId ||
+    !(await hasConnectedStripeAccount(store?.id, true))
+  ) {
+    console.log("first", await hasConnectedStripeAccount(store?.id, true));
+    return (
+      <InfoCard
+        heading="Online payments not setup"
+        subheading="This seller does not have online payments setup yet. Please contact the seller directly to submit your order."
+        icon={<AlertCircle size={24} />}
+        button={
+          <Link href={routes.cart}>
+            <Button>Return to cart</Button>
+          </Link>
+        }
+      />
+    );
+  }
 
   if (!storeProducts.length || !detailsOfProductsInCart.length || !store?.id)
     throw new Error("Store not found");

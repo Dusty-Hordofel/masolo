@@ -186,7 +186,7 @@ model Store {
 
 model Payment {
   id                     Int     @id @default(autoincrement())
-  storeId                String? @map("store_id")
+  storeId                String  @unique @map("store_id") // Ajout de @unique
   stripeAccountId        String?
   stripeAccountCreatedAt Int?
   stripeAccountExpiresAt Int?
@@ -218,7 +218,7 @@ model CartItem {
 //   storeId                   Int?
 //   items                     Json?
 //   total                     Decimal @default(0.00)
-//   stripePaymentIntentId     String? @unique
+//   stripePaymentIntentId     String? unique@
 //   stripePaymentIntentStatus String?
 //   name                      String?
 //   email                     String?

@@ -107,10 +107,10 @@ export const StoreService = {
     }
   },
 
-  async getStoreById(slug: string) {
+  async getStoreById(id: string) {
     try {
       const store = await prisma.store.findFirst({
-        where: { slug },
+        where: { id },
         // include: {
         //   products: {
         //     include: {
@@ -121,7 +121,7 @@ export const StoreService = {
       });
       // console.log("��� ~ getStoreBySlug ~ store:", store);
 
-      return store?.id;
+      return store?.slug;
     } catch (error) {
       console.error("Error fetching  store by slug:", error);
       return null;
@@ -141,6 +141,7 @@ export const StoreService = {
           },
         },
       });
+      console.log("🚀 ~ getStoreBySlug ~ store:", store);
 
       if (store) {
         return returnId ? store.id : store.slug;
