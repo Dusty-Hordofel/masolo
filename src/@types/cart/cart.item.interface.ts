@@ -5,7 +5,7 @@ import { ProductWithImages } from "../admin/admin.products.interface";
 // export type CartItem = { id: string; qty: number };
 
 export type CheckoutItem = {
-  id: number;
+  id: string;
   price: number;
   qty: number;
 };

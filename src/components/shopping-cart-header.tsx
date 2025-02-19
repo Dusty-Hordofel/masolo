@@ -1,7 +1,7 @@
 "use server";
 import { ShoppingCart } from "lucide-react";
 import { cookies } from "next/headers";
-import { getCart } from "@/server-actions/add-to-cart";
+import { getCart, getCartTest } from "@/server-actions/add-to-cart";
 import {
   Sheet,
   SheetBody,
@@ -13,38 +13,34 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "./ui/button";
 import { Heading } from "./ui/heading";
 import { EmptyState } from "./ui/empty-state";
 import { CartLineItems } from "./storefront/cart-line-items";
+import CartNavigationButton from "./cart-navigation-button";
+
+const getCartData = async () => {
+  const cartId = cookies().get("cartId")?.value;
+  if (!cartId)
+    return { cartItems: [], uniqueStoreIds: [], cartItemDetails: [] };
+
+  const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(cartId);
+
+  const numberOfCartItems = cartItems.reduce(
+    (acc, item) => acc + Number(item.qty),
+    0
+  );
+
+  return { cartItems, uniqueStoreIds, cartItemDetails, numberOfCartItems };
+};
 
 export const ShoppingCartHeader = async () => {
-  const cartId = cookies().get("cartId")?.value;
-  console.log("🚀 ~ ShoppingCartHeader ~ cartId:LL", cartId);
-
-  const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
-    String(cartId)
-  );
-  console.log(
-    "🚀 ~ ShoppingCartHeader ~ cartItemDetails:DEDE",
-    cartItemDetails
-  );
-
-  const numberOfCartItems =
-    !!cartItems &&
-    cartItems.reduce((acc, item) => (acc += Number(item.qty)), 0);
+  const { cartItems, uniqueStoreIds, cartItemDetails, numberOfCartItems } =
+    await getCartData();
 
   return (
     <Sheet>
       <SheetTrigger>
-        <div className="relative">
-          <ShoppingCart size={26} />
-          {numberOfCartItems && numberOfCartItems > 0 ? (
-            <span className="bg-primary p-1 rounded-full aspect-square min-w-6 min-h-6 text-white flex items-center justify-center text-sm absolute -top-2 -right-3">
-              {numberOfCartItems}
-            </span>
-          ) : null}
-        </div>
+        <CartIconBadge numberOfCartItems={numberOfCartItems} />
       </SheetTrigger>
       <SheetContent className="overflow-auto lg:max-w-[600px] sm:max-w-[400px] xl:max-w-[650px]">
         <SheetHeader>
@@ -60,27 +56,11 @@ export const ShoppingCartHeader = async () => {
         </SheetHeader>
         <SheetBody>
           {numberOfCartItems && numberOfCartItems > 0 ? (
-            <div className="flex flex-col gap-6 mt-6">
-              {uniqueStoreIds.map((storeId) => (
-                <div key={storeId}>
-                  <Heading size="h4">
-                    {
-                      cartItemDetails.find((item) => item.storeId === storeId)
-                        ?.name
-                    }
-                  </Heading>
-                  <CartLineItems
-                    variant="cart"
-                    cartItems={cartItems}
-                    products={
-                      cartItemDetails?.filter(
-                        (item) => item.storeId === storeId
-                      ) ?? []
-                    }
-                  />
-                </div>
-              ))}
-            </div>
+            <CartContent
+              uniqueStoreIds={uniqueStoreIds}
+              cartItems={cartItems}
+              cartItemDetails={cartItemDetails}
+            />
           ) : (
             <EmptyState height="h-[150px]">
               <Heading size="h4">Your cart is empty</Heading>
@@ -89,14 +69,52 @@ export const ShoppingCartHeader = async () => {
         </SheetBody>
         <SheetFooter>
           <SheetClose asChild>
-            <Button className="w-full">
-              {numberOfCartItems && numberOfCartItems > 0
-                ? "View full cart"
-                : "Start shopping"}
-            </Button>
+            <CartNavigationButton numberOfCartItems={numberOfCartItems} />
           </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
   );
 };
+
+export const CartIconBadge = ({
+  numberOfCartItems,
+}: {
+  numberOfCartItems: number | undefined;
+}) => (
+  <div className="relative">
+    <ShoppingCart size={26} />
+    {numberOfCartItems && numberOfCartItems > 0 ? (
+      <span className="bg-primary p-1 rounded-full aspect-square min-w-6 min-h-6 text-white flex items-center justify-center text-sm absolute -top-2 -right-3">
+        {numberOfCartItems}
+      </span>
+    ) : null}
+  </div>
+);
+
+export const CartContent = ({
+  uniqueStoreIds,
+  cartItems,
+  cartItemDetails,
+}: {
+  uniqueStoreIds: string[];
+  cartItems: { id: string; productId: string; qty: number; cartId: string }[];
+  cartItemDetails: getCartTest[];
+}) => (
+  <div className="flex flex-col gap-6 mt-6">
+    {uniqueStoreIds.map((storeId) => (
+      <div key={storeId}>
+        <Heading size="h4">
+          {cartItemDetails.find((item) => item.storeId === storeId)?.name}
+        </Heading>
+        <CartLineItems
+          variant="cart"
+          cartItems={cartItems}
+          products={
+            cartItemDetails.filter((item) => item.storeId === storeId) ?? []
+          }
+        />
+      </div>
+    ))}
+  </div>
+);

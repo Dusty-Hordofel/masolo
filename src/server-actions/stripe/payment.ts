@@ -1,3 +1,5 @@
+"use server";
+
 import { CheckoutItem } from "@/@types/cart/cart.item.interface";
 import { platformFeeDecimal } from "@/lib/application-constants";
 import { prisma } from "@/lib/prisma";
@@ -43,24 +45,57 @@ export async function processPaymentIntent({
     const { orderTotal, platformFee } = calculateOrderAmounts(items);
 
     if (cartId) {
-      await updatePaymentIntent(
-        cartId,
-        orderTotal,
-        platformFee,
-        metadata,
-        stripeAccountId,
-        stripe
-      );
+      const paymentIntent = await prisma.cart.findUnique({
+        where: { id: cartId },
+        select: {
+          paymentIntentId: true,
+          clientSecret: true,
+        },
+      });
+
+      // ✅ Si un PaymentIntent existe, le mettre à jour
+      if (paymentIntent?.clientSecret && paymentIntent?.paymentIntentId) {
+        await stripe.paymentIntents.update(
+          paymentIntent.paymentIntentId,
+          {
+            amount: orderTotal,
+            application_fee_amount: platformFee,
+            metadata,
+          },
+          {
+            stripeAccount: stripeAccountId,
+          }
+        );
+
+        return { clientSecret: paymentIntent.clientSecret };
+      }
     }
 
-    await createPaymentIntent(
-      cartId,
-      orderTotal,
-      platformFee,
-      metadata,
-      stripeAccountId,
-      stripe
+    const newPaymentIntent = await stripe.paymentIntents.create(
+      {
+        amount: orderTotal,
+        currency: "usd",
+        metadata,
+        automatic_payment_methods: {
+          enabled: true,
+        },
+        application_fee_amount: platformFee,
+      },
+      {
+        stripeAccount: stripeAccountId,
+      }
     );
+
+    // ✅ Mise à jour du panier dans la base de données avec Prisma
+    await prisma.cart.update({
+      where: { id: cartId },
+      data: {
+        paymentIntentId: newPaymentIntent.id,
+        clientSecret: newPaymentIntent.client_secret,
+      },
+    });
+
+    return { clientSecret: newPaymentIntent.client_secret as string };
   } catch (error) {
     console.log(error);
   }
@@ -144,6 +179,7 @@ export async function updatePaymentIntent(
         clientSecret: true,
       },
     });
+    console.log("🚀 ~ paymentIntent:DD", paymentIntent);
 
     // ✅ Si un PaymentIntent existe, le mettre à jour
     if (paymentIntent?.clientSecret && paymentIntent?.paymentIntentId) {

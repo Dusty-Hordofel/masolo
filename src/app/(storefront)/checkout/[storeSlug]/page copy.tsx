@@ -119,7 +119,7 @@ const CheckoutPage = async ({ params }: { params: { storeSlug: string } }) => {
           Checkout
         </Button>
       </div>
-      {paymentIntent?.clientSecret ? (
+      {paymentIntent?.clientSecret && (
         <div>
           <div className="lg:grid lg:grid-cols-12 lg:gap-8 mt-4 flex flex-col-reverse gap-6">
             <div className="col-span-7">
@@ -142,10 +142,6 @@ const CheckoutPage = async ({ params }: { params: { storeSlug: string } }) => {
             </div>
           </div>
         </div>
-      ) : (
-        <p className="text-red-500">
-          Erreur : Impossible de générer le paiement
-        </p>
       )}
     </>
   );

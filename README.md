@@ -58,4 +58,4 @@ $
 
 ### 15. Product Cart
 
-### 16. PaymentIntent
+### 16. PaymentIntent_1

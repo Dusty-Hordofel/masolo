@@ -15,8 +15,10 @@ import { AlertCircle, ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 export const PaymentConnectionStatus = async () => {
-  // const connectedStripeAccount = false;
-  const connectedStripeAccount = await hasConnectedStripeAccount();
+  const connectedStripeAccount = await hasConnectedStripeAccount(
+    "b4d35aad-f0bd-41d7-827f-1c8a82bef234",
+    true
+  );
   console.log(
     "🚀 ~ PaymentConnectionStatus ~ connectedStripeAccount:TALA",
     connectedStripeAccount

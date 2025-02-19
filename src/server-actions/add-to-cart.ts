@@ -55,7 +55,7 @@ export async function updateCart(
   newCartItem: Omit<CartItem, "cartId">
 ) {
   try {
-    const existingItem = await getCartItem(cartId, newCartItem.id);
+    const existingItem = await getCartItem(cartId, newCartItem.productId);
 
     if (existingItem) {
       await updateCartItemQuantity(
@@ -183,7 +183,7 @@ export async function createCartItem(
 ) {
   await prisma.cartItem.create({
     data: {
-      productId: newCartItem.id,
+      productId: newCartItem.productId,
       qty: newCartItem.qty,
       cart: { connect: { id: cartId } },
     },
@@ -205,6 +205,7 @@ export async function createCart(
   newCartItem: Omit<CartItem, "cartId">,
   cookieStore: ReadonlyRequestCookies
 ) {
+  console.log("🚀 ~ newCartItem:TALA", newCartItem);
   await prisma.cart.deleteMany({
     where: { isClosed: false },
   });
@@ -213,7 +214,7 @@ export async function createCart(
     data: {
       cartItems: {
         create: {
-          productId: newCartItem.id,
+          productId: newCartItem.productId,
           qty: newCartItem.qty,
         },
       },
