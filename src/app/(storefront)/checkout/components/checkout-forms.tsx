@@ -1,24 +1,29 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { routes } from "@/app/data/routes";
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
+// import { routes } from "@/lib/routes";
+// import { StripeCheckoutFormDetails } from "@/lib/types";
+// https://stripe.com/docs/payments/quickstart
+
 import {
   PaymentElement,
+  LinkAuthenticationElement,
   useStripe,
   useElements,
   AddressElement,
-  LinkAuthenticationElement,
 } from "@stripe/react-stripe-js";
 import {
+  StripeAddressElementChangeEvent,
   StripeLinkAuthenticationElementChangeEvent,
   StripePaymentElementOptions,
 } from "@stripe/stripe-js";
-import { useParams } from "next/navigation";
-import { Heading } from "@/components/ui/heading";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { routes } from "@/app/data/routes";
+import { useParams } from "next/navigation";
+import { FormEvent, useEffect, useState } from "react";
 
-const CheckoutForm = () => {
+export default function CheckoutForms() {
   const { storeSlug } = useParams();
   const stripe = useStripe();
   const elements = useElements();
@@ -58,12 +63,16 @@ const CheckoutForm = () => {
     });
   }, [stripe]);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!stripe || !elements) return;
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js hasn't yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
+    }
 
     setIsLoading(true);
-    // setIsError(null);
 
     const { error } = await stripe.confirmPayment({
       elements,
@@ -74,6 +83,11 @@ const CheckoutForm = () => {
       },
     });
 
+    // This point will only be reached if there is an immediate error when
+    // confirming the payment. Otherwise, your customer will be redirected to
+    // your `return_url`. For some payment methods like iDEAL, your customer will
+    // be redirected to an intermediate site first to authorize the payment, then
+    // redirected to the `return_url`.
     if (error.type === "card_error" || error.type === "validation_error") {
       setMessage(error.message ?? "An unexpected error occurred.");
     } else {
@@ -90,9 +104,10 @@ const CheckoutForm = () => {
   return (
     <form
       id="payment-form"
-      className="flex flex-col gap-6"
       onSubmit={handleSubmit}
+      className="flex flex-col gap-6"
     >
+      {/* Show any error or success messages */}
       {message && (
         <div
           id="payment-message"
@@ -131,6 +146,4 @@ const CheckoutForm = () => {
       </Button>
     </form>
   );
-};
-
-export default CheckoutForm;
+}

@@ -28,12 +28,6 @@ const nextConfig = {
       },
     ],
   },
-  // domains: [
-  //   "res.cloudinary.com",
-  //   "www.nike.com",
-  //   "uploadthing.com",
-  //   "images.unsplash.com",
-  // ],
 };
 
 export default nextConfig;

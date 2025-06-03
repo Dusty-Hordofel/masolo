@@ -1,10 +1,10 @@
-import { Image, Prisma, Product } from "@prisma/client";
+import { Image, Payment, Prisma, Product, Store } from "@prisma/client";
 
 export type ProductWithImages = Product & {
   images: Image[];
 };
 
-
+export type StoreWithPayment = Store & { payments: Payment[] };
 
 export type ImageProps = Pick<Image, "secureUrl" | "alt" | "publicId">;
 

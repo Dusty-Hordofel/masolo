@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Elements,
   PaymentElement,
   useStripe,
   useElements,
@@ -10,21 +9,14 @@ import {
   LinkAuthenticationElement,
 } from "@stripe/react-stripe-js";
 import {
-  loadStripe,
   StripeLinkAuthenticationElementChangeEvent,
   StripePaymentElementOptions,
 } from "@stripe/stripe-js";
-import { createPaymentIntent } from "./payment";
 import { routes } from "../data/routes";
 import { useParams } from "next/navigation";
 import { Heading } from "@/components/ui/heading";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-// Charger Stripe avec la clé publique
-// const stripePromise = loadStripe(
-//   process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string
-// );
 
 const CheckoutForm = () => {
   const { storeSlug } = useParams();
@@ -34,8 +26,6 @@ const CheckoutForm = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
-  //   const [error, setError] = useState<string | null>(null);
-  //   const [isError, setIsError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!stripe) {

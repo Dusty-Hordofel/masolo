@@ -6,7 +6,7 @@ import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { createPaymentIntent } from "./payment";
 import CheckoutForm from "./checkout-form";
 
-export default function CheckoutPage({
+export default function CheckoutWrapper({
   storeStripeAccountId,
 }: {
   storeStripeAccountId: string;
@@ -55,3 +55,5 @@ export default function CheckoutPage({
     </Elements>
   );
 }
+
+// export default CheckoutWrapper;

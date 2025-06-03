@@ -12,6 +12,7 @@ import {
   StripeLinkAuthenticationElementChangeEvent,
   StripePaymentElementOptions,
 } from "@stripe/stripe-js";
+
 import { useParams } from "next/navigation";
 import { Heading } from "@/components/ui/heading";
 import { AlertCircle, Loader2 } from "lucide-react";

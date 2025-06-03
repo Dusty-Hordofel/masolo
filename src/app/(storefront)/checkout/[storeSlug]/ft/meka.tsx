@@ -6,7 +6,7 @@ import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { createPaymentIntent } from "./payment";
 import CheckoutForm from "./checkout-form";
 
-export default function CheckoutPage({
+export default function Meka({
   storeStripeAccountId,
 }: {
   storeStripeAccountId: string;
@@ -24,7 +24,7 @@ export default function CheckoutPage({
   );
 
   useEffect(() => {
-    createPaymentIntent().then((secret) => {
+    createPaymentIntent("acct_1QtLL5PPN6he4rg6").then((secret) => {
       if (secret) {
         setClientSecret(secret);
       }

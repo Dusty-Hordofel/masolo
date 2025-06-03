@@ -169,6 +169,12 @@ model Image {
 //   @@map("stores")
 // }
 
+// enum StoreStatus {
+//   PENDING
+//   ACTIVE
+//   BANNED
+//   DISABLED
+// }
 model Store {
   id          String    @id @default(uuid())
   name        String    @unique @map("store_name")
@@ -179,10 +185,22 @@ model Store {
   ownerId     String?
   products    Product[] // Ajout de la relation inverse avec Product
   payments    Payment[]
+  orders      Order[]
   // payments    Payment[]
 
   @@map("stores")
 }
+
+// model Store {
+//   id          Int      @id @default(autoincrement())
+//   name        String   @unique @db.VarChar(40)
+//   industry    String?
+//   description String?
+//   slug        String   @unique @db.VarChar(50)
+//   products    Product[]
+//   payments    Payment[]
+//   orders      Order[]
+// }
 
 model Payment {
   id                     Int     @id @default(autoincrement())
@@ -193,6 +211,33 @@ model Payment {
   detailsSubmitted       Boolean @default(false)
 
   store Store? @relation(fields: [storeId], references: [id], onDelete: Cascade) // ✅ Relation avec Store
+}
+
+model Order {
+  id                        Int     @id @default(autoincrement())
+  prettyOrderId             Int?
+  storeId                   String
+  items                     Json
+  total                     Decimal @default(0) @db.Decimal(10, 2)
+  stripePaymentIntentId     String  @unique @db.VarChar(256)
+  stripePaymentIntentStatus String?
+  name                      String?
+  email                     String?
+  createdAt                 Int
+  addressId                 Int
+  store                     Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  address                   Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
+}
+
+model Address {
+  id         Int     @id @default(autoincrement())
+  line1      String
+  line2      String?
+  city       String
+  state      String
+  postalCode String
+  country    String
+  orders     Order[]
 }
 
 model Cart {
@@ -211,27 +256,3 @@ model CartItem {
   cartId    String @map("cart_id")
   cart      Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
 }
-
-// model Order {
-//   id                        Int     @id @default(autoincrement())
-//   prettyOrderId             Int?
-//   storeId                   Int?
-//   items                     Json?
-//   total                     Decimal @default(0.00)
-//   stripePaymentIntentId     String? unique@
-//   stripePaymentIntentStatus String?
-//   name                      String?
-//   email                     String?
-//   createdAt                 Int?
-//   addressId                 Int?
-// }
-
-// model Address {
-//   id         Int     @id @default(autoincrement())
-//   line1      String?
-//   line2      String?
-//   city       String?
-//   state      String?
-//   postalCode String?
-//   country    String?
-// }

@@ -82,6 +82,7 @@ export default async function CheckoutPage({
       price: true,
     },
   });
+  // console.log("🚀 ~ storeProducts:", storeProducts);
 
   const detailsOfProductsInCart = cartItems
     .map((item) => {
@@ -97,8 +98,25 @@ export default async function CheckoutPage({
     })
     .filter(Boolean) as CheckoutItem[];
 
+  // console.log(
+  //   "🚀 ~ CheckoutPage ~ detailsOfProductsInCart:",
+  //   detailsOfProductsInCart
+  // );
+
+  // console.log("🚀 ~ CheckoutPage ~ store:", store);
+  // console.log("🚀 ~ CheckoutPage ~ storeProducts:", storeProducts);
+  // console.log("🚀 ~ CheckoutPage ~ storeProducts:ID", store?.id);
+
+  // const storeId = Number(store[0].storeId);
   const storeStripeAccountId = store?.payments[0]?.stripeAccountId;
   console.log("🚀 ~ storeStripeAccountId:", storeStripeAccountId);
+
+  // const account = await stripe.accounts.retrieve();
+  // console.log("🚀 ~ account:ACC", account);
+  // console.log(
+  //   "🚀 ~ CheckoutPage ~ storeStripeAccountId:",
+  //   storeStripeAccountId
+  // );
 
   if (
     !storeStripeAccountId ||
@@ -118,14 +136,40 @@ export default async function CheckoutPage({
     );
   }
 
+  // const paymentIntent = processPaymentIntent({
+  //   items: detailsOfProductsInCart,
+  //   storeId: store?.id,
+  // });
+
   const paymentIntentPromise = createStripePaymentIntent2({
     storeId: store.id,
     items: detailsOfProductsInCart,
   });
-  // const paymentIntent = createStripePaymentIntent2({
+  const paymentIntent = createStripePaymentIntent2({
+    storeId: store.id,
+    items: detailsOfProductsInCart,
+  });
+  // console.log("🚀 ~ paymentIntentPromise:", paymentIntentPromise);
+
+  // const account = await stripe.accounts.retrieve(
+  //   process.env.STRIPE_PLATFORM_ACCOUNT_ID as string
+  // );
+  // console.log("🚀 ~ account:ACCOUNT", account.capabilities);
+  // console.log("🚀 ~ account:ACCOUNT-R", account.requirements);
+
+  // const paymentMethod = await stripe.paymentMethods.retrieve(await paymentIntent.payment_method);
+
+  // console.log("Type de paiement:", paymentMethod.type);
+  // console.log("Détails:", paymentMethod);
+  // const paymentIntentPromise2 = await createStripePaymentIntent2({
   //   storeId: store.id,
   //   items: detailsOfProductsInCart,
   // });
+  // console.log("🚀 ~ paymentIntentPromise2:", paymentIntentPromise2);
+  // console.log("🚀 ~ CheckoutPage ~ paymentIntent:IT", paymentIntent);
+
+  // const test = await checkStripeAccount(storeStripeAccountId);
+  // console.log("🚀 ~ test:", test);
 
   return (
     <>
@@ -136,6 +180,21 @@ export default async function CheckoutPage({
         detailsOfProductsInCart={detailsOfProductsInCart}
         paymentIntentPromise={paymentIntentPromise}
       />
+
+      {/* <CheckoutWrapper
+        detailsOfProductsInCart={detailsOfProductsInCart}
+        paymentIntent={paymentIntent}
+        storeStripeAccountId={storeStripeAccountId}
+        cartLineItems={
+          <CartLineItems
+            variant="checkout"
+            cartItems={cartItems}
+            products={
+              cartItemDetails?.filter((item) => item.storeId === store.id) ?? []
+            }
+          />
+        }
+      /> */}
     </>
   );
 }
