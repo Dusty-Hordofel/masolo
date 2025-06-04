@@ -6,7 +6,7 @@ import { CartItem } from "@prisma/client";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { ProductWithImages } from "@/@types/admin/admin.products.interface";
+import { ProductWithImages } from "@/@types/admin/product";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 export async function addToCart(newCartItem: Omit<CartItem, "cartId">) {

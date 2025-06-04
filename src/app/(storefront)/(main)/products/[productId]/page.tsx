@@ -8,7 +8,7 @@ import Link from "next/link";
 import { ProductImage } from "@/components/product-image";
 import { addToCart } from "@/server-actions/add-to-cart";
 import { getProductDetails } from "@/server-actions/products";
-import { ProductWithImages } from "@/@types/admin/admin.products.interface";
+import { ProductWithImages } from "@/@types/admin/product";
 import { getStoreByProductId } from "@/server-actions/store";
 import { routes, productsQueryParams } from "@/app/data/routes";
 import { FeatureIcons } from "@/components/storefront/feature-icons";

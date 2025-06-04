@@ -14,8 +14,8 @@ export async function createNewProduct(
   return await ProductService.createProduct(productData, storeId);
 }
 
-export async function getProductDetails(id: string): Promise<Product> {
-  return await ProductService.productDetails(id);
+export async function getProduct(id: string): Promise<Product> {
+  return await ProductService.product(id);
 }
 
 export async function updateProduct(

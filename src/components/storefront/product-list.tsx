@@ -1,6 +1,6 @@
 import React from "react";
 import { ProductCard } from "./product-card";
-import { StoreAndProduct } from "@/@types/admin/admin.products.interface";
+import { StoreAndProduct } from "@/@types/admin/product";
 
 type ProductListProps = {
   storeAndProduct: StoreAndProduct[];

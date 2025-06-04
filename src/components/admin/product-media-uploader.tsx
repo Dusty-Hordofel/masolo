@@ -6,7 +6,7 @@ import { XIcon } from "lucide-react";
 import { Image } from "@prisma/client";
 import { Button } from "../ui/button";
 
-const ProductImageUploader = ({
+const ProductMediaUploader = ({
   productId,
   setUploadedImages,
   currentProductImages,
@@ -124,4 +124,4 @@ const ProductImageUploader = ({
   );
 };
 
-export default ProductImageUploader;
+export default ProductMediaUploader;

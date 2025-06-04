@@ -1,4 +1,4 @@
-import { ProductWithImages } from "@/@types/admin/admin.products.interface";
+import { ProductWithImages } from "@/@types/admin/product";
 import { routes } from "@/app/data/routes";
 import { ParagraphFormatter } from "@/components/paragraph-formatter";
 import { QuickViewModalWrapper } from "@/components/storefront/quickview-modal-wrapper";

@@ -1,5 +1,5 @@
-export interface Item {
+export type Item = {
   value: string;
   label: string;
   id: string;
-}
+};

@@ -24,7 +24,7 @@ import {
 import {
   ProductEditorSharedProps,
   // ProductWithImages,
-} from "@/@types/admin/admin.products.interface";
+} from "@/@types/admin/product";
 
 export function useProductEditor({
   displayType,
