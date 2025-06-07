@@ -235,21 +235,21 @@ const QuantitySelector = ({
 //   </Button>
 // );
 
-interface PreOrderButtonProps {
-  addToCartAction: (data: {
-    id: string;
-    qty: number;
-    productId: string;
-  }) => Promise<{
-    success: boolean;
-    title: string;
-    description: string;
-  }>;
-  id: string;
-  productId: string;
-  productName: string;
-  quantity: number;
-}
+// interface PreOrderButtonProps {
+//   addToCartAction: (data: {
+//     id: string;
+//     qty: number;
+//     productId: string;
+//   }) => Promise<{
+//     success: boolean;
+//     title: string;
+//     description: string;
+//   }>;
+//   id: string;
+//   productId: string;
+//   productName: string;
+//   quantity: number;
+// }
 
 // const PreOrderButton = ({
 //   addToCartAction,
