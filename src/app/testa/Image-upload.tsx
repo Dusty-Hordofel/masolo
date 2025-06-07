@@ -28,7 +28,7 @@ const ImageUpload: React.FC = () => {
 
     try {
       // Créer les prévisualisations
-      const newPreviews: string[] = [];
+      // const newPreviews: string[] = [];
       const previewPromises = Array.from(files).map((file) => {
         return new Promise<string>((resolve) => {
           const reader = new FileReader();

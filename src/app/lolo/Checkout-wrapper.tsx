@@ -50,14 +50,14 @@ const CheckoutWrapper = (props: {
     ],
   } as StripeElementsOptions;
 
-  const orderTotal = useMemo(() => {
-    return currencyFormatter(
-      props.detailsOfProductsInCart.reduce(
-        (acc, item) => acc + item.price * item.qty,
-        0
-      )
-    );
-  }, [props.detailsOfProductsInCart]);
+  // const orderTotal = useMemo(() => {
+  //   return currencyFormatter(
+  //     props.detailsOfProductsInCart.reduce(
+  //       (acc, item) => acc + item.price * item.qty,
+  //       0
+  //     )
+  //   );
+  // }, [props.detailsOfProductsInCart]);
 
   return (
     <Elements stripe={stripePromise} options={options}>

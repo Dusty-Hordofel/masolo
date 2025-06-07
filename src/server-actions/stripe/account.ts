@@ -10,7 +10,7 @@ import Stripe from "stripe";
 const stripe = new Stripe(
   "sk_test_51NZaglAJF88lxObTvUS00OhlIuefFG16bfLlymCGOiEhA9A7kAjp9Z8d18PM1yZtYJUHfsWJn4lL4TsPpqPsO5BS00BE5U4Fy4",
   {
-    apiVersion: "2024-04-10",
+    apiVersion: "2025-05-28.basil",
   }
 );
 // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -154,7 +154,7 @@ export async function createAccountLink(
   console.log("🚀 ~ storeId:SID", storeId);
   try {
     // 1️⃣ Ensure the user is authenticated
-    const user: any = await currentUser();
+    const user = await currentUser();
     if (!user) {
       console.warn("🔴 User is not authenticated. Redirecting to /auth/login.");
       return redirect("/auth/login");

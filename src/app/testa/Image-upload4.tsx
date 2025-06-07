@@ -34,7 +34,7 @@ const ImageUpload4: React.FC = () => {
     new Set()
   );
 
-  const { register, reset, control } = useForm<ImageFormData>();
+  const { register, control } = useForm<ImageFormData>();
 
   const watchedFiles = useWatch({
     control,
@@ -185,20 +185,24 @@ const ImageUpload4: React.FC = () => {
     }
   };
 
-  const removeImage = (publicId: string, imageId: string) => {
-    if (
-      window.confirm(
-        "Êtes-vous sûr de vouloir supprimer cette image définitivement de Cloudinary ?"
-      )
-    ) {
-      deleteImageFromCloudinary(publicId, imageId);
-    }
-  };
+  // const removeImage = (publicId: string, imageId: string) => {
+  //   if (
+  //     window.confirm(
+  //       "Êtes-vous sûr de vouloir supprimer cette image définitivement de Cloudinary ?"
+  //     )
+  //   ) {
+  //     deleteImageFromCloudinary(publicId, imageId);
+  //   }
+  // };
 
   const toggleImageSelection = (id: string) => {
     setSelectedImageIds((prev) => {
       const updated = new Set(prev);
-      updated.has(id) ? updated.delete(id) : updated.add(id);
+      if (updated.has(id)) {
+        updated.delete(id);
+      } else {
+        updated.add(id);
+      }
       return updated;
     });
   };

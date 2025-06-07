@@ -10,9 +10,7 @@ import {
 import { CreditCard } from "lucide-react";
 import { CreateConnectedAccount } from "./components/create-connected-account";
 
-type Props = {};
-
-const PaymentsPage = async (props: Props) => {
+const PaymentsPage = async () => {
   await updateStripeAccountStatus("b4d35aad-f0bd-41d7-827f-1c8a82bef234");
 
   const connectedStripeAccount = await hasConnectedStripeAccount(

@@ -23,7 +23,15 @@ export const CheckoutButton = ({ storeId }: CheckoutButtonProps) => {
         const slug = await getStoreById(storeId);
 
         router.push(`${routes.checkout}/${slug}`);
-      } catch (error) {
+      } catch (error: unknown) {
+        // console.error("Erreur lors de la suppression:", error);
+
+        if (error instanceof Error) {
+          alert(`Erreur lors de la suppression de l'image: ${error.message}`);
+        } else {
+          alert("Erreur inconnue lors de la suppression de l'image.");
+        }
+
         toast({
           title: "Error",
           description: "Unable to retrieve the store. Please try again",

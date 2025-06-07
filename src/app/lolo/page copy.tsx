@@ -3,9 +3,9 @@
 // import React, { useEffect, useState } from "react";
 import {
   Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
+  // PaymentElement,
+  // useStripe,
+  // useElements,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { createPaymentIntent } from "./payment";
