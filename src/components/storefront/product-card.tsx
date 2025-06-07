@@ -106,11 +106,11 @@ export const ProductCartActions = (props: {
         !props.disableQuantitySelector && (
           <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
         )}
-      {getActionButton(
+      {/* {getActionButton(
         props.availableInventory,
         props.isPreOrderAvailable ?? false,
         { ...props, quantity }
-      )}
+      )} */}
     </div>
   );
 };
