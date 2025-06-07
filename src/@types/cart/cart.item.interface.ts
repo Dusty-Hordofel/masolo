@@ -2,7 +2,7 @@
 import { Product } from "@prisma/client";
 import { ProductWithImages } from "../admin/product";
 
-// export type CartItem = { id: string; qty: number };
+export type CartItem = { id: string; qty: number };
 
 export type CheckoutItem = {
   id: string;
