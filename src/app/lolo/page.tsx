@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 // import { Elements } from "@stripe/react-stripe-js";
-import { StripeElementsOptions } from "@stripe/stripe-js";
+// import { StripeElementsOptions } from "@stripe/stripe-js";
 import { createPaymentIntent } from "./payment";
 // import CheckoutForm from "./checkout-form";
 
@@ -37,21 +37,21 @@ const CheckoutPage = () =>
 
     if (!clientSecret) return <p>Chargement...</p>;
 
-    const options = {
-      clientSecret,
-      appearance: {
-        theme: "stripe",
-      },
-      paymentMethodOrder: [
-        "apple_pay",
-        "google_pay",
-        "paypal",
-        "alma",
-        "card",
-        "klarna",
-        "revolut_pay",
-      ],
-    } as StripeElementsOptions;
+    // const options = {
+    //   clientSecret,
+    //   appearance: {
+    //     theme: "stripe",
+    //   },
+    //   paymentMethodOrder: [
+    //     "apple_pay",
+    //     "google_pay",
+    //     "paypal",
+    //     "alma",
+    //     "card",
+    //     "klarna",
+    //     "revolut_pay",
+    //   ],
+    // } as StripeElementsOptions;
 
     return (
       <>
