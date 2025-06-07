@@ -161,9 +161,14 @@ const ImageUpload3: React.FC = () => {
       } else {
         throw new Error("La suppression sur Cloudinary a échoué");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Erreur lors de la suppression:", error);
-      alert(`Erreur lors de la suppression de l'image: ${error.message}`);
+
+      if (error instanceof Error) {
+        alert(`Erreur lors de la suppression de l'image: ${error.message}`);
+      } else {
+        alert("Erreur inconnue lors de la suppression de l'image.");
+      }
     } finally {
       // Retirer l'image de l'état de suppression
       setDeletingImages((prev) => {
@@ -187,7 +192,7 @@ const ImageUpload3: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-        Téléchargement d'Images Cloudinary
+        Téléchargement d&apos;Images Cloudinary
       </h1>
 
       {/* Interface de sélection d'images */}
@@ -520,7 +525,7 @@ const ImageUpload3: React.FC = () => {
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:text-blue-800 text-xs font-medium block"
                           >
-                            Voir l'image complète →
+                            Voir l&apos;image complète →
                           </a>
                         </div>
                       )}

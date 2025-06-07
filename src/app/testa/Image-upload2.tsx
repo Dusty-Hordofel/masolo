@@ -139,7 +139,7 @@ const ImageUpload2: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-        Téléchargement d'Images Cloudinary
+        Téléchargement d&apos;Images Cloudinary
       </h1>
 
       {/* Interface de sélection d'images */}
@@ -400,7 +400,7 @@ const ImageUpload2: React.FC = () => {
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                   >
-                    Voir l'image complète →
+                    Voir l&apos;image complète →
                   </a>
                 </div>
               </div>
