@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
+import { useEffect, useState } from "react";
+// import { Elements } from "@stripe/react-stripe-js";
+import { StripeElementsOptions } from "@stripe/stripe-js";
 import { createPaymentIntent } from "./payment";
-import CheckoutForm from "./checkout-form";
+// import CheckoutForm from "./checkout-form";
 
 const CheckoutPage = () =>
   //   {
