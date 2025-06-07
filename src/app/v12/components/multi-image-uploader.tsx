@@ -539,7 +539,7 @@ export function MultiImageUploader() {
 
           {/* Other images - uniform size */}
           <div className="col-span-3 grid grid-cols-3 gap-2">
-            {visibleImages.slice(1, 7).map((image, index) => (
+            {visibleImages.slice(1, 7).map((image) => (
               <div key={image.id} className="aspect-square">
                 <ImageCard
                   image={image}
