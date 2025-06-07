@@ -670,10 +670,10 @@ export function MultiImageUploader() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="date-desc">
-                      Date d'ajout (le plus récent en premier)
+                      Date d&apos;ajout (le plus récent en premier)
                     </SelectItem>
                     <SelectItem value="date-asc">
-                      Date d'ajout (le plus ancien en premier)
+                      Date d&apos;ajout (le plus ancien en premier)
                     </SelectItem>
                     <SelectItem value="name-asc">
                       Nom du fichier (A-Z)
