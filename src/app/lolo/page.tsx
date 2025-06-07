@@ -6,54 +6,61 @@ import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { createPaymentIntent } from "./payment";
 import CheckoutForm from "./checkout-form";
 
-const CheckoutPage = ({
-  storeStripeAccountId,
-}: {
-  storeStripeAccountId: string;
-}) => {
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
+const CheckoutPage = () =>
+  //   {
+  //   storeStripeAccountId,
+  // }: {
+  //   storeStripeAccountId: string;
+  // }
 
-  //   let stripeAccountId = "acct_1QtLL5PPN6he4rg6";
+  {
+    const [clientSecret, setClientSecret] = useState<string | null>(null);
 
-  const stripePromise = useMemo(
-    () =>
-      loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!, {
-        stripeAccount: storeStripeAccountId,
-      }),
-    [storeStripeAccountId]
-  );
+    //   let stripeAccountId = "acct_1QtLL5PPN6he4rg6";
 
-  useEffect(() => {
-    createPaymentIntent().then((secret) => {
-      if (secret) {
-        setClientSecret(secret);
-      }
-    });
-  }, []);
+    // const stripePromise =
+    // useMemo(
+    //   () =>
+    //     loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!, {
+    //       stripeAccount: storeStripeAccountId,
+    //     }),
+    //   [storeStripeAccountId]
+    // );
 
-  if (!clientSecret) return <p>Chargement...</p>;
+    useEffect(() => {
+      createPaymentIntent().then((secret) => {
+        if (secret) {
+          setClientSecret(secret);
+        }
+      });
+    }, []);
 
-  const options = {
-    clientSecret,
-    appearance: {
-      theme: "stripe",
-    },
-    paymentMethodOrder: [
-      "apple_pay",
-      "google_pay",
-      "paypal",
-      "alma",
-      "card",
-      "klarna",
-      "revolut_pay",
-    ],
-  } as StripeElementsOptions;
+    if (!clientSecret) return <p>Chargement...</p>;
 
-  return (
-    <Elements stripe={stripePromise} options={options}>
-      <CheckoutForm />
-    </Elements>
-  );
-};
+    const options = {
+      clientSecret,
+      appearance: {
+        theme: "stripe",
+      },
+      paymentMethodOrder: [
+        "apple_pay",
+        "google_pay",
+        "paypal",
+        "alma",
+        "card",
+        "klarna",
+        "revolut_pay",
+      ],
+    } as StripeElementsOptions;
+
+    return (
+      <>
+        <h1>OMO</h1>
+      </>
+      // <Elements stripe={stripePromise} options={options}>
+      //   <CheckoutForm />
+      // </Elements>
+    );
+  };
 
 export default CheckoutPage;
