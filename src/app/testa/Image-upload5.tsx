@@ -126,10 +126,22 @@ const ImageUpload5: React.FC = () => {
     }
   };
 
+  // const toggleImageSelection = (id: string) => {
+  //   setSelectedImageIds((prev) => {
+  //     const updated = new Set(prev);
+  //     updated.has(id) ? updated.delete(id) : updated.add(id);
+  //     return updated;
+  //   });
+  // };
+
   const toggleImageSelection = (id: string) => {
     setSelectedImageIds((prev) => {
       const updated = new Set(prev);
-      updated.has(id) ? updated.delete(id) : updated.add(id);
+      if (updated.has(id)) {
+        updated.delete(id);
+      } else {
+        updated.add(id);
+      }
       return updated;
     });
   };

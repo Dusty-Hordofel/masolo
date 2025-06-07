@@ -5,7 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import CheckoutForm from "./checkout-form";
 import { CheckoutItem } from "@/@types/cart/cart.item.interface";
-import { currencyFormatter } from "@/lib/currency";
+// import { currencyFormatter } from "@/lib/currency";
 
 const CheckoutWrapper = (props: {
   paymentIntent: Promise<{ clientSecret: string | null } | undefined>;

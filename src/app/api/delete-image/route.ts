@@ -14,7 +14,7 @@ interface DeleteImageRequest {
 
 interface CloudinaryDestroyResponse {
   result: "ok" | "not found" | string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // ✅ Helper pour typer les erreurs Cloudinary

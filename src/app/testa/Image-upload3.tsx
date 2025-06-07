@@ -28,7 +28,7 @@ const ImageUpload3: React.FC = () => {
   >([]);
   const [deletingImages, setDeletingImages] = useState<Set<string>>(new Set());
 
-  const { register, reset, control } = useForm<ImageFormData>();
+  const { register, control } = useForm<ImageFormData>();
 
   const watchedFiles = useWatch({
     control,
