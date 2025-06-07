@@ -175,7 +175,7 @@ export async function createAccountLink(
     }
 
     // 3️⃣ Check if a Stripe account is already linked
-    let paymentRecord = await prisma.payment.findFirst({
+    const paymentRecord = await prisma.payment.findFirst({
       where: { storeId },
       select: { stripeAccountId: true },
     });
