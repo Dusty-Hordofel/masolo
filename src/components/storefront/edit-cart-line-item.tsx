@@ -19,7 +19,7 @@ import { handleInputQuantity } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast.hook";
 import {
   getCartTest,
-  updateCartItemQuantity,
+  // updateCartItemQuantity,
 } from "@/server-actions/add-to-cart";
 import { CartItem } from "@/@types/cart/cart.item.interface";
 // import { CartItem } from "@prisma/client";
@@ -93,23 +93,8 @@ const EditCartLineItem = ({
               onClick={() => {
                 // setIsOpen((prev) => !prev);
                 if (productInCart) {
-                  //   void updateCartItemQuantity({
-                  //     id: product.id,
-                  //     qty: Number(quantity),
-                  //   });
-                  //   void updateCart({
-                  //     ...props.productInCart,
-                  //     qty: Number(quantity),
-                  //   });
-                  // void updateCartItemQuantity({
-                  //   id: product.id,
-                  //   qty: Number(quantity),
-                  // });
-
                   console.log("KATI", quantity);
-                  void updateCartItemQuantity(product.id, Number(quantity));
-
-                  // console.log("🚀 ~ onClick={ ~ yoyo:", yoyo);
+                  // void updateCartItemQuantity(product.id, Number(quantity));
 
                   toast({
                     title: "Cart updated",

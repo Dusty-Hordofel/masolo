@@ -169,6 +169,12 @@ model Image {
 //   @@map("stores")
 // }
 
+// enum StoreStatus {
+//   PENDING
+//   ACTIVE
+//   BANNED
+//   DISABLED
+// }
 model Store {
   id          String    @id @default(uuid())
   name        String    @unique @map("store_name")
@@ -178,8 +184,60 @@ model Store {
   owner       User?     @relation(fields: [ownerId], references: [id])
   ownerId     String?
   products    Product[] // Ajout de la relation inverse avec Product
+  payments    Payment[]
+  orders      Order[]
+  // payments    Payment[]
 
   @@map("stores")
+}
+
+// model Store {
+//   id          Int      @id @default(autoincrement())
+//   name        String   @unique @db.VarChar(40)
+//   industry    String?
+//   description String?
+//   slug        String   @unique @db.VarChar(50)
+//   products    Product[]
+//   payments    Payment[]
+//   orders      Order[]
+// }
+
+model Payment {
+  id                     Int     @id @default(autoincrement())
+  storeId                String  @unique @map("store_id") // Ajout de @unique
+  stripeAccountId        String?
+  stripeAccountCreatedAt Int?
+  stripeAccountExpiresAt Int?
+  detailsSubmitted       Boolean @default(false)
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: Cascade) // ✅ Relation avec Store
+}
+
+model Order {
+  id                        Int     @id @default(autoincrement())
+  prettyOrderId             Int?
+  storeId                   String
+  items                     Json
+  total                     Decimal @default(0) @db.Decimal(10, 2)
+  stripePaymentIntentId     String  @unique @db.VarChar(256)
+  stripePaymentIntentStatus String?
+  name                      String?
+  email                     String?
+  createdAt                 Int
+  addressId                 Int
+  store                     Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  address                   Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
+}
+
+model Address {
+  id         Int     @id @default(autoincrement())
+  line1      String
+  line2      String?
+  city       String
+  state      String
+  postalCode String
+  country    String
+  orders     Order[]
 }
 
 model Cart {
@@ -192,42 +250,9 @@ model Cart {
 }
 
 model CartItem {
-  // id     String @id @default(uuid())
-  id     String @id // L'ID sera directement l'ID du produit
-  qty    Int    @default(0)
-  cartId String @map("cart_id")
-  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  id        String @id @default(uuid()) // ✅ Génère un ID unique pour chaque CartItem
+  productId String // ID du produit
+  qty       Int    @default(0)
+  cartId    String @map("cart_id")
+  cart      Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
 }
-
-// model Payment {
-//   id                     Int     @id @default(autoincrement())
-//   storeId                Int?
-//   stripeAccountId        String?
-//   stripeAccountCreatedAt Int?
-//   stripeAccountExpiresAt Int?
-//   detailsSubmitted       Boolean @default(false)
-// }
-
-// model Order {
-//   id                        Int     @id @default(autoincrement())
-//   prettyOrderId             Int?
-//   storeId                   Int?
-//   items                     Json?
-//   total                     Decimal @default(0.00)
-//   stripePaymentIntentId     String? @unique
-//   stripePaymentIntentStatus String?
-//   name                      String?
-//   email                     String?
-//   createdAt                 Int?
-//   addressId                 Int?
-// }
-
-// model Address {
-//   id         Int     @id @default(autoincrement())
-//   line1      String?
-//   line2      String?
-//   city       String?
-//   state      String?
-//   postalCode String?
-//   country    String?
-// }

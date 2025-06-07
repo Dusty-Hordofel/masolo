@@ -7,7 +7,7 @@ import {
 } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Item } from "@/@types/admin/admin.item.interface";
+import { Item } from "@/@types/admin/item";
 import { cn } from "@/lib/utils";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>;

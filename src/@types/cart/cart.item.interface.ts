@@ -1,11 +1,11 @@
 // import { ProductImages } from "@/components/storefront/product-search";
 import { Product } from "@prisma/client";
-import { ProductWithImages } from "../admin/admin.products.interface";
+import { ProductWithImages } from "../admin/product";
 
 export type CartItem = { id: string; qty: number };
 
 export type CheckoutItem = {
-  id: number;
+  id: string;
   price: number;
   qty: number;
 };

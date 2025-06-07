@@ -106,4 +106,51 @@ export const StoreService = {
       return null;
     }
   },
+
+  async getStoreById(id: string) {
+    try {
+      const store = await prisma.store.findFirst({
+        where: { id },
+        // include: {
+        //   products: {
+        //     include: {
+        //       images: true,
+        //     },
+        //   },
+        // },
+      });
+      // console.log("��� ~ getStoreBySlug ~ store:", store);
+
+      return store?.slug;
+    } catch (error) {
+      console.error("Error fetching  store by slug:", error);
+      return null;
+    }
+  },
+  async getStoreBySlug(slug: string, returnId: boolean = false) {
+    try {
+      const store = await prisma.store.findFirst({
+        where: {
+          slug,
+        },
+        include: {
+          payments: {
+            select: {
+              stripeAccountId: true,
+            },
+          },
+        },
+      });
+      console.log("🚀 ~ getStoreBySlug ~ store:", store);
+
+      if (store) {
+        return returnId ? store.id : store.slug;
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error fetching store by slug:", error);
+      return null;
+    }
+  },
 };

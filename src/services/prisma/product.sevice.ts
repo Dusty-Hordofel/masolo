@@ -55,7 +55,7 @@ export const ProductService = {
     }
   },
 
-  async productDetails(id: string) {
+  async product(id: string) {
     const product = await prisma.product.findUnique({
       where: { id },
       include: { images: true },

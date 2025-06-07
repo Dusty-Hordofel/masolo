@@ -5,9 +5,9 @@ import { HeadingAndSubheading } from "./heading-and-subheading";
 import DynamicFormField from "../forms/dynamic-form-field";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
-import { ProductEditorSharedProps } from "@/@types/admin/admin.products.interface";
+import { ProductEditorSharedProps } from "@/@types/admin/product";
 import { useProductEditor } from "./use-producteditor";
-import ProductImageUploader from "./product-image-uploader";
+import ProductMediaUploader from "./product-media-uploader";
 
 const ProductEditorElements = ({
   displayType,
@@ -74,7 +74,7 @@ const ProductEditorElements = ({
             {productStatus === "existing-product" &&
               initialValues &&
               initialValues.images && (
-                <ProductImageUploader
+                <ProductMediaUploader
                   productId={initialValues?.id as string}
                   setUploadedImages={setUploadedImages}
                   currentProductImages={currentProductImages}

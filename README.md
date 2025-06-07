@@ -57,3 +57,5 @@ $
 ### 14. Products details, addToCartButton
 
 ### 15. Product Cart
+
+### 16. PaymentIntent_1

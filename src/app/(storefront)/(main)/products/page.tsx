@@ -1,4 +1,4 @@
-import { ProductWithImages } from "@/@types/admin/admin.products.interface";
+import { ProductWithImages } from "@/@types/admin/product";
 import { ProductBanner } from "@/components/storefront/product-banner";
 import { getStoreAndProduct } from "@/server-actions/store";
 import { Store } from "@prisma/client";

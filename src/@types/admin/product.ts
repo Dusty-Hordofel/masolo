@@ -4,15 +4,13 @@ export type ProductWithImages = Product & {
   images: Image[];
 };
 
-
-
 export type ImageProps = Pick<Image, "secureUrl" | "alt" | "publicId">;
 
-export interface ProductEditorSharedProps {
+export type ProductEditorSharedProps = {
   displayType?: "page" | "modal";
   productStatus: "new-product" | "existing-product";
   initialValues?: ProductWithImages;
-}
+};
 
 export type StoreAndProduct = Prisma.ProductGetPayload<{
   include: {
@@ -23,7 +21,7 @@ export type StoreAndProduct = Prisma.ProductGetPayload<{
 
 // we can use the following properties to configure the editor instead of using ProductEditorSharedProps
 
-// interface ProductEditorProps {
+// type ProductEditorProps =  {
 //   displayType?: "page" | "modal";
 //   productStatus: "new-product" | "existing-product";
 //   initialValues?: Product;

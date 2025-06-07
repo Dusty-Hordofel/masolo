@@ -1,4 +1,4 @@
-import { ProductWithImages } from "@/@types/admin/admin.products.interface";
+import { ProductWithImages } from "@/@types/admin/product";
 import { routes } from "@/app/data/routes";
 import { ParagraphFormatter } from "@/components/paragraph-formatter";
 import { QuickViewModalWrapper } from "@/components/storefront/quickview-modal-wrapper";
@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { currencyFormatter } from "@/lib/currency";
-import { getProductDetails } from "@/server-actions/products";
+import { getProduct } from "@/server-actions/products";
 import { ImageOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,9 +16,7 @@ export default async function StorefrontProductQuickView({
 }: {
   params: { productId: string };
 }) {
-  const product = (await getProductDetails(
-    params.productId
-  )) as ProductWithImages;
+  const product = (await getProduct(params.productId)) as ProductWithImages;
   console.log("🚀 ~ ProductPage ~ productDetails:MAL", product);
 
   return (
