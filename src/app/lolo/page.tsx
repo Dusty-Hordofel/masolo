@@ -6,11 +6,11 @@ import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { createPaymentIntent } from "./payment";
 import CheckoutForm from "./checkout-form";
 
-export default function CheckoutPage({
+const CheckoutPage = ({
   storeStripeAccountId,
 }: {
   storeStripeAccountId: string;
-}) {
+}) => {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
   //   let stripeAccountId = "acct_1QtLL5PPN6he4rg6";
@@ -54,4 +54,6 @@ export default function CheckoutPage({
       <CheckoutForm />
     </Elements>
   );
-}
+};
+
+export default CheckoutPage;
