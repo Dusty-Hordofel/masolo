@@ -131,19 +131,19 @@ interface ActionButtonProps {
   quantity: number;
 }
 
-const getActionButton = (
-  availableInventory: number | null,
-  isPreOrderAvailable: boolean,
-  props: ActionButtonProps
-) => {
-  if (availableInventory && Number(availableInventory) > 0) {
-    return <AddToCartButton {...props} />;
-  } else if (isPreOrderAvailable) {
-    return <PreOrderButton {...props} />;
-  } else {
-    return <SoldOutButton />;
-  }
-};
+// const getActionButton = (
+//   availableInventory: number | null,
+//   isPreOrderAvailable: boolean,
+//   props: ActionButtonProps
+// ) => {
+//   if (availableInventory && Number(availableInventory) > 0) {
+//     return <AddToCartButton {...props} />;
+//   } else if (isPreOrderAvailable) {
+//     return <PreOrderButton {...props} />;
+//   } else {
+//     return <SoldOutButton />;
+//   }
+// };
 
 interface AddToCartButtonProps {
   addToCartAction: (data: {
