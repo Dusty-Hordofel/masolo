@@ -613,56 +613,13 @@ export function MultiImageUploader() {
           }
         }}
       >
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden flex flex-col p-0 sm:rounded-2xl">
-          <DialogHeader
-          // className="p-4 border-b"
-          >
+        <DialogContent className="max-w-[980px] max-h-[703.047px] overflow-hidden flex flex-col p-0 sm:rounded-2xl">
+          <DialogHeader>
             <DialogTitle className="p-4 border-b bg-gray-100 border-[rgba(227, 227, 227, 1)]">
               Bibliothèque multimédia
             </DialogTitle>
 
             {/* Search and Controls */}
-            {/* <div className="mt-4 space-y-4">
-              <div className="flex gap-4 items-center">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Rechercher des fichiers..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
-                </div> */}
-
-            {/* View Mode Dropdown */}
-            {/* <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
-                      {viewMode === "grid" ? (
-                        <Grid3X3 className="h-4 w-4" />
-                      ) : (
-                        <List className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setViewMode("grid")}>
-                      <Grid3X3 className="h-4 w-4 mr-2" />
-                      Grille
-                      {viewMode === "grid" && (
-                        <Check className="h-4 w-4 ml-auto" />
-                      )}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setViewMode("list")}>
-                      <List className="h-4 w-4 mr-2" />
-                      Liste
-                      {viewMode === "list" && (
-                        <Check className="h-4 w-4 ml-auto" />
-                      )}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div> */}
 
             <div className="space-y-4  px-5 py-3">
               <div className="flex justify-between items-center ">
