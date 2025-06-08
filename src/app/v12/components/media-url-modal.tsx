@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 
-export default function MediaUrlModal() {
+export default function Component() {
   const [url, setUrl] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -48,19 +48,19 @@ export default function MediaUrlModal() {
         <DialogTrigger asChild>
           <Button variant="outline" className="gap-2">
             <Plus className="h-4 w-4" />
-            Ajouter à partir d&apos;une URL
+            Ajouter à partir d'une URL
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-lg font-medium">
-              Ajouter un support multimédia à partir d&apos;une URL
+              Ajouter un support multimédia à partir d'une URL
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="media-url" className="text-sm font-medium">
-                URL d&apos;image, YouTube ou Vimeo
+                URL d'image, YouTube ou Vimeo
               </Label>
               <Input
                 id="media-url"

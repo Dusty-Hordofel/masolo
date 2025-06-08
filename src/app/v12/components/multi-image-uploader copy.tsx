@@ -49,7 +49,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import MediaUrlDropdown from "./media-url-dropdown";
 
 interface ImageData {
   id: string;
@@ -613,16 +612,12 @@ export function MultiImageUploader() {
           }
         }}
       >
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden flex flex-col p-0 sm:rounded-2xl">
-          <DialogHeader
-          // className="p-4 border-b"
-          >
-            <DialogTitle className="p-4 border-b bg-gray-100 border-[rgba(227, 227, 227, 1)]">
-              Bibliothèque multimédia
-            </DialogTitle>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden flex flex-col p-0">
+          <DialogHeader className="p-4 border-b">
+            <DialogTitle>Bibliothèque multimédia</DialogTitle>
 
             {/* Search and Controls */}
-            {/* <div className="mt-4 space-y-4">
+            <div className="mt-4 space-y-4">
               <div className="flex gap-4 items-center">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -632,10 +627,10 @@ export function MultiImageUploader() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-10"
                   />
-                </div> */}
+                </div>
 
-            {/* View Mode Dropdown */}
-            {/* <DropdownMenu>
+                {/* View Mode Dropdown */}
+                <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="icon">
                       {viewMode === "grid" ? (
@@ -656,55 +651,6 @@ export function MultiImageUploader() {
                     <DropdownMenuItem onClick={() => setViewMode("list")}>
                       <List className="h-4 w-4 mr-2" />
                       Liste
-                      {viewMode === "list" && (
-                        <Check className="h-4 w-4 ml-auto" />
-                      )}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div> */}
-
-            <div className="space-y-4  px-5 py-3">
-              <div className="flex justify-between items-center ">
-                <div className="relative max-w-[517px] w-full">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Rechercher des fichiers..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-
-                {/* View Mode Dropdown */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
-                      {viewMode === "grid" ? (
-                        <Grid3X3 className="h-4 w-4" />
-                      ) : (
-                        <List className="h-4 w-4" />
-                      )}
-                      <ChevronDown className="h-4 w-4 opacity-50" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onClick={() => setViewMode("grid")}
-                      className="cursor-pointer"
-                    >
-                      <Grid3X3 className="h-4 w-4 mr-2" />
-                      Affichage en grille
-                      {viewMode === "grid" && (
-                        <Check className="h-4 w-4 ml-auto" />
-                      )}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => setViewMode("list")}
-                      className="cursor-pointer"
-                    >
-                      <List className="h-4 w-4 mr-2" />
-                      Affichage en liste
                       {viewMode === "list" && (
                         <Check className="h-4 w-4 ml-auto" />
                       )}
@@ -837,43 +783,39 @@ export function MultiImageUploader() {
                       <ChevronDown className="h-4 w-4" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-56">
-                    <div className="space-y-2">
-                      <div className="flex flex-col gap-y-3">
-                        <div>
-                          <Label className="text-sm font-medium">
-                            Taille minimale (Mo)
-                          </Label>
-                          <Input
-                            placeholder="Min"
-                            value={minSize}
-                            onChange={(e) => setMinSize(e.target.value)}
-                            type="number"
-                            className="flex-1"
-                          />
-                        </div>
-                        <div>
-                          <Label className="text-sm font-medium">
-                            Taille maximale (Mo)
-                          </Label>
-                          <Input
-                            placeholder="Max"
-                            value={maxSize}
-                            onChange={(e) => setMaxSize(e.target.value)}
-                            type="number"
-                            className="flex-1"
-                          />
-                        </div>
+                  <PopoverContent className="w-80">
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-sm font-medium">
+                          Taille du fichier (Mo)
+                        </Label>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <Input
+                          placeholder="Min"
+                          value={minSize}
+                          onChange={(e) => setMinSize(e.target.value)}
+                          type="number"
+                          className="flex-1"
+                        />
+                        <span className="text-sm text-muted-foreground">à</span>
+                        <Input
+                          placeholder="Max"
+                          value={maxSize}
+                          onChange={(e) => setMaxSize(e.target.value)}
+                          type="number"
+                          className="flex-1"
+                        />
                       </div>
                       {(minSize || maxSize) && (
                         <Button
-                          variant="link"
+                          variant="outline"
                           size="sm"
                           onClick={() => {
                             setMinSize("");
                             setMaxSize("");
                           }}
-                          className=" w-max h-max p-0 "
+                          className="w-full"
                         >
                           Effacer
                         </Button>
@@ -893,38 +835,43 @@ export function MultiImageUploader() {
                 previewImageInModal ? "w-1/2" : "w-full"
               )}
             >
-              {/* upload section */}
-              <div className="px-5 mt-4 mb-5">
-                <div
-                  className={cn(
-                    "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
-                    isDragging
-                      ? "border-primary bg-primary/5"
-                      : "border-muted-foreground/25 hover:border-primary/50"
-                  )}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <div className="flex flex-col items-center justify-center">
-                    <div className="space-y-2">
-                      <div className="relative ">
-                        <p className="border w-max px-3 py-[6px] rounded-lg hover:bg-gray-100">
-                          <span>Ajouter un support multimédia</span>
-                        </p>
-
-                        <div className="_Activator_17fbw_1 absolute right-3 top-0">
-                          <MediaUrlDropdown />
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Glisser-déposer des images, des vidéos, des modèles 3D
-                        et des fichiers
-                      </p>
+              {/* Upload section */}
+              <div className="p-4 border-b">
+                <Tabs defaultValue="upload" className="w-full">
+                  <TabsList>
+                    <TabsTrigger value="upload">
+                      Télécharger des fichiers
+                    </TabsTrigger>
+                    <TabsTrigger value="url">Ajouter par URL</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="upload" className="space-y-2">
+                    <Button
+                      onClick={() => modalFileInputRef.current?.click()}
+                      className="w-full"
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      Sélectionner des fichiers
+                    </Button>
+                    <input
+                      ref={modalFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={handleFileChange}
+                    />
+                  </TabsContent>
+                  <TabsContent value="url" className="space-y-2">
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="URL de l'image..."
+                        value={urlInput}
+                        onChange={(e) => setUrlInput(e.target.value)}
+                      />
+                      <Button onClick={addImageFromUrl}>Ajouter</Button>
                     </div>
-                  </div>
-                </div>
+                  </TabsContent>
+                </Tabs>
               </div>
 
               {/* Images Grid/List */}

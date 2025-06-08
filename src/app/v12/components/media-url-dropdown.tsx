@@ -13,11 +13,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 
-export default function Component() {
-  const [url, setUrl] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+export default function MediaUrlDropdown() {
+  const [mediaUrl, setMediaUrl] = useState("");
+  const [isAddMediaUrlDropdownOpen, setIsAddMediaUrlDropdownOpen] =
+    useState(false);
 
-  const isValidUrl = (urlString: string) => {
+  const isValidMediaUrl = (urlString: string) => {
     if (!urlString.trim()) return false;
     try {
       const url = new URL(urlString);
@@ -27,56 +28,80 @@ export default function Component() {
     }
   };
 
-  const handleAddFile = () => {
-    if (isValidUrl(url)) {
-      console.log("Ajout du fichier avec l'URL:", url);
+  const handleAddMediaFile = () => {
+    if (isValidMediaUrl(mediaUrl)) {
+      console.log("Ajout du fichier avec l'URL:", mediaUrl);
       // Ici vous pouvez ajouter la logique pour traiter l'URL
-      setUrl("");
-      setIsOpen(false);
+      setMediaUrl("");
+      setIsAddMediaUrlDropdownOpen(false);
     }
   };
 
-  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUrl(e.target.value);
+  const handleMediaUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMediaUrl(e.target.value);
   };
 
   return (
-    <div className="p-8">
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="gap-2">
-            <Plus className="h-4 w-4" />
-            Ajouter à partir d&apos;une URL
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-80 p-4" align="start">
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="media-url" className="text-sm font-medium">
-                URL d&apos;image, YouTube ou Vimeo
-              </Label>
-              <Input
-                id="media-url"
-                type="url"
-                placeholder="https://"
-                value={url}
-                onChange={handleUrlChange}
-                autoComplete="off"
-                className="w-full"
-              />
-            </div>
-            <Button
-              onClick={handleAddFile}
-              disabled={!isValidUrl(url)}
-              size="sm"
-              variant="secondary"
-              className="w-auto"
+    <Popover
+      open={isAddMediaUrlDropdownOpen}
+      onOpenChange={setIsAddMediaUrlDropdownOpen}
+    >
+      <PopoverTrigger asChild>
+        <Button
+          variant="link"
+          className="gap-2"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          Ajouter à partir d'une URL
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-max"
+        align="start"
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        <div className="space-y-3 flex flex-col justify-start items-start">
+          <p className="text-sm font-bold text-start">
+            Ajouter un support multimédia à partir d'une URL
+          </p>
+          <div className="w-full space-y-1">
+            <Label
+              htmlFor="media-url"
+              className="text-sm font-medium text-start block"
             >
-              Ajouter le fichier
-            </Button>
+              URL d'image, YouTube ou Vimeo
+            </Label>
+            <Input
+              id="media-url"
+              type="url"
+              placeholder="https://"
+              value={mediaUrl}
+              onChange={handleMediaUrlChange}
+              onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              autoComplete="off"
+              className="w-full"
+              autoFocus
+            />
           </div>
-        </PopoverContent>
-      </Popover>
-    </div>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddMediaFile();
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
+            disabled={!isValidMediaUrl(mediaUrl)}
+            size="sm"
+            variant="secondary"
+            className="w-max m-O"
+          >
+            Ajouter le fichier
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
