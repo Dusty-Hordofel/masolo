@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Check,
   ChevronDown,
+  CircleX,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -384,6 +385,26 @@ export function MultiImageUploader() {
   const hasMoreImages = images.length > 5;
 
   // Navigation for preview in modal
+  // const navigatePreview = (direction: "next" | "prev") => {
+  //   if (!previewImageInModal) return;
+
+  //   const currentIndex = filteredAndSortedImages.findIndex(
+  //     (img) => img.id === previewImageInModal.id
+  //   );
+  //   if (currentIndex === -1) return;
+
+  //   let newIndex;
+  //   if (direction === "next") {
+  //     newIndex = (currentIndex + 1) % filteredAndSortedImages.length;
+  //   } else {
+  //     newIndex =
+  //       (currentIndex - 1 + filteredAndSortedImages.length) %
+  //       filteredAndSortedImages.length;
+  //   }
+
+  //   setPreviewImageInModal(filteredAndSortedImages[newIndex]);
+  // };
+
   const navigatePreview = (direction: "next" | "prev") => {
     if (!previewImageInModal) return;
 
@@ -394,11 +415,13 @@ export function MultiImageUploader() {
 
     let newIndex;
     if (direction === "next") {
-      newIndex = (currentIndex + 1) % filteredAndSortedImages.length;
+      // Empêcher d'aller au-delà de la dernière image
+      if (currentIndex >= filteredAndSortedImages.length - 1) return;
+      newIndex = currentIndex + 1;
     } else {
-      newIndex =
-        (currentIndex - 1 + filteredAndSortedImages.length) %
-        filteredAndSortedImages.length;
+      // Empêcher d'aller avant la première image
+      if (currentIndex <= 0) return;
+      newIndex = currentIndex - 1;
     }
 
     setPreviewImageInModal(filteredAndSortedImages[newIndex]);
@@ -415,6 +438,17 @@ export function MultiImageUploader() {
       }
     }
   }, [previewImageInModal]);
+
+  const getCurrentIndex = () => {
+    if (!previewImageInModal) return -1;
+    return filteredAndSortedImages.findIndex(
+      (img) => img.id === previewImageInModal.id
+    );
+  };
+
+  const currentIndex = getCurrentIndex();
+  const isFirstImage = currentIndex <= 0;
+  const isLastImage = currentIndex >= filteredAndSortedImages.length - 1;
 
   // Handle preview image with animation
   const handlePreviewImage = (image: ImageData) => {
@@ -842,16 +876,28 @@ export function MultiImageUploader() {
             </div>
           </DialogHeader>
 
-          <div className="flex-1 overflow-hidden flex">
+          <div
+            className={cn(
+              "overflow-hidden   bg-yellow-200 ",
+              previewImageInModal ? "flex" : "overflow-y-auto"
+            )}
+          >
             {/* Split view when image is selected */}
             <div
               className={cn(
-                "flex-1 overflow-hidden flex flex-col transition-all duration-300 ease-in-out",
+                "flex-1 overflow-hidden overflow-y-auto flex flex-col transition-all duration-300 ease-in-out",
                 previewImageInModal ? "w-1/2" : "w-full"
               )}
             >
               {/* upload section */}
-              <div className="px-5 mt-4 mb-5">
+              <MediaUploader
+                isDragging={isDragging}
+                handleDragOver={handleDragOver}
+                handleDragLeave={handleDragLeave}
+                handleDrop={handleDrop}
+                fileInputRef={fileInputRef}
+              />
+              {/* <div className="px-5 mt-4 mb-5">
                 <div
                   className={cn(
                     "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
@@ -882,10 +928,10 @@ export function MultiImageUploader() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Images Grid/List */}
-              <div className="flex-1 overflow-y-auto p-4" ref={imageListRef}>
+              <div className="flex-1  p-4" ref={imageListRef}>
                 {viewMode === "grid" ? (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {filteredAndSortedImages.map((image) => (
@@ -962,8 +1008,9 @@ export function MultiImageUploader() {
             {/* Image Preview Panel with Animation */}
             {previewImageInModal && (
               <div
+                // sticky top-0
                 className={cn(
-                  "w-1/2 border-l flex flex-col h-full transition-transform duration-300 ease-in-out",
+                  "w-1/2 border-l flex flex-col h-full transition-transform duration-300 ease-in-out bg-[#f1f1f1]  p-5",
                   isPreviewAnimating ? "translate-x-0" : "translate-x-full"
                 )}
                 style={{
@@ -972,25 +1019,28 @@ export function MultiImageUploader() {
                     : "translateX(100%)",
                 }}
               >
-                <div className="p-4 border-b flex justify-between items-center">
+                {/* p-4 border-b  */}
+                <div className="flex justify-between items-center">
                   <h3 className="font-medium">Aperçu</h3>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={handleClosePreview}
                   >
-                    <X className="h-4 w-4" />
+                    {/* <X className="h-4 w-4" /> */}
+                    <CircleX className="h-4 w-4" />
                   </Button>
                 </div>
-
-                <div className="flex-1 overflow-y-auto flex flex-col">
+                {/* overflow-y-auto */}
+                <div className="flex-1  flex flex-col">
                   {/* Image with navigation */}
-                  <div className="relative flex-1 flex items-center justify-center p-4">
+                  <div className="relative flex-1 flex items-center justify-center p-4 bg-purple-300">
                     <Button
                       variant="outline"
                       size="icon"
                       className="absolute left-6 top-1/2 transform -translate-y-1/2 rounded-full z-10"
                       onClick={() => navigatePreview("prev")}
+                      disabled={isFirstImage}
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
@@ -1000,7 +1050,8 @@ export function MultiImageUploader() {
                         previewImageInModal.url || previewImageInModal.preview
                       }
                       alt={previewImageInModal.name}
-                      className="max-w-full max-h-[60vh] object-contain transition-opacity duration-200"
+                      // max-w-full max-h-[60vh]
+                      className=" max-w-96 h-max-56 object-contain transition-opacity duration-200"
                     />
 
                     <Button
@@ -1008,6 +1059,7 @@ export function MultiImageUploader() {
                       size="icon"
                       className="absolute right-6 top-1/2 transform -translate-y-1/2 rounded-full z-10"
                       onClick={() => navigatePreview("next")}
+                      disabled={isLastImage}
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>
@@ -1058,6 +1110,56 @@ export function MultiImageUploader() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </div>
+  );
+}
+
+interface MediaUploaderProps {
+  isDragging: boolean;
+  handleDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
+  handleDragLeave: (e: React.DragEvent<HTMLDivElement>) => void;
+  handleDrop: (e: React.DragEvent<HTMLDivElement>) => void;
+  fileInputRef: React.RefObject<HTMLInputElement>;
+}
+function MediaUploader({
+  isDragging,
+  handleDragOver,
+  handleDragLeave,
+  handleDrop,
+  fileInputRef,
+}: MediaUploaderProps) {
+  return (
+    <div className="px-5 mt-4 mb-5">
+      <div
+        className={cn(
+          "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
+          isDragging
+            ? "border-primary bg-primary/5"
+            : "border-muted-foreground/25 hover:border-primary/50"
+        )}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <div className="flex flex-col items-center justify-center">
+          <div className="space-y-2">
+            <div className="relative ">
+              <p className="border w-max px-3 py-[6px] rounded-lg hover:bg-gray-100">
+                <span>Ajouter un support multimédia</span>
+              </p>
+
+              <div className="_Activator_17fbw_1 absolute right-3 top-0">
+                <MediaUrlDropdown />
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mb-1">
+              Glisser-déposer des images, des vidéos, des modèles 3D et des
+              fichiers
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
