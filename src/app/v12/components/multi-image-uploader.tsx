@@ -897,38 +897,6 @@ export function MultiImageUploader() {
                 handleDrop={handleDrop}
                 fileInputRef={fileInputRef}
               />
-              {/* <div className="px-5 mt-4 mb-5">
-                <div
-                  className={cn(
-                    "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
-                    isDragging
-                      ? "border-primary bg-primary/5"
-                      : "border-muted-foreground/25 hover:border-primary/50"
-                  )}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <div className="flex flex-col items-center justify-center">
-                    <div className="space-y-2">
-                      <div className="relative ">
-                        <p className="border w-max px-3 py-[6px] rounded-lg hover:bg-gray-100">
-                          <span>Ajouter un support multimédia</span>
-                        </p>
-
-                        <div className="_Activator_17fbw_1 absolute right-3 top-0">
-                          <MediaUrlDropdown />
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Glisser-déposer des images, des vidéos, des modèles 3D
-                        et des fichiers
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
 
               {/* Images Grid/List */}
               <div className="flex-1  p-4" ref={imageListRef}>

@@ -1,5 +1,5 @@
 import { routes } from "@/app/data/routes";
-import { CartLineItems } from "@/components/storefront/cart-line-items";
+import { CartLineItems } from "@/components/storefrontc/cart-line-items";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { currencyFormatter } from "@/lib/currency";

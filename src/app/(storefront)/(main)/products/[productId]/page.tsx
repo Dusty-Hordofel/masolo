@@ -12,7 +12,7 @@ import { ProductWithImages } from "@/@types/admin/product";
 import { getStoreByProductId } from "@/server-actions/store";
 import { routes, productsQueryParams } from "@/app/data/routes";
 import { FeatureIcons } from "@/components/storefront/feature-icons";
-import { ProductCartActions } from "@/components/storefront/product-card";
+import { ProductCartActions } from "@/components/storefront/ProductCartActions";
 
 export default async function StorefrontProductDetails({
   params,
@@ -69,14 +69,24 @@ export default async function StorefrontProductDetails({
             {currencyFormatter(Number(product.price))}
           </Text>
 
-          <ProductCartActions
+          {/* <ProductCartActions
             addToCartAction={addToCart}
             availableInventory={product.inventory}
             isPreOrderAvailable={product.isPreOrderAvailable}
             productId={product.id}
             productName={product.name}
             disableQuantitySelector
+            id={product.id}
+          /> */}
+
+          <ProductCartActions
+            addToCartAction={addToCart}
+            availableInventory={product.inventory}
+            isPreOrderAvailable={product.isPreOrderAvailable}
+            productId={product.id}
+            productName={product.name}
           />
+
           <FeatureIcons className="mt-8" />
         </div>
       </div>

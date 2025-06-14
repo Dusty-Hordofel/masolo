@@ -1,11 +1,11 @@
 import { ProductWithImages } from "@/@types/admin/product";
-import { ProductBanner } from "@/components/storefront/product-banner";
+import { ProductBanner } from "@/components/storefrontc/product-banner";
 import { getStoreAndProduct } from "@/server-actions/store";
 import { Store } from "@prisma/client";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Heading } from "@/components/ui/heading";
-import ProductList from "@/components/storefront/product-list";
-import ProductFiltersSidebar from "@/components/storefront/product-filters-sidebar";
+import ProductList from "@/components/storefrontc/product-list";
+import ProductFiltersSidebar from "@/components/storefrontc/product-filters-sidebar";
 
 export type ProductAndStore = ProductWithImages &
   Omit<Store, "description" | "industry">;

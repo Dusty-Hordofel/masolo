@@ -1,7 +1,7 @@
 import { ProductWithImages } from "@/@types/admin/product";
 import { routes } from "@/app/data/routes";
 import { ParagraphFormatter } from "@/components/paragraph-formatter";
-import { QuickViewModalWrapper } from "@/components/storefront/quickview-modal-wrapper";
+import { QuickViewModalWrapper } from "@/components/storefrontc/quickview-modal-wrapper";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";

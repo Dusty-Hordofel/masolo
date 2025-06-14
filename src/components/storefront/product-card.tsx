@@ -57,6 +57,7 @@ export const ProductCard = ({
                 productId={product.id}
                 productName={product.name}
                 disableQuantitySelector
+                id={product.id}
               />
             </div>
           )}
@@ -84,6 +85,7 @@ export const ProductInformation = ({
 };
 
 export const ProductCartActions = (props: {
+  id: string;
   addToCartAction: typeof addToCart;
   availableInventory: number;
   isPreOrderAvailable?: boolean;
@@ -106,55 +108,63 @@ export const ProductCartActions = (props: {
         !props.disableQuantitySelector && (
           <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
         )}
-      {/* {getActionButton(
+      {getActionButton(
         props.availableInventory,
         props.isPreOrderAvailable ?? false,
         { ...props, quantity }
-      )} */}
+      )}
+      availableInventory: number | null, isPreOrderAvailable: boolean, props:
+      ActionButtonProps
     </div>
   );
 };
 
-// interface ActionButtonProps {
-//   addToCartAction: (data: {
-//     id: string;
-//     qty: number;
-//     productId: string;
-//   }) => Promise<{
-//     success: boolean;
-//     title: string;
-//     description: string;
-//   }>;
-//   id: string;
-//   productId: string;
-//   productName: string;
-//   quantity: number;
-// }
+interface ActionButtonProps {
+  addToCartAction: (data: {
+    id: string;
+    qty: number;
+    productId: string;
+  }) => Promise<
+    | {
+        success: boolean;
+        title: string;
+        description: string;
+      }
+    | undefined
+  >;
+  id: string;
+  productId: string;
+  productName: string;
+  quantity: number;
+}
 
-// const getActionButton = (
-//   availableInventory: number | null,
-//   isPreOrderAvailable: boolean,
-//   props: ActionButtonProps
-// ) => {
-//   if (availableInventory && Number(availableInventory) > 0) {
-//     return <AddToCartButton {...props} />;
-//   } else if (isPreOrderAvailable) {
-//     return <PreOrderButton {...props} />;
-//   } else {
-//     return <SoldOutButton />;
-//   }
-// };
+const getActionButton = (
+  availableInventory: number | null,
+  isPreOrderAvailable: boolean,
+  props: ActionButtonProps
+) => {
+  if (availableInventory && Number(availableInventory) > 0) {
+    return <AddToCartButton {...props} />;
+  } else if (isPreOrderAvailable) {
+    return <PreOrderButton {...props} />;
+  } else {
+    return <SoldOutButton />;
+  }
+};
 
 interface AddToCartButtonProps {
   addToCartAction: (data: {
     id: string;
     qty: number;
     productId: string;
-  }) => Promise<{
-    success: boolean;
-    title: string;
-    description: string;
-  }>;
+  }) => Promise<
+    | {
+        success: boolean;
+        title: string;
+        description: string;
+      }
+    | undefined
+  >;
   id: string;
   productId: string;
   productName: string;
@@ -193,7 +203,7 @@ export const AddToCartButton = ({
         });
       }
     });
-  }, [addToCartAction, productId, productName, quantity]);
+  }, [addToCartAction, productId, productName, quantity, id]);
 
   return (
     <Button
@@ -229,99 +239,102 @@ const QuantitySelector = ({
   </div>
 );
 
-// const SoldOutButton = () => (
-//   <Button variant="secondary" disabled={true} className="w-36">
-//     Sold Out
-//   </Button>
-// );
+const SoldOutButton = () => (
+  <Button variant="secondary" disabled={true} className="w-36">
+    Sold Out
+  </Button>
+);
 
-// interface PreOrderButtonProps {
-//   addToCartAction: (data: {
-//     id: string;
-//     qty: number;
-//     productId: string;
-//   }) => Promise<{
-//     success: boolean;
-//     title: string;
-//     description: string;
-//   }>;
-//   id: string;
-//   productId: string;
-//   productName: string;
-//   quantity: number;
-// }
+interface PreOrderButtonProps {
+  addToCartAction: (data: {
+    id: string;
+    qty: number;
+    productId: string;
+  }) => Promise<
+    | {
+        success: boolean;
+        title: string;
+        description: string;
+      }
+    | undefined
+  >;
+  id: string;
+  productId: string;
+  productName: string;
+  quantity: number;
+}
 
-// const PreOrderButton = ({
-//   addToCartAction,
-//   id,
-//   productId,
-//   productName,
-//   quantity,
-// }: PreOrderButtonProps) => {
-//   const [isPending, startTransition] = useTransition();
+const PreOrderButton = ({
+  addToCartAction,
+  id,
+  productId,
+  productName,
+  quantity,
+}: PreOrderButtonProps) => {
+  const [isPending, startTransition] = useTransition();
 
-//   const handlePreOrder = async () => {
-//     // const result =
+  const handlePreOrder = async () => {
+    // const result =
 
-//     await addToCartAction({
-//       id,
-//       productId,
-//       qty: Number(quantity),
-//     });
+    await addToCartAction({
+      id,
+      productId,
+      qty: Number(quantity),
+    });
 
-//     toast({
-//       title: "Preorder placed",
-//       description: `${quantity}x ${productName} has been preordered.`,
-//       action: (
-//         <Link href={routes.cart}>
-//           <ToastAction altText="View cart">View</ToastAction>
-//         </Link>
-//       ),
-//     });
+    toast({
+      title: "Preorder placed",
+      description: `${quantity}x ${productName} has been preordered.`,
+      action: (
+        <Link href={routes.cart}>
+          <ToastAction altText="View cart">View</ToastAction>
+        </Link>
+      ),
+    });
 
-//     // toast({
-//     //   title: result.title, // Utilisez le title retourné de l'action
-//     //   description: result.description, // Utilisez la description retournée
-//     //   action: (
-//     //     <Link href={routes.cart}>
-//     //       <ToastAction altText="View cart">View</ToastAction>
-//     //     </Link>
-//     //   ),
-//     // });
-//   };
-//   return (
-//     <Button
-//       disabled={isPending}
-//       size="default"
-//       className="w-36 bg-blue-500 hover:bg-blue-600 text-white"
-//       onClick={() => {
-//         startTransition(() => {
-//           handlePreOrder(); // Appeler la fonction handlePreOrder séparée
-//         });
-//       }}
-//       // onClick={() => {
-//       //   startTransition(() =>
-//       //     addToCartAction({
-//       //       id: productId,
-//       //       qty: Number(quantity),
-//       //       // isPreOrder: true,
-//       //     })
-//       //   );
-//       //   toast({
-//       //     title: "Preorder placed",
-//       //     description: `${quantity}x ${productName} has been preordered.`,
-//       //     action: (
-//       //       <Link href={routes.cart}>
-//       //         <ToastAction altText="View cart">View</ToastAction>
-//       //       </Link>
-//       //     ),
-//       //   });
-//       // }}
-//     >
-//       Preorder
-//     </Button>
-//   );
-// };
+    // toast({
+    //   title: result.title, // Utilisez le title retourné de l'action
+    //   description: result.description, // Utilisez la description retournée
+    //   action: (
+    //     <Link href={routes.cart}>
+    //       <ToastAction altText="View cart">View</ToastAction>
+    //     </Link>
+    //   ),
+    // });
+  };
+  return (
+    <Button
+      disabled={isPending}
+      size="default"
+      className="w-36 bg-blue-500 hover:bg-blue-600 text-white"
+      onClick={() => {
+        startTransition(() => {
+          handlePreOrder(); // Appeler la fonction handlePreOrder séparée
+        });
+      }}
+      // onClick={() => {
+      //   startTransition(() =>
+      //     addToCartAction({
+      //       id: productId,
+      //       qty: Number(quantity),
+      //       // isPreOrder: true,
+      //     })
+      //   );
+      //   toast({
+      //     title: "Preorder placed",
+      //     description: `${quantity}x ${productName} has been preordered.`,
+      //     action: (
+      //       <Link href={routes.cart}>
+      //         <ToastAction altText="View cart">View</ToastAction>
+      //       </Link>
+      //     ),
+      //   });
+      // }}
+    >
+      Preorder
+    </Button>
+  );
+};
 
 interface ProductQuickViewButtonProps {
   productId: string;
