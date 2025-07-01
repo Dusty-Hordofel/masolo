@@ -49,6 +49,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface ImageData {
   id: string;
@@ -458,11 +459,13 @@ export function MultiImageUploader() {
           Retour
         </Button>
         <div className="max-w-4xl mx-auto">
-          <img
-            src={selectedImage.url || selectedImage.preview}
-            alt={selectedImage.name}
-            className="w-full h-auto rounded-lg shadow-lg"
-          />
+          <picture>
+            <img
+              src={selectedImage.url || selectedImage.preview}
+              alt={selectedImage.name}
+              className="w-full h-auto rounded-lg shadow-lg"
+            />
+          </picture>
           <div className="mt-4 p-4 bg-muted rounded-lg">
             <h3 className="font-semibold">{selectedImage.name}</h3>
             <p className="text-sm text-muted-foreground">
@@ -560,11 +563,13 @@ export function MultiImageUploader() {
               >
                 <div className="w-full h-full bg-muted rounded-lg overflow-hidden relative">
                   {images[7] && (
-                    <img
-                      src={images[7].url || images[7].preview}
-                      alt="More images"
-                      className="w-full h-full object-cover"
-                    />
+                    <picture>
+                      <img
+                        src={images[7].url || images[7].preview}
+                        alt="More images"
+                        className="w-full h-full object-cover"
+                      />
+                    </picture>
                   )}
                   <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
                     <div className="text-white text-center">
@@ -826,8 +831,8 @@ export function MultiImageUploader() {
               </div>
             </div>
           </DialogHeader>
-
-          <div className="flex-1 overflow-hidden flex bg-red-300 relative">
+          {/* bg-red-300  */}
+          <div className="flex-1 overflow-hidden flex relative">
             {/* Split view when image is selected */}
             <div
               className={cn(
@@ -835,47 +840,49 @@ export function MultiImageUploader() {
                 previewImageInModal ? "w-1/2" : "w-full"
               )}
             >
-              {/* Upload section */}
-              <div className="p-4 border-b">
-                <Tabs defaultValue="upload" className="w-full">
-                  <TabsList>
-                    <TabsTrigger value="upload">
-                      Télécharger des fichiers
-                    </TabsTrigger>
-                    <TabsTrigger value="url">Ajouter par URL</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="upload" className="space-y-2">
-                    <Button
-                      onClick={() => modalFileInputRef.current?.click()}
-                      className="w-full"
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      Sélectionner des fichiers
-                    </Button>
-                    <input
-                      ref={modalFileInputRef}
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      className="hidden"
-                      onChange={handleFileChange}
-                    />
-                  </TabsContent>
-                  <TabsContent value="url" className="space-y-2">
-                    <div className="flex gap-2">
-                      <Input
-                        placeholder="URL de l'image..."
-                        value={urlInput}
-                        onChange={(e) => setUrlInput(e.target.value)}
-                      />
-                      <Button onClick={addImageFromUrl}>Ajouter</Button>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </div>
-
               {/* Images Grid/List */}
-              <div className="flex-1 overflow-y-auto p-4" ref={imageListRef}>
+              <div
+                className="flex-1 overflow-y-auto p-4 space-y-4"
+                ref={imageListRef}
+              >
+                {/* Upload section */}
+                <div className="border-b">
+                  <Tabs defaultValue="upload" className="w-full">
+                    <TabsList>
+                      <TabsTrigger value="upload">
+                        Télécharger des fichiers
+                      </TabsTrigger>
+                      <TabsTrigger value="url">Ajouter par URL</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="upload" className="space-y-2">
+                      <Button
+                        onClick={() => modalFileInputRef.current?.click()}
+                        className="w-full"
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        Sélectionner des fichiers
+                      </Button>
+                      <input
+                        ref={modalFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={handleFileChange}
+                      />
+                    </TabsContent>
+                    <TabsContent value="url" className="space-y-2">
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="URL de l'image..."
+                          value={urlInput}
+                          onChange={(e) => setUrlInput(e.target.value)}
+                        />
+                        <Button onClick={addImageFromUrl}>Ajouter</Button>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </div>
                 {viewMode === "grid" ? (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {filteredAndSortedImages.map((image) => (
@@ -903,11 +910,13 @@ export function MultiImageUploader() {
                             : "hover:bg-muted"
                         )}
                       >
-                        <img
-                          src={image.url || image.preview}
-                          alt={image.name}
-                          className="w-12 h-12 object-cover rounded"
-                        />
+                        <picture>
+                          <img
+                            src={image.url || image.preview}
+                            alt={image.name}
+                            className="w-12 h-12 object-cover rounded"
+                          />
+                        </picture>
                         <div className="flex-1">
                           <p className="font-medium">{image.name}</p>
                           <p className="text-sm text-muted-foreground">
@@ -951,60 +960,74 @@ export function MultiImageUploader() {
 
             {/* Image Preview Panel with Animation */}
             {previewImageInModal && (
-              <div
-                className={cn(
-                  "w-1/2 border-l flex flex-col h-full transition-transform duration-300 ease-in-out",
-                  isPreviewAnimating ? "translate-x-0" : "translate-x-full"
-                )}
-                style={{
-                  transform: isPreviewAnimating
-                    ? "translateX(0)"
-                    : "translateX(100%)",
-                }}
-              >
-                <div className="p-4 border-b flex justify-between items-center">
-                  <h3 className="font-medium">Aperçu</h3>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleClosePreview}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto flex flex-col">
-                  {/* Image with navigation */}
-                  <div className="relative flex-1 flex items-center justify-center p-4">
+              <div className="w-1/2 relative h-">
+                <div
+                  className={cn(
+                    "border-l grid grid-rows-[auto,1fr,auto] bg-muted transition-transform duration-300 ease-in-out absolute w-full h-full",
+                    isPreviewAnimating ? "translate-x-0" : "translate-x-full"
+                  )}
+                  style={{
+                    transform: isPreviewAnimating
+                      ? "translateX(0)"
+                      : "translateX(100%)",
+                  }}
+                >
+                  {/* header */}
+                  <div className="p-4 border-b flex justify-between items-center">
+                    <h3 className="font-medium">Aperçu</h3>
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       size="icon"
-                      className="absolute left-6 top-1/2 transform -translate-y-1/2 rounded-full z-10"
-                      onClick={() => navigatePreview("prev")}
+                      onClick={handleClosePreview}
                     >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-
-                    <img
-                      src={
-                        previewImageInModal.url || previewImageInModal.preview
-                      }
-                      alt={previewImageInModal.name}
-                      className="max-w-full max-h-[60vh] object-contain transition-opacity duration-200"
-                    />
-
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="absolute right-6 top-1/2 transform -translate-y-1/2 rounded-full z-10"
-                      onClick={() => navigatePreview("next")}
-                    >
-                      <ChevronRight className="h-4 w-4" />
+                      <X className="h-4 w-4" />
                     </Button>
                   </div>
 
+                  {/* Content */}
+                  <div className="bg-muted px-4 py-5">
+                    {/* Image with navigation */}
+                    <div className="grid grid-cols-[auto,1fr,auto] h-full">
+                      <div className="flex items-center justify-center">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="rounded-full"
+                          onClick={() => navigatePreview("prev")}
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="relative">
+                        <Image
+                          src={
+                            previewImageInModal.url ||
+                            previewImageInModal.preview
+                          }
+                          alt="Description"
+                          fill
+                          style={{ objectFit: "contain" }}
+                          sizes="100vw"
+                          className="px-10"
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-center">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="rounded-full"
+                          onClick={() => navigatePreview("next")}
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Image metadata */}
-                  <div className="p-4 bg-muted">
+
+                  <div className="p-4 bg-muted border-t">
                     <h4 className="font-medium text-sm truncate">
                       {previewImageInModal.name}
                     </h4>
@@ -1073,11 +1096,13 @@ function ImageCard({
     <Card className={cn("overflow-hidden", className)}>
       <CardContent className="p-0 relative h-full">
         <div className="relative h-full cursor-pointer" onClick={onView}>
-          <img
-            src={image.url || image.preview}
-            alt="Upload"
-            className="w-full h-full object-cover"
-          />
+          <picture>
+            <img
+              src={image.url || image.preview}
+              alt="Upload"
+              className="w-full h-full object-cover"
+            />
+          </picture>
 
           {/* Upload Progress Overlay */}
           {image.isUploading && (

@@ -1,0 +1,5 @@
+.responsive-img-parent {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9; /* Modifier selon le ratio désiré */
+}

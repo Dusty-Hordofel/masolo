@@ -36,7 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import {
   DropdownMenu,
@@ -133,10 +133,10 @@ export function MultiImageUploader2() {
     new Set()
   );
   const [productSearchQuery, setProductSearchQuery] = useState("");
-  const [urlInput, setUrlInput] = useState("");
+  // const [urlInput, setUrlInput] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const modalFileInputRef = useRef<HTMLInputElement>(null);
+  // const modalFileInputRef = useRef<HTMLInputElement>(null);
   const imageListRef = useRef<HTMLDivElement>(null);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -247,20 +247,20 @@ export function MultiImageUploader2() {
     }
   };
 
-  const addImageFromUrl = async () => {
-    if (!urlInput.trim()) return;
+  // const addImageFromUrl = async () => {
+  //   if (!urlInput.trim()) return;
 
-    try {
-      const response = await fetch(urlInput);
-      const blob = await response.blob();
-      const file = new File([blob], "image-from-url.jpg", { type: blob.type });
+  //   try {
+  //     const response = await fetch(urlInput);
+  //     const blob = await response.blob();
+  //     const file = new File([blob], "image-from-url.jpg", { type: blob.type });
 
-      handleFiles([file]);
-      setUrlInput("");
-    } catch (error) {
-      console.error("Error adding image from URL:", error);
-    }
-  };
+  //     handleFiles([file]);
+  //     setUrlInput("");
+  //   } catch (error) {
+  //     console.error("Error adding image from URL:", error);
+  //   }
+  // };
 
   const deleteImage = async (imageId: string) => {
     const image = images.find((img) => img.id === imageId);

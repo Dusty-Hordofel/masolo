@@ -1,4 +1,5 @@
 import { MultiImageUploader } from "./components/multi-image-uploader1";
+import { MultiImageUploader2 } from "./components/multi-image-uploader2";
 
 export default function Home() {
   return (
@@ -7,6 +8,7 @@ export default function Home() {
         Gestionnaire d&apos;Images Avancé
       </h1>
       <MultiImageUploader />
+      <MultiImageUploader2 />
     </main>
   );
 }
