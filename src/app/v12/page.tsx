@@ -1,4 +1,4 @@
-import { MultiImageUploader } from "./components/multi-image-uploader";
+import { MultiImageUploader } from "./components/multi-image-uploader1";
 
 export default function Home() {
   return (

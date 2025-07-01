@@ -110,7 +110,7 @@ const PRODUCTS = [
   "LED High Tops",
 ];
 
-export function MultiImageUploader() {
+export function MultiImageUploader2() {
   const [images, setImages] = useState<ImageData[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [showAllImages, setShowAllImages] = useState(false);
@@ -385,26 +385,6 @@ export function MultiImageUploader() {
   const hasMoreImages = images.length > 5;
 
   // Navigation for preview in modal
-  // const navigatePreview = (direction: "next" | "prev") => {
-  //   if (!previewImageInModal) return;
-
-  //   const currentIndex = filteredAndSortedImages.findIndex(
-  //     (img) => img.id === previewImageInModal.id
-  //   );
-  //   if (currentIndex === -1) return;
-
-  //   let newIndex;
-  //   if (direction === "next") {
-  //     newIndex = (currentIndex + 1) % filteredAndSortedImages.length;
-  //   } else {
-  //     newIndex =
-  //       (currentIndex - 1 + filteredAndSortedImages.length) %
-  //       filteredAndSortedImages.length;
-  //   }
-
-  //   setPreviewImageInModal(filteredAndSortedImages[newIndex]);
-  // };
-
   const navigatePreview = (direction: "next" | "prev") => {
     if (!previewImageInModal) return;
 
@@ -415,17 +395,37 @@ export function MultiImageUploader() {
 
     let newIndex;
     if (direction === "next") {
-      // Empêcher d'aller au-delà de la dernière image
-      if (currentIndex >= filteredAndSortedImages.length - 1) return;
-      newIndex = currentIndex + 1;
+      newIndex = (currentIndex + 1) % filteredAndSortedImages.length;
     } else {
-      // Empêcher d'aller avant la première image
-      if (currentIndex <= 0) return;
-      newIndex = currentIndex - 1;
+      newIndex =
+        (currentIndex - 1 + filteredAndSortedImages.length) %
+        filteredAndSortedImages.length;
     }
 
     setPreviewImageInModal(filteredAndSortedImages[newIndex]);
   };
+
+  // const navigatePreview = (direction: "next" | "prev") => {
+  //   if (!previewImageInModal) return;
+
+  //   const currentIndex = filteredAndSortedImages.findIndex(
+  //     (img) => img.id === previewImageInModal.id
+  //   );
+  //   if (currentIndex === -1) return;
+
+  //   let newIndex;
+  //   if (direction === "next") {
+  //     // Empêcher d'aller au-delà de la dernière image
+  //     if (currentIndex >= filteredAndSortedImages.length - 1) return;
+  //     newIndex = currentIndex + 1;
+  //   } else {
+  //     // Empêcher d'aller avant la première image
+  //     if (currentIndex <= 0) return;
+  //     newIndex = currentIndex - 1;
+  //   }
+
+  //   setPreviewImageInModal(filteredAndSortedImages[newIndex]);
+  // };
 
   // Scroll to active image
   useEffect(() => {
