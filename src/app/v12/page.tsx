@@ -8,9 +8,11 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-6">
         Gestionnaire d&apos;Images Avancé
       </h1>
-      {/* <MultiImageUploader />
-      <MultiImageUploader2 /> */}
-      <MultiImageUploader3 />
+      <div className="space-y-10">
+        <MultiImageUploader />
+        <MultiImageUploader2 />
+        <MultiImageUploader3 />
+      </div>
     </main>
   );
 }

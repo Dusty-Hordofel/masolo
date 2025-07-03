@@ -6,7 +6,6 @@ import { useState, useRef, useEffect } from "react";
 import {
   Upload,
   X,
-  Plus,
   ArrowLeft,
   Search,
   Grid3X3,
@@ -19,7 +18,6 @@ import {
   CircleX,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
@@ -51,26 +49,11 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-
-interface ImageData {
-  id: string;
-  file: File;
-  preview: string;
-  url?: string;
-  publicId?: string;
-  isUploaded: boolean;
-  isUploading: boolean;
-  progress: number;
-  isSelected: boolean;
-  name: string;
-  size: number;
-  uploadDate: Date;
-  type: string;
-  usedIn: string[];
-  products: string[];
-  width?: number;
-  height?: number;
-}
+import MediaLibraryItem from "./media-library-item";
+import { ImageData } from "@/@types";
+import AddImageCard from "./add-image-card";
+import ImageCard from "./image-card";
+import { MediaUploader } from "./media-uploader";
 
 type ViewMode = "grid" | "list";
 type SortOption =
@@ -136,8 +119,12 @@ export function MultiImageUploader3() {
   const [urlInput, setUrlInput] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const ignoreNextClick = useRef<boolean>(false);
   const modalFileInputRef = useRef<HTMLInputElement>(null);
   const imageListRef = useRef<HTMLDivElement>(null);
+
+  // const [dropdownOpen, setDropdownOpen] = useState(false);
+  // const [shouldOpenInput, setShouldOpenInput] = useState(false);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -157,6 +144,18 @@ export function MultiImageUploader3() {
       handleFiles(Array.from(e.dataTransfer.files));
     }
   };
+
+  // const handleDropzoneClick = () => {
+  //   // Si le dropdown vient juste d'être fermé, on n'ouvre pas l'input
+  //   if (dropdownOpen) {
+  //     setDropdownOpen(false);
+  //     setTimeout(() => setShouldOpenInput(false), 0); // reset pour le prochain clic
+  //     return;
+  //   }
+  //   // Sinon, on ouvre l'input
+  //   setShouldOpenInput(true);
+  //   // ... ouvrir l'input de fichiers ici
+  // };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -383,6 +382,7 @@ export function MultiImageUploader3() {
   const visibleImages = showExpanded ? images : images.slice(0, 6);
   const remainingCount = Math.max(0, images.length - 5);
   const hasMoreImages = images.length > 5;
+  const hasImages = images.length > 0;
 
   // Navigation for preview in modal
   const navigatePreview = (direction: "next" | "prev") => {
@@ -498,38 +498,22 @@ export function MultiImageUploader3() {
 
       {/* Images Grid */}
       {images.length === 0 ? (
-        <div
-          className={cn(
-            "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
-            isDragging
-              ? "border-primary bg-primary/5"
-              : "border-muted-foreground/25 hover:border-primary/50"
-          )}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <div className="flex flex-col items-center justify-center space-y-3">
-            <div className="rounded-full bg-muted p-4">
-              <Upload className="h-8 w-8" />
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-1">Ajouter des images</h3>
-              <p className="text-sm text-muted-foreground mb-1">
-                Glissez-déposez ou cliquez pour sélectionner
-              </p>
-              <p className="text-xs text-muted-foreground">
-                PNG, JPG, GIF (max 10MB chacune)
-              </p>
-            </div>
-          </div>
-        </div>
+        <MediaUploader
+          isDragging={isDragging}
+          handleDragOver={handleDragOver}
+          handleDragLeave={handleDragLeave}
+          handleDrop={handleDrop}
+          fileInputRef={fileInputRef}
+          setShowAllImages={setShowAllImages}
+          showAllImages={showAllImages}
+          hasImages={hasImages}
+          ignoreNextClick={ignoreNextClick}
+        />
       ) : (
         <div className="grid grid-cols-6 gap-2 h-96">
           {/* First image - large */}
           {images[0] && (
-            <div className="col-span-3 row-span-2 relative">
+            <div className="col-span-2 row-span-2 aspect-square">
               <ImageCard
                 image={images[0]}
                 isSelected={selectedImages.has(images[0].id)}
@@ -542,81 +526,70 @@ export function MultiImageUploader3() {
           )}
 
           {/* Other images - uniform size */}
-          <div className="col-span-3 grid grid-cols-3 gap-2">
-            {!showExpanded
-              ? visibleImages.slice(1, 7).map((image) => (
-                  <div key={image.id} className="aspect-square">
-                    <ImageCard
-                      image={image}
-                      isSelected={selectedImages.has(image.id)}
-                      onToggleSelection={() => toggleImageSelection(image.id)}
-                      onDelete={() => deleteImage(image.id)}
-                      onView={() => setSelectedImage(image)}
-                      className="h-full"
-                    />
-                  </div>
-                ))
-              : visibleImages.map((image) => (
-                  <div key={image.id} className="aspect-square">
-                    <ImageCard
-                      image={image}
-                      isSelected={selectedImages.has(image.id)}
-                      onToggleSelection={() => toggleImageSelection(image.id)}
-                      onDelete={() => deleteImage(image.id)}
-                      onView={() => setSelectedImage(image)}
-                      className="h-full"
-                    />
-                  </div>
-                ))}
-            {/* More images indicator or Add card */}
-            {
-              !showExpanded && hasMoreImages && images.length > 6 && (
+
+          {!showExpanded
+            ? visibleImages.slice(1, 7).map((image) => (
                 <div
-                  className="aspect-square relative cursor-pointer group"
-                  onClick={() => setShowExpanded(true)}
+                  key={image.id}
+                  className="col-span-1 row-span-1 aspect-square"
                 >
-                  <div className="w-full h-full bg-muted rounded-lg overflow-hidden relative">
-                    {images[7] && (
-                      <picture>
-                        <img
-                          src={images[7].url || images[7].preview}
-                          alt="More images"
-                          className="w-full h-full object-cover"
-                        />
-                      </picture>
-                    )}
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                      <div className="text-white text-center">
-                        {/* <Plus className="h-6 w-6 mx-auto mb-1" /> */}
-                        <p className="text-sm font-medium">+{remainingCount}</p>
-                        <p className="text-xs">images</p>
-                      </div>
-                    </div>
+                  <ImageCard
+                    image={image}
+                    isSelected={selectedImages.has(image.id)}
+                    onToggleSelection={() => toggleImageSelection(image.id)}
+                    onDelete={() => deleteImage(image.id)}
+                    onView={() => setSelectedImage(image)}
+                    className="h-full"
+                  />
+                </div>
+              ))
+            : visibleImages.map((image) => (
+                <div
+                  key={image.id}
+                  className="col-span-1 row-span-1 aspect-square"
+                >
+                  <ImageCard
+                    image={image}
+                    isSelected={selectedImages.has(image.id)}
+                    onToggleSelection={() => toggleImageSelection(image.id)}
+                    onDelete={() => deleteImage(image.id)}
+                    onView={() => setSelectedImage(image)}
+                    className="h-full"
+                  />
+                </div>
+              ))}
+          {/* More images indicator or Add card */}
+          {!showExpanded && hasMoreImages && images.length > 6 && (
+            <div
+              className="aspect-square relative cursor-pointer group"
+              onClick={() => setShowExpanded(true)}
+            >
+              <div className="w-full h-full bg-muted rounded-lg overflow-hidden relative">
+                {images[7] && (
+                  <picture>
+                    <img
+                      src={images[7].url || images[7].preview}
+                      alt="More images"
+                      className="w-full h-full object-cover"
+                    />
+                  </picture>
+                )}
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                  <div className="text-white text-center">
+                    {/* <Plus className="h-6 w-6 mx-auto mb-1" /> */}
+                    <p className="text-sm font-medium">+{remainingCount}</p>
+                    <p className="text-xs">images</p>
                   </div>
                 </div>
-              )
-              // )
-              // ) : (
-              //   <div className="aspect-square">
-              //     <AddImageCard
-              //       onFileSelect={() => fileInputRef.current?.click()}
-              //       onOpenModal={() => setShowAllImages(true)}
-              //       onDragOver={handleDragOver}
-              //       onDragLeave={handleDragLeave}
-              //       onDrop={handleDrop}
-              //       isDragging={isDragging}
-              //     />
-              //   </div>
-              // )
-            }
-            <div className="aspect-square">
-              <AddImageCard onOpenModal={() => setShowAllImages(true)} />
+              </div>
             </div>
+          )}
+          <div className="col-span-1 row-span-1 aspect-square">
+            <AddImageCard onOpenModal={() => setShowAllImages(true)} />
           </div>
         </div>
       )}
 
-      {/* Hidden file input */}
       <input
         ref={fileInputRef}
         type="file"
@@ -1107,194 +1080,5 @@ export function MultiImageUploader3() {
         </DialogContent>
       </Dialog>
     </div>
-  );
-}
-
-interface ImageCardProps {
-  image: ImageData;
-  isSelected: boolean;
-  onToggleSelection: () => void;
-  onDelete: () => void;
-  onView: () => void;
-  className?: string;
-}
-
-function ImageCard({
-  image,
-  isSelected,
-  onToggleSelection,
-  onDelete,
-  onView,
-  className,
-}: ImageCardProps) {
-  return (
-    <Card className={cn("overflow-hidden", className)}>
-      <CardContent className="p-0 relative h-full">
-        <div className="relative h-full cursor-pointer" onClick={onView}>
-          <picture>
-            <img
-              src={image.url || image.preview}
-              alt="Upload"
-              className="w-full h-full object-cover"
-            />
-          </picture>
-
-          {/* Upload Progress Overlay */}
-          {image.isUploading && (
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <div className="bg-white rounded-lg p-3 min-w-[120px]">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Upload...</span>
-                    <span>{Math.round(image.progress)}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-primary h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${image.progress}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Controls */}
-          {image.isUploaded && (
-            <>
-              {/* Checkbox */}
-              <div
-                className="absolute top-2 right-2"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Checkbox
-                  checked={isSelected}
-                  onCheckedChange={onToggleSelection}
-                  className="h-5 w-5 bg-white border-2 shadow-sm"
-                />
-              </div>
-
-              {/* Delete Button */}
-              <div
-                className="absolute top-2 left-2"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  className="h-7 w-7 rounded-full shadow-sm"
-                  onClick={onDelete}
-                >
-                  <X className="h-3 w-3" />
-                </Button>
-              </div>
-            </>
-          )}
-
-          {/* Selection Overlay */}
-          {isSelected && (
-            <div className="absolute inset-0 bg-primary/20 border-2 border-primary rounded-lg pointer-events-none" />
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-interface MediaLibraryItemProps {
-  image: ImageData;
-  isSelected: boolean;
-  isActive: boolean;
-  onToggleSelection: () => void;
-  onDelete: () => void;
-  onView: () => void;
-}
-
-function MediaLibraryItem({
-  image,
-  isSelected,
-  isActive,
-  onToggleSelection,
-  onDelete,
-  onView,
-}: MediaLibraryItemProps) {
-  return (
-    <div
-      className={cn(
-        "relative rounded-lg overflow-hidden group transition-all duration-200",
-        isActive ? "ring-2 ring-primary scale-105" : "hover:scale-102"
-      )}
-      data-image-id={image.id}
-    >
-      <picture>
-        <img
-          src={image.url || image.preview}
-          alt={image.name}
-          className="w-full aspect-square object-cover"
-        />
-      </picture>
-
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200" />
-
-      {/* Controls */}
-      <div
-        className="absolute top-2 right-2"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Checkbox
-          checked={isSelected}
-          onCheckedChange={onToggleSelection}
-          className="h-5 w-5 bg-white border-2 shadow-sm"
-        />
-      </div>
-
-      <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        <div className="flex gap-1">
-          <Button
-            variant={isActive ? "default" : "secondary"}
-            size="icon"
-            className="h-8 w-8 bg-black/70 hover:bg-black/90"
-            onClick={onView}
-          >
-            <Eye className="h-4 w-4 text-white" />
-          </Button>
-          <Button
-            variant="destructive"
-            size="icon"
-            className="h-8 w-8"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete();
-            }}
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-interface AddImageCardProps {
-  onOpenModal: () => void;
-}
-
-function AddImageCard({ onOpenModal }: AddImageCardProps) {
-  return (
-    <Card className="overflow-hidden">
-      <CardContent className="p-0 relative h-full">
-        <div
-          className={cn(
-            "aspect-square flex flex-col items-center justify-center cursor-pointer transition-colors border-2 border-dashed  hover:bg-gray-200/65 bg-gray-200/30 "
-          )}
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenModal();
-          }}
-        >
-          <Plus className="h-6 w-6 mx-auto mb-1" />
-        </div>
-      </CardContent>
-    </Card>
   );
 }

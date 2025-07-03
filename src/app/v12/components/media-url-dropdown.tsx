@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, MutableRefObject } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -11,12 +11,20 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus } from "lucide-react";
 
-export default function MediaUrlDropdown() {
+type MediaUrlDropdownProps = {
+  ignoreNextClick: MutableRefObject<boolean>;
+};
+export default function MediaUrlDropdown({
+  ignoreNextClick,
+}: MediaUrlDropdownProps) {
   const [mediaUrl, setMediaUrl] = useState("");
   const [isAddMediaUrlDropdownOpen, setIsAddMediaUrlDropdownOpen] =
     useState(false);
+  console.log(
+    "🚀 ~ MediaUrlDropdown ~ isAddMediaUrlDropdownOpen:",
+    isAddMediaUrlDropdownOpen
+  );
 
   const isValidMediaUrl = (urlString: string) => {
     if (!urlString.trim()) return false;
@@ -41,10 +49,19 @@ export default function MediaUrlDropdown() {
     setMediaUrl(e.target.value);
   };
 
+  const handleOpenChange = (open: boolean) => {
+    // Si on ferme le popover, on ignore le clic suivant
+    if (!open) {
+      ignoreNextClick.current = true;
+    }
+    setIsAddMediaUrlDropdownOpen(open);
+  };
+
   return (
     <Popover
       open={isAddMediaUrlDropdownOpen}
-      onOpenChange={setIsAddMediaUrlDropdownOpen}
+      onOpenChange={handleOpenChange}
+      // onOpenChange={setIsAddMediaUrlDropdownOpen}
     >
       <PopoverTrigger asChild>
         <Button
@@ -54,7 +71,7 @@ export default function MediaUrlDropdown() {
             e.stopPropagation();
           }}
         >
-          Ajouter à partir d'une URL
+          Ajouter à partir d&apos;une URL
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -65,14 +82,14 @@ export default function MediaUrlDropdown() {
       >
         <div className="space-y-3 flex flex-col justify-start items-start">
           <p className="text-sm font-bold text-start">
-            Ajouter un support multimédia à partir d'une URL
+            Ajouter un support multimédia à partir d&apos;une URL
           </p>
           <div className="w-full space-y-1">
             <Label
               htmlFor="media-url"
               className="text-sm font-medium text-start block"
             >
-              URL d'image, YouTube ou Vimeo
+              URL d&apos;image, YouTube ou Vimeo
             </Label>
             <Input
               id="media-url"
