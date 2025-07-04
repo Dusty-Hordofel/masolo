@@ -48,18 +48,22 @@ export function MediaUploader({
       >
         <div className="flex flex-col items-center justify-center">
           <div className="space-y-2">
-            <div className="relative ">
+            <div className="relative flex justify-center items-center">
               <p className="border w-max px-3 py-[6px] rounded-lg hover:bg-gray-100">
-                <span>Ajouter un support multimédia</span>
+                <span>Upload new</span>
               </p>
 
               {hasImages && (
-                <div className="_Activator_17fbw_1 absolute right-3 top-0">
+                <div
+                // className="_Activator_17fbw_1 absolute right-3 top-0"
+                >
                   <MediaUrlDropdown ignoreNextClick={ignoreNextClick} />
                 </div>
               )}
               {!hasImages && !showAllImages && (
-                <div className="_Activator_17fbw_1 absolute right-3 top-0">
+                <div
+                // className="_Activator_17fbw_1 absolute right-3 top-0"
+                >
                   <Button
                     variant="link"
                     onClick={(e) => {
@@ -67,7 +71,7 @@ export function MediaUploader({
                       setShowAllImages(true);
                     }}
                   >
-                    Sélectionner des images
+                    Sélect existing
                   </Button>
                 </div>
               )}

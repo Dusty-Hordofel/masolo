@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "lucide-react";
 
 type MediaUrlDropdownProps = {
   ignoreNextClick: MutableRefObject<boolean>;
@@ -71,7 +72,8 @@ export default function MediaUrlDropdown({
             e.stopPropagation();
           }}
         >
-          Ajouter à partir d&apos;une URL
+          <span className="hidden sm:inline-block">Add media from URL</span>
+          <Link className="sm:hidden" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -81,9 +83,7 @@ export default function MediaUrlDropdown({
         onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="space-y-3 flex flex-col justify-start items-start">
-          <p className="text-sm font-bold text-start">
-            Ajouter un support multimédia à partir d&apos;une URL
-          </p>
+          <p className="text-sm font-bold text-start">Add from URL</p>
           <div className="w-full space-y-1">
             <Label
               htmlFor="media-url"
@@ -115,7 +115,7 @@ export default function MediaUrlDropdown({
             variant="secondary"
             className="w-max m-O"
           >
-            Ajouter le fichier
+            Add file
           </Button>
         </div>
       </PopoverContent>

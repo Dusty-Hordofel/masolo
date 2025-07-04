@@ -4,7 +4,7 @@ import type React from "react";
 
 import { useEffect } from "react";
 import {
-  // Upload,
+  Upload,
   X,
   ArrowLeft,
   Search,
@@ -34,7 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import {
   DropdownMenu,
@@ -100,7 +100,7 @@ export function MultiImageUploader3() {
     setMaxSize,
     usageFilter,
     setUsageFilter,
-    // filteredAndSortedImages
+    filteredAndSortedImages,
   } = useImageFilters();
 
   const {
@@ -128,16 +128,16 @@ export function MultiImageUploader3() {
     // setImages,
     selectedImages,
     // setSelectedImages,
-    // addImageFromUrl,
+    addImageFromUrl,
     handleFileChange,
     handleFiles,
     // uploadImage,
     deleteImage,
     deleteSelectedImages,
-    // urlInput,
-    // setUrlInput,
+    urlInput,
+    setUrlInput,
     fileInputRef,
-    // modalFileInputRef,
+    modalFileInputRef,
   } = useImageManager();
 
   const { isDragging, handleDragOver, handleDragLeave, handleDrop } =
@@ -155,53 +155,104 @@ export function MultiImageUploader3() {
     });
   };
 
+  // const filteredAndSortedImages = (
+  //   images: ImageData[],
+  //   selectedProducts: Set<string>
+  // ) =>
+  //   images
+  //     .filter((image) => {
+  //       if (
+  //         searchQuery &&
+  //         !image.name.toLowerCase().includes(searchQuery.toLowerCase())
+  //       )
+  //         return false;
+  //       if (
+  //         fileTypeFilter !== "all" &&
+  //         fileTypeFilter === "images" &&
+  //         !image.type.startsWith("image/")
+  //       )
+  //         return false;
+  //       if (minSize && image.size < Number.parseFloat(minSize) * 1024 * 1024)
+  //         return false;
+  //       if (maxSize && image.size > Number.parseFloat(maxSize) * 1024 * 1024)
+  //         return false;
+  //       if (usageFilter !== "all" && !image.usedIn.includes(usageFilter))
+  //         return false;
+  //       if (
+  //         selectedProducts.size > 0 &&
+  //         !Array.from(selectedProducts).some((product) =>
+  //           image.products.includes(product)
+  //         )
+  //       )
+  //         return false;
+  //       return true;
+  //     })
+  //     .sort((a, b) => {
+  //       switch (sortBy) {
+  //         case "date-desc":
+  //           return b.uploadDate.getTime() - a.uploadDate.getTime();
+  //         case "date-asc":
+  //           return a.uploadDate.getTime() - b.uploadDate.getTime();
+  //         case "name-asc":
+  //           return a.name.localeCompare(b.name);
+  //         case "name-desc":
+  //           return b.name.localeCompare(a.name);
+  //         case "size-asc":
+  //           return a.size - b.size;
+  //         case "size-desc":
+  //           return b.size - a.size;
+  //         default:
+  //           return 0;
+  //       }
+  //     });
+
   // Filter and sort images
-  const filteredAndSortedImages = images
-    .filter((image) => {
-      if (
-        searchQuery &&
-        !image.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-        return false;
-      if (
-        fileTypeFilter !== "all" &&
-        fileTypeFilter === "images" &&
-        !image.type.startsWith("image/")
-      )
-        return false;
-      if (minSize && image.size < Number.parseFloat(minSize) * 1024 * 1024)
-        return false;
-      if (maxSize && image.size > Number.parseFloat(maxSize) * 1024 * 1024)
-        return false;
-      if (usageFilter !== "all" && !image.usedIn.includes(usageFilter))
-        return false;
-      if (
-        selectedProducts.size > 0 &&
-        !Array.from(selectedProducts).some((product) =>
-          image.products.includes(product)
-        )
-      )
-        return false;
-      return true;
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case "date-desc":
-          return b.uploadDate.getTime() - a.uploadDate.getTime();
-        case "date-asc":
-          return a.uploadDate.getTime() - b.uploadDate.getTime();
-        case "name-asc":
-          return a.name.localeCompare(b.name);
-        case "name-desc":
-          return b.name.localeCompare(a.name);
-        case "size-asc":
-          return a.size - b.size;
-        case "size-desc":
-          return b.size - a.size;
-        default:
-          return 0;
-      }
-    });
+  // const filteredAndSortedImages = images
+  //   .filter((image) => {
+  //     if (
+  //       searchQuery &&
+  //       !image.name.toLowerCase().includes(searchQuery.toLowerCase())
+  //     )
+  //       return false;
+  //     if (
+  //       fileTypeFilter !== "all" &&
+  //       fileTypeFilter === "images" &&
+  //       !image.type.startsWith("image/")
+  //     )
+  //       return false;
+  //     if (minSize && image.size < Number.parseFloat(minSize) * 1024 * 1024)
+  //       return false;
+  //     if (maxSize && image.size > Number.parseFloat(maxSize) * 1024 * 1024)
+  //       return false;
+  //     if (usageFilter !== "all" && !image.usedIn.includes(usageFilter))
+  //       return false;
+  //     if (
+  //       selectedProducts.size > 0 &&
+  //       !Array.from(selectedProducts).some((product) =>
+  //         image.products.includes(product)
+  //       )
+  //     )
+  //       return false;
+  //     return true;
+  //   })
+  //   .sort((a, b) => {
+  //     switch (sortBy) {
+  //       case "date-desc":
+  //         return b.uploadDate.getTime() - a.uploadDate.getTime();
+  //       case "date-asc":
+  //         return a.uploadDate.getTime() - b.uploadDate.getTime();
+  //       case "name-asc":
+  //         return a.name.localeCompare(b.name);
+  //       case "name-desc":
+  //         return b.name.localeCompare(a.name);
+  //       case "size-asc":
+  //         return a.size - b.size;
+  //       case "size-desc":
+  //         return b.size - a.size;
+  //       default:
+  //         return 0;
+  //     }
+  //   });
 
   const visibleImages = showExpanded ? images : images.slice(0, 6);
   const remainingCount = Math.max(0, images.length - 5);
@@ -212,9 +263,10 @@ export function MultiImageUploader3() {
   const navigatePreview = (direction: "next" | "prev") => {
     if (!previewImageInModal) return;
 
-    const currentIndex = filteredAndSortedImages.findIndex(
-      (img) => img.id === previewImageInModal.id
-    );
+    const currentIndex = filteredAndSortedImages(
+      images,
+      selectedProducts
+    ).findIndex((img) => img.id === previewImageInModal.id);
     if (currentIndex === -1) return;
 
     let newIndex;
@@ -226,7 +278,9 @@ export function MultiImageUploader3() {
         filteredAndSortedImages.length;
     }
 
-    setPreviewImageInModal(filteredAndSortedImages[newIndex]);
+    setPreviewImageInModal(
+      filteredAndSortedImages(images, selectedProducts)[newIndex]
+    );
   };
 
   // Scroll to active image
@@ -239,7 +293,7 @@ export function MultiImageUploader3() {
         activeElement.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
-  }, [previewImageInModal, imageListRef]);
+  }, [previewImageInModal]);
 
   // Handle preview image with animation
   const handlePreviewImage = (image: ImageData) => {
@@ -334,8 +388,7 @@ export function MultiImageUploader3() {
           ignoreNextClick={ignoreNextClick}
         />
       ) : (
-        // gap-2 h-96
-        <div className="grid grid-cols-3 gap-1 sm:grid-cols-6 ">
+        <div className="grid grid-cols-6 gap-2 h-96">
           {/* First image - large */}
           {images[0] && (
             <div className="col-span-2 row-span-2 aspect-square">
@@ -444,7 +497,7 @@ export function MultiImageUploader3() {
             {/* Search and Controls */}
 
             <div className="space-y-4  px-5 py-3">
-              <div className="flex justify-between items-center space-x-20">
+              <div className="flex justify-between items-center ">
                 <div className="relative max-w-[517px] w-full">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -458,7 +511,7 @@ export function MultiImageUploader3() {
                 {/* View Mode Dropdown */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon" className="p-2">
+                    <Button variant="outline" size="icon">
                       {viewMode === "grid" ? (
                         <Grid3X3 className="h-4 w-4" />
                       ) : (
@@ -493,12 +546,7 @@ export function MultiImageUploader3() {
               </div>
 
               {/* Filters and Sort */}
-              <div
-                className="
-                   flex  overflow-x-auto gap-4
-                   md:grid md:grid-cols-5 md:overflow-x-visible
-                 "
-              >
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <Select
                   value={sortBy}
                   onValueChange={(value: SortOption) => setSortBy(value)}
@@ -684,7 +732,7 @@ export function MultiImageUploader3() {
                 ref={imageListRef}
               >
                 {/* Upload section */}
-                {/* <div className="border-b">
+                <div className="border-b">
                   <Tabs defaultValue="upload" className="w-full">
                     <TabsList>
                       <TabsTrigger value="upload">
@@ -720,88 +768,83 @@ export function MultiImageUploader3() {
                       </div>
                     </TabsContent>
                   </Tabs>
-                </div> */}
-                <MediaUploader
-                  isDragging={isDragging}
-                  handleDragOver={handleDragOver}
-                  handleDragLeave={handleDragLeave}
-                  handleDrop={handleDrop}
-                  fileInputRef={fileInputRef}
-                  setShowAllImages={setShowAllImages}
-                  showAllImages={showAllImages}
-                  hasImages={hasImages}
-                  ignoreNextClick={ignoreNextClick}
-                />
+                </div>
                 {viewMode === "grid" ? (
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {filteredAndSortedImages.map((image) => (
-                      <MediaLibraryItem
-                        key={image.id}
-                        image={image}
-                        isSelected={selectedImages.has(image.id)}
-                        isActive={previewImageInModal?.id === image.id}
-                        onToggleSelection={() => toggleImageSelection(image.id)}
-                        onDelete={() => deleteImage(image.id)}
-                        onView={() => handlePreviewImage(image)}
-                      />
-                    ))}
+                    {filteredAndSortedImages(images, selectedProducts).map(
+                      (image) => (
+                        <MediaLibraryItem
+                          key={image.id}
+                          image={image}
+                          isSelected={selectedImages.has(image.id)}
+                          isActive={previewImageInModal?.id === image.id}
+                          onToggleSelection={() =>
+                            toggleImageSelection(image.id)
+                          }
+                          onDelete={() => deleteImage(image.id)}
+                          onView={() => handlePreviewImage(image)}
+                        />
+                      )
+                    )}
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {filteredAndSortedImages.map((image) => (
-                      <div
-                        key={image.id}
-                        data-image-id={image.id}
-                        className={cn(
-                          "flex items-center gap-4 p-2 border rounded-lg transition-colors",
-                          previewImageInModal?.id === image.id
-                            ? "bg-primary/10 border-primary"
-                            : "hover:bg-muted"
-                        )}
-                      >
-                        <picture>
-                          <img
-                            src={image.url || image.preview}
-                            alt={image.name}
-                            className="w-12 h-12 object-cover rounded"
-                          />
-                        </picture>
-                        <div className="flex-1">
-                          <p className="font-medium">{image.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {(image.size / 1024 / 1024).toFixed(2)} MB
-                          </p>
+                    {filteredAndSortedImages(images, selectedProducts).map(
+                      (image) => (
+                        <div
+                          key={image.id}
+                          data-image-id={image.id}
+                          className={cn(
+                            "flex items-center gap-4 p-2 border rounded-lg transition-colors",
+                            previewImageInModal?.id === image.id
+                              ? "bg-primary/10 border-primary"
+                              : "hover:bg-muted"
+                          )}
+                        >
+                          <picture>
+                            <img
+                              src={image.url || image.preview}
+                              alt={image.name}
+                              className="w-12 h-12 object-cover rounded"
+                            />
+                          </picture>
+                          <div className="flex-1">
+                            <p className="font-medium">{image.name}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {(image.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Checkbox
+                              checked={selectedImages.has(image.id)}
+                              onCheckedChange={() =>
+                                toggleImageSelection(image.id)
+                              }
+                            />
+                            <Button
+                              variant={
+                                previewImageInModal?.id === image.id
+                                  ? "default"
+                                  : "outline"
+                              }
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => handlePreviewImage(image)}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => deleteImage(image.id)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex gap-2">
-                          <Checkbox
-                            checked={selectedImages.has(image.id)}
-                            onCheckedChange={() =>
-                              toggleImageSelection(image.id)
-                            }
-                          />
-                          <Button
-                            variant={
-                              previewImageInModal?.id === image.id
-                                ? "default"
-                                : "outline"
-                            }
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => handlePreviewImage(image)}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => deleteImage(image.id)}
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
+                      )
+                    )}
                   </div>
                 )}
               </div>
