@@ -1,6 +1,7 @@
 import { MultiImageUploader } from "./components/multi-image-uploader1";
 import { MultiImageUploader2 } from "./components/multi-image-uploader2";
 import { MultiImageUploader3 } from "./components/multi-image-uploader3";
+import { MultiImageUploader4 } from "./components/multi-image-uploader4";
 
 export default function Home() {
   return (
@@ -9,9 +10,9 @@ export default function Home() {
         Gestionnaire d&apos;Images Avancé
       </h1>
       <div className="space-y-10">
-        <MultiImageUploader />
-        <MultiImageUploader2 />
-        <MultiImageUploader3 />
+        {/* <MultiImageUploader /> */}
+        {/* <MultiImageUploader2 /> */}
+        <MultiImageUploader4 />
       </div>
     </main>
   );

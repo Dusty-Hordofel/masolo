@@ -3,13 +3,6 @@ import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 export const useImageManager = () => {
   const [images, setImages] = useState<ImageData[]>([]);
-
-  // setSelectedImages: Dispatch<SetStateAction<Set<string>>>
-  // const selectedImages: Set<string
-  // const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
-
-  //   const [images, setImages] = useState<ImageData[]>([]);
-  // const [isDragging, setIsDragging] = useState(false);
   const [urlInput, setUrlInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const modalFileInputRef = useRef<HTMLInputElement>(null);
