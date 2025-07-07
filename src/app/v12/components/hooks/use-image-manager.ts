@@ -1,9 +1,12 @@
 import { ImageData } from "@/@types";
-import { useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 export const useImageManager = () => {
   const [images, setImages] = useState<ImageData[]>([]);
-  const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
+
+  // setSelectedImages: Dispatch<SetStateAction<Set<string>>>
+  // const selectedImages: Set<string
+  // const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
 
   //   const [images, setImages] = useState<ImageData[]>([]);
   // const [isDragging, setIsDragging] = useState(false);
@@ -111,7 +114,10 @@ export const useImageManager = () => {
     }
   };
 
-  const deleteImage = async (imageId: string) => {
+  const deleteImage = async (
+    imageId: string,
+    setSelectedImages: Dispatch<SetStateAction<Set<string>>>
+  ) => {
     const image = images.find((img) => img.id === imageId);
     if (!image) return;
 
@@ -135,7 +141,10 @@ export const useImageManager = () => {
     });
   };
 
-  const deleteSelectedImages = async () => {
+  const deleteSelectedImages = async (
+    selectedImages: Set<string>,
+    setSelectedImages: Dispatch<SetStateAction<Set<string>>>
+  ) => {
     const imagesToDelete = images.filter((img) => selectedImages.has(img.id));
 
     const deletePromises = imagesToDelete.map(async (image) => {
@@ -160,11 +169,7 @@ export const useImageManager = () => {
   return {
     images,
     setImages,
-    selectedImages,
-    setSelectedImages,
     addImageFromUrl,
-    // toggleImageSelection,
-    // handleDrop,
     handleFileChange,
     handleFiles,
     uploadImage,

@@ -104,6 +104,8 @@ export function MultiImageUploader3() {
   } = useImageFilters();
 
   const {
+    selectedImages,
+    setSelectedImages,
     selectedImage,
     setSelectedImage,
     previewImageInModal,
@@ -125,20 +127,13 @@ export function MultiImageUploader3() {
 
   const {
     images,
-    // setImages,
-    selectedImages,
-    // setSelectedImages,
-    // addImageFromUrl,
     handleFileChange,
     handleFiles,
-    // uploadImage,
     deleteImage,
     deleteSelectedImages,
-    // urlInput,
-    // setUrlInput,
     fileInputRef,
-    // modalFileInputRef,
   } = useImageManager();
+  console.log("🚀 ~ MultiImageUploader3 ~ selectedImages:", selectedImages);
 
   const { isDragging, handleDragOver, handleDragLeave, handleDrop } =
     useDragAndDrop(handleFiles);
@@ -311,7 +306,9 @@ export function MultiImageUploader3() {
       {selectedImages.size > 0 && (
         <div className="flex gap-2 justify-end">
           <Button
-            onClick={deleteSelectedImages}
+            onClick={() =>
+              deleteSelectedImages(selectedImages, setSelectedImages)
+            }
             variant="destructive"
             size="sm"
           >
@@ -343,7 +340,7 @@ export function MultiImageUploader3() {
                 image={images[0]}
                 isSelected={selectedImages.has(images[0].id)}
                 onToggleSelection={() => toggleImageSelection(images[0].id)}
-                onDelete={() => deleteImage(images[0].id)}
+                onDelete={() => deleteImage(images[0].id, setSelectedImages)}
                 onView={() => setSelectedImage(images[0])}
                 className="h-full"
               />
@@ -362,7 +359,7 @@ export function MultiImageUploader3() {
                     image={image}
                     isSelected={selectedImages.has(image.id)}
                     onToggleSelection={() => toggleImageSelection(image.id)}
-                    onDelete={() => deleteImage(image.id)}
+                    onDelete={() => deleteImage(image.id, setSelectedImages)}
                     onView={() => setSelectedImage(image)}
                     className="h-full"
                   />
@@ -377,7 +374,7 @@ export function MultiImageUploader3() {
                     image={image}
                     isSelected={selectedImages.has(image.id)}
                     onToggleSelection={() => toggleImageSelection(image.id)}
-                    onDelete={() => deleteImage(image.id)}
+                    onDelete={() => deleteImage(image.id, setSelectedImages)}
                     onView={() => setSelectedImage(image)}
                     className="h-full"
                   />
@@ -741,7 +738,9 @@ export function MultiImageUploader3() {
                         isSelected={selectedImages.has(image.id)}
                         isActive={previewImageInModal?.id === image.id}
                         onToggleSelection={() => toggleImageSelection(image.id)}
-                        onDelete={() => deleteImage(image.id)}
+                        onDelete={() =>
+                          deleteImage(image.id, setSelectedImages)
+                        }
                         onView={() => handlePreviewImage(image)}
                       />
                     ))}
@@ -795,7 +794,9 @@ export function MultiImageUploader3() {
                             variant="destructive"
                             size="icon"
                             className="h-8 w-8"
-                            onClick={() => deleteImage(image.id)}
+                            onClick={() =>
+                              deleteImage(image.id, setSelectedImages)
+                            }
                           >
                             <X className="h-4 w-4" />
                           </Button>

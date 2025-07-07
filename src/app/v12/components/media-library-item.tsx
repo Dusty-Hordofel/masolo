@@ -47,7 +47,7 @@ export default function MediaLibraryItem({
         <Checkbox
           checked={isSelected}
           onCheckedChange={onToggleSelection}
-          className="h-5 w-5 bg-white border-2 shadow-sm"
+          className="h-5 w-5 bg-white  shadow-sm"
         />
       </div>
 

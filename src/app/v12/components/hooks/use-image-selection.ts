@@ -18,15 +18,8 @@ export function useImageSelection() {
   );
   const [productSearchQuery, setProductSearchQuery] = useState("");
 
-  // const toggleImageSelection = (imageId: string) => {
-  //   setSelectedImages((prev) => {
-  //     const newSet = new Set(prev);
-  //     newSet.has(imageId) ? newSet.delete(imageId) : newSet.add(imageId);
-  //     return newSet;
-  //   });
-  // };
-
   const toggleImageSelection = (imageId: string) => {
+    console.log("🚀 ~ toggleImageSelection ~ imageId:", imageId);
     setSelectedImages((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(imageId)) {

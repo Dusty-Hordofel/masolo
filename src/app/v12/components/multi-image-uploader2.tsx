@@ -116,6 +116,7 @@ export function MultiImageUploader2() {
   const [showAllImages, setShowAllImages] = useState(false);
   const [showExpanded, setShowExpanded] = useState(false);
   const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
+  console.log("🚀 ~ MultiImageUploader2 ~ selectedImages:", selectedImages);
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
   const [previewImageInModal, setPreviewImageInModal] =
     useState<ImageData | null>(null);
@@ -287,6 +288,7 @@ export function MultiImageUploader2() {
   };
 
   const toggleImageSelection = (imageId: string) => {
+    console.log("🚀 ~ toggleImageSelection ~ imageId:", imageId);
     setSelectedImages((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(imageId)) {
