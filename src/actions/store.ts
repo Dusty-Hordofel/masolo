@@ -47,3 +47,7 @@ export async function getStoreByProductId(productId: string) {
     throw new Error("Failed to fetch store.");
   }
 }
+
+export const getStoreImages = async (storeId: string) => {
+  return await StoreService.getStoreImages(storeId);
+};

@@ -27,6 +27,7 @@ export const ProductSchema = z.object({
       z.object({
         publicId: z.string().url("L'ID de l'image doit être valide"),
         secureUrl: z.string().url("L'URL de l'image doit être valide"),
+        storeId: z.string(),
         alt: z.string(), // Texte alternatif optionnel
       })
     )

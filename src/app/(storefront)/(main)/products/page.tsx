@@ -1,6 +1,6 @@
 import { ProductWithImages } from "@/@types/admin/product";
-import { ProductBanner } from "@/components/storefrontc/product-banner";
-import { getStoreAndProduct } from "@/server-actions/store";
+// import { ProductBanner } from "@/components/storefrontc/product-banner";
+import { getStoreAndProduct } from "@/actions/store";
 import { Store } from "@prisma/client";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Heading } from "@/components/ui/heading";
@@ -15,7 +15,7 @@ export default async function StorefrontProductsPage() {
 
   return (
     <div>
-      <ProductBanner heading="Products">
+      {/* <ProductBanner heading="Products">
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis at
@@ -47,7 +47,7 @@ export default async function StorefrontProductsPage() {
           neque sodales ut etiam sit. Lacinia quis vel eros donec. Massa sapien
           faucibus et molestie ac feugiat sed.
         </p>
-      </ProductBanner>
+      </ProductBanner> */}
       <div className="md:grid md:grid-cols-12 md:mt-0 lg:mt-12 mt-12 md:gap-12">
         <ProductFiltersSidebar />
         {storeAndProduct.length > 0 ? (

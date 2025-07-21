@@ -26,6 +26,7 @@ const ProductEditorElements = ({
     currentProductImages,
     setUploadedImages,
   } = useProductEditor({ displayType, productStatus, initialValues });
+  console.log("🚀 ~ initialValues:", initialValues);
 
   return (
     <>
@@ -75,7 +76,8 @@ const ProductEditorElements = ({
               initialValues &&
               initialValues.images && (
                 <ProductMediaUploader
-                  productId={initialValues?.id as string}
+                  productId={initialValues.id}
+                  storeId={initialValues.storeId}
                   setUploadedImages={setUploadedImages}
                   currentProductImages={currentProductImages}
                   handleDeleteProductImage={handleDeleteProductImage}
@@ -116,7 +118,7 @@ const ProductEditorElements = ({
           {!!initialValues && (
             <Button
               type="button"
-              variant="destructiveOutline"
+              // variant="destructiveOutline"
               onClick={() => handleDeleteProduct(initialValues.id)}
             >
               Delete

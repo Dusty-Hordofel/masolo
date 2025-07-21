@@ -24,6 +24,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
   callbacks: {
     async jwt({ token, user, trigger }) {
+      // console.log("🚀 ~ jwt callback ~ token:", token);
+      // console.log("🚀 ~ jwt callback ~ user:", user);
+
       if (user) {
         const dbUser = await getUserById(user.id as string);
         const stores = await prisma.store.findMany({

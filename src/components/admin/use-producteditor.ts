@@ -12,7 +12,7 @@ import {
   deleteProduct,
   deleteProductImage,
   updateProduct,
-} from "@/server-actions/products";
+} from "@/actions/products";
 import {
   secondLevelNestedRoutes,
   singleLevelNestedRoutes,
@@ -31,20 +31,26 @@ export function useProductEditor({
   // productStatus,
   initialValues,
 }: ProductEditorSharedProps) {
+  console.log("🚀 ~ initialValues:LO", initialValues);
   const router = useRouter();
 
   // Status of uploaded & deleted images
   const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
+  console.log("🚀 ~ setUploadedImages:", setUploadedImages);
+
   const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
 
   // React Hook Form
-  const defaultValues: ProductFormData = {
-    name: initialValues?.name || "",
-    price: initialValues?.price || 0,
-    description: initialValues?.description || "",
-    inventory: initialValues?.inventory || 0,
-    // storeId: initialValues?.storeId || undefined,
-  };
+  const defaultValues: ProductFormData = useMemo(
+    () => ({
+      name: initialValues?.name || "",
+      price: initialValues?.price || 0,
+      description: initialValues?.description || "",
+      inventory: initialValues?.inventory || 0,
+      storeId: initialValues?.storeId || undefined,
+    }),
+    [initialValues]
+  );
 
   const {
     register,
@@ -62,7 +68,7 @@ export function useProductEditor({
     if (initialValues) {
       reset(defaultValues);
     }
-  }, [initialValues, reset]);
+  }, [initialValues, defaultValues, reset]);
 
   // Filter images (exclude deleted ones)
   const currentProductImages = useMemo(() => {
@@ -87,7 +93,8 @@ export function useProductEditor({
     } else {
       data = await createNewProduct(
         formValues,
-        "b4d35aad-f0bd-41d7-827f-1c8a82bef234"
+        // initialValues?.storeId as string
+        "5f4dba74-1040-4fcd-831f-920226cba241"
       );
       if (data.productId) {
         router.push(

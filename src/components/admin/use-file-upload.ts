@@ -1,19 +1,26 @@
 "use client";
 
-import { addProductImages, getNewImages } from "@/server-actions/products";
+import { addProductImages, getNewImages } from "@/actions/products";
 import { useState } from "react";
 import { Image } from "@prisma/client";
 
 export interface UploadedFile {
+  name: string;
   publicId: string; // ID public retourné par Cloudinary
   secureUrl: string; // URL du fichier téléversé
   alt: string; //
+  size: string;
+  productId: string;
+  storeId: string;
+  format: string;
+  type: string;
 }
 
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
 const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUD_SECRET as string;
 
 export const useFileUploadToCloudinary = (
+  storeId: string,
   productId: string,
   setUploadedImages: React.Dispatch<React.SetStateAction<Image[] | []>>
 ) => {
@@ -23,6 +30,7 @@ export const useFileUploadToCloudinary = (
     setIsUploading(true);
     try {
       const results: UploadedFile[] = [];
+      console.log("🚀 ~ uploadFiles ~ results:MAMA", results);
       for (const file of files) {
         const formData = new FormData();
         formData.append("file", file); //The file to be uploaded
@@ -37,10 +45,34 @@ export const useFileUploadToCloudinary = (
         const data = await response.json();
 
         if (data.secure_url && data.public_id && data.original_filename) {
+          const format =
+            (data.format || file.type.split("/")[1]).toString() || "unknown";
+
+          const getMediaType = (resourceType: string, mimeType: string) => {
+            if (resourceType === "image") return "image";
+            if (resourceType === "video") return "video";
+            if (resourceType === "raw") {
+              if (mimeType.startsWith("audio/")) return "audio";
+              if (mimeType.includes("pdf")) return "document";
+              if (mimeType.includes("zip") || mimeType.includes("rar"))
+                return "archive";
+              return "document";
+            }
+            return "unknown";
+          };
+
+          const mediaType = getMediaType(data.resource_type, file.type);
+
           results.push({
+            name: data.original_filename,
             publicId: data.public_id,
             secureUrl: data.secure_url,
             alt: data.original_filename.replace(/_/g, " "),
+            size: data.bytes?.toString() || "0",
+            format: format,
+            type: mediaType, // Convertir en string comme requis par le modèle
+            productId: productId,
+            storeId: storeId,
           });
 
           // setUploadedImages((prev) => [...prev, ...results]);
@@ -48,7 +80,7 @@ export const useFileUploadToCloudinary = (
       }
 
       // const addedProduct =
-      await addProductImages(productId, results);
+      await addProductImages(storeId, productId, results);
       // console.log(
       //   "🚀 ~ uploadFiles ~ addedProduct:ADDED-PRODUCT",
       //   addedProduct

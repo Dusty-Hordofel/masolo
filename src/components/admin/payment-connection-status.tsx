@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 // import { singleLevelNestedRoutes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { hasConnectedStripeAccount } from "@/server-actions/stripe/account";
+import { hasConnectedStripeAccount } from "@/actions/stripe/account";
 // import { hasConnectedStripeAccount } from "@/server-actions/stripe/account";
 import { AlertCircle, ChevronDown } from "lucide-react";
 import Link from "next/link";

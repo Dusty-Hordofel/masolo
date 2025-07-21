@@ -20,7 +20,7 @@ import { toast } from "@/hooks/use-toast.hook";
 import {
   getCartTest,
   // updateCartItemQuantity,
-} from "@/server-actions/add-to-cart";
+} from "@/actions/add-to-cart";
 import { CartItem } from "@/@types/cart/cart.item.interface";
 // import { CartItem } from "@prisma/client";
 

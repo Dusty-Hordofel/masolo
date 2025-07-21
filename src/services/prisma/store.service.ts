@@ -7,6 +7,18 @@ export const StoreService = {
   async createStore(storeValues: StoreSchemaFormData) {
     const user = await currentUser();
 
+    console.log("🚀 ~ createStore ~ user:", user);
+
+    // Check if user is authenticated
+    if (!user || !user.id) {
+      console.log("🚀 ~ createStore ~ user not authenticated:", { user });
+      return {
+        error: true,
+        title: "Authentication required",
+        description: "Please log in to create a store.",
+      };
+    }
+
     try {
       const existingStore = await prisma.store.findFirst({
         where: {
@@ -28,7 +40,7 @@ export const StoreService = {
           ...storeValues,
           slug: createSlug(storeValues.name),
           owner: {
-            connect: { id: user?.id },
+            connect: { id: user.id },
           },
         },
       });
@@ -151,6 +163,24 @@ export const StoreService = {
     } catch (error) {
       console.error("Error fetching store by slug:", error);
       return null;
+    }
+  },
+
+  async getStoreImages(storeId: string) {
+    try {
+      if (!storeId) throw new Error("Store ID is required.");
+
+      const images = await prisma.image.findMany({
+        where: {
+          storeId,
+        },
+      });
+      console.log("🚀 ~ getStoreImages ~ images:", images);
+
+      return images;
+    } catch (error) {
+      console.error("Error fetching  product stores:", error);
+      return [];
     }
   },
 };

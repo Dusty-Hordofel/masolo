@@ -3,7 +3,7 @@ import { CartLineItems } from "@/components/storefrontc/cart-line-items";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { currencyFormatter } from "@/lib/currency";
-import { getCart } from "@/server-actions/add-to-cart";
+import { getCart } from "@/actions/add-to-cart";
 import { ChevronRight } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";

@@ -149,11 +149,15 @@ model Product {
 
 model Image {
   id        String   @id @default(uuid())
+  name      String
   publicId  String
   secureUrl String
   alt       String
-  productId String?  @map("product_id")
-  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      String
+  format    String
+  type      String
+  productId String   @map("product_id")
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   storeId   String   @map("store_id")
   store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())

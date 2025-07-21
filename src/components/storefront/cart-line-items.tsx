@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 import { ProductImage } from "../product-image";
 // import { CartItem } from "@/@types/cart/cart.item.interface";
 import { routes } from "@/app/data/routes";
-import { getCartTest } from "@/server-actions/add-to-cart";
+import { getCartTest } from "@/actions/add-to-cart";
 import EditCartLineItem from "./edit-cart-line-item";
 import { CartItem } from "@prisma/client";
 

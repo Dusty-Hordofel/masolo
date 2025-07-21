@@ -7,11 +7,13 @@ import { Image } from "@prisma/client";
 import { Button } from "../ui/button";
 
 const ProductMediaUploader = ({
+  storeId,
   productId,
   setUploadedImages,
   currentProductImages,
   handleDeleteProductImage,
 }: {
+  storeId: string;
   productId: string;
   currentProductImages: Image[];
   setUploadedImages: React.Dispatch<React.SetStateAction<Image[]>>;
@@ -19,6 +21,7 @@ const ProductMediaUploader = ({
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { isUploading, uploadFiles } = useFileUploadToCloudinary(
+    storeId,
     productId,
     setUploadedImages
   );

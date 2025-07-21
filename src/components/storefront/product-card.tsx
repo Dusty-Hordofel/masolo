@@ -2,7 +2,7 @@
 
 import { StoreAndProduct } from "@/@types/admin/product";
 import { Button } from "@/components/ui/button";
-import { addToCart } from "@/server-actions/add-to-cart";
+import { addToCart } from "@/actions/add-to-cart";
 import {
   useTransition,
   useCallback,

@@ -6,7 +6,7 @@ import {
   getStripeAccountDetails,
   hasConnectedStripeAccount,
   updateStripeAccountStatus,
-} from "@/server-actions/stripe/account";
+} from "@/actions/stripe/account";
 import { CreditCard } from "lucide-react";
 import { CreateConnectedAccount } from "./components/create-connected-account";
 

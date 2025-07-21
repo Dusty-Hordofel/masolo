@@ -1,7 +1,7 @@
 "use server";
 import { ShoppingCart } from "lucide-react";
 import { cookies } from "next/headers";
-import { getCart, getCartTest } from "@/server-actions/add-to-cart";
+import { getCart, getCartTest } from "@/actions/add-to-cart";
 import {
   Sheet,
   SheetBody,

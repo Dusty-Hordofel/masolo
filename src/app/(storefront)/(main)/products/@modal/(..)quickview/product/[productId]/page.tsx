@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { currencyFormatter } from "@/lib/currency";
-import { getProduct } from "@/server-actions/products";
+import { getProduct } from "@/actions/products";
 import { ImageOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

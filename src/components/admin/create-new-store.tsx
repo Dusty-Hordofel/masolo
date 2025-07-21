@@ -11,7 +11,7 @@ import {
   storeSchema,
   StoreSchemaFormData,
 } from "@/schemas/stores/stores.schema";
-import { createStore } from "@/server-actions/store";
+import { createStore } from "@/actions/store";
 import { useToast } from "@/hooks/use-toast.hook";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";

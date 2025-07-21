@@ -3,7 +3,7 @@
 import { routes } from "@/app/data/routes";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast.hook";
-import { getStoreById } from "@/server-actions/store";
+import { getStoreById } from "@/actions/store";
 import { Loader2, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useTransition } from "react";

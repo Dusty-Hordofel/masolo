@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { ProductFormData } from "@/schemas/products/product.schema";
 import { deleteImageFromCloudinary } from "@/services/cloudinary/cloudinary.service";
 import { ProductService } from "@/services/prisma/product.sevice";
-import { Product } from "@prisma/client";
+import { Image, Product } from "@prisma/client";
 
 export async function createNewProduct(
   productData: ProductFormData,
@@ -29,14 +29,27 @@ export async function deleteProduct(id: string) {
 }
 
 export async function addProductImages(
+  storeId: string,
   productId: string,
-  productImages: Array<{ publicId: string; secureUrl: string; alt: string }>
+  productImages: Array<Omit<Image, "id" | "createdAt" | "product" | "store">>
+  // Array<{
+  //   name: string;
+  //   publicId: string;
+  //   secureUrl: string;
+  //   alt: string;
+  //   size: string;
+  //   format: string;
+  //   type: string;
+  //   storeId: string;
+  //   productId: string;
+  // }>
 ) {
   try {
     // Étape 1 : Récupérer le produit existant
     const existingProduct = (await prisma.product.findUnique({
       where: { id: productId },
     })) as Product;
+    console.log("🚀 ~ existingProduct:ID", existingProduct);
 
     if (!existingProduct) {
       throw new Error(`Product with ID ${productId} not found.`);
@@ -45,11 +58,12 @@ export async function addProductImages(
     const updatedProduct = await prisma.image.createMany({
       data: productImages.map((productImage) => ({
         ...productImage,
-        productId, // Assurez-vous d'inclure la clé étrangère
+        // productId,
+        // storeId, // Assurez-vous d'inclure la clé étrangère
       })),
     });
+    console.log("🚀 ~ updatedProduct:RESULT", updatedProduct);
 
-    console.log("🚀 ~ Product updated successfully:", updatedProduct);
     return updatedProduct;
   } catch (error) {
     console.error("Error updating product images:", error);

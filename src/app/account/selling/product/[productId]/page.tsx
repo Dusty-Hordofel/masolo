@@ -1,6 +1,6 @@
 import { ProductWithImages } from "@/@types/admin/product";
 import { ProductEditor } from "@/components/admin/product-editor";
-import { getProduct } from "@/server-actions/products";
+import { getProduct } from "@/actions/products";
 
 interface ProductPageParams {
   productId: string;

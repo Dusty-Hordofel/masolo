@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 import DataTable from "./data-table";
 import { columns } from "./columns";
-import { getProducts } from "@/server-actions/products";
+import { getProducts } from "@/actions/products";
 
 const ProductsPage = async () => {
   const products = await getProducts();

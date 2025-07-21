@@ -32,4 +32,6 @@ export type FileTypeFilter =
   | "images"
   | "videos"
   | "external-videos"
-  | "3d-models";
+  | "3d-models"
+  | ""
+  | null;

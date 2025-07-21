@@ -9,7 +9,7 @@ import { FeatureBanner } from "../components/feature-banner";
 import { AlarmClock, DollarSign, Phone, Truck, User } from "lucide-react";
 
 import { routes } from "@/app/data/routes";
-import { getStoreAndProduct } from "@/server-actions/store";
+import { getStoreAndProduct } from "@/actions/store";
 import { ProductCard } from "@/components/storefront/product-card";
 
 export default async function Home() {
