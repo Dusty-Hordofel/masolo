@@ -1,31 +1,28 @@
-// const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
-// const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUD_SECRET as string;
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryError } from "@/@types";
 
-export const deleteImageFromCloudinary = async (public_id: string) => {
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+export const deleteImageFromCloudinary = async (publicId: string) => {
+  if (!publicId || typeof publicId !== "string") {
+    throw new Error("Invalid publicId provided for Cloudinary deletion");
+  }
+
   try {
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/delete/upload/${public_id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Failed to delete image: ${response.statusText}`);
+    const result = await cloudinary.uploader.destroy(publicId);
+    if (result.result !== "ok" && result.result !== "not found") {
+      throw new CloudinaryError(`Cloudinary deletion failed: ${result.result}`);
     }
-
-    return response.json();
+    return result;
   } catch (error) {
-    console.error("Erreur lors de la suppression d'une image.", error);
+    console.error("Error when deleting an image.", error);
+    throw error;
   }
 };
-
-// TODO: refactor
-// export const uploadImagesToCloudinary = async (file: File) => {};
 
 export const uploadImageToCloudinary = async (file: File) => {
   const formData = new FormData();
@@ -51,13 +48,12 @@ export const uploadImageToCloudinary = async (file: File) => {
     }
 
     const data = await response.json();
-    console.log("🚀 ~ uploadImageToCloudinary ~ data:DATA", data);
+
     return {
       url: data.secure_url,
       public_url: data.url,
       public_id: data.public_id,
     };
-    // return data;
   } catch (error) {
     console.error("Error uploading image:", error);
     throw error;

@@ -1,5 +1,7 @@
 "use server";
 
+import { Result } from "@/@types";
+import { CloudinaryError } from "@/@types";
 import { UploadedFile } from "@/components/admin/use-file-upload";
 import { prisma } from "@/lib/prisma";
 import { ProductFormData } from "@/schemas/products/product.schema";
@@ -71,7 +73,9 @@ export async function addProductImages(
   }
 }
 
-export async function deleteProductImage(imageId: string) {
+export async function deleteProductImage(
+  imageId: string
+): Promise<Result<{ id: string }>> {
   try {
     // Récupérer l'image avant de la supprimer
     const image = await prisma.image.findUnique({
@@ -79,30 +83,59 @@ export async function deleteProductImage(imageId: string) {
     });
 
     if (!image) {
-      throw new Error(`Image with ID ${imageId} not found.`);
+      return {
+        success: false,
+        title: "Image not found",
+        description: `Image with ID ${imageId} not found.`,
+      };
     }
 
-    // Supprimer d'abord l'image sur Cloudinary
     await deleteImageFromCloudinary(image.publicId);
 
-    // Supprimer l'image de la base de données
     await prisma.image.delete({
       where: { id: imageId },
     });
 
-    console.log("✅ Image supprimée de la base de données.");
     return {
       success: true,
       title: "Product deleted",
       description: `
     Image with ${imageId} have been deleted successfully`,
+      data: { id: imageId },
     };
-  } catch (error) {
-    console.error("❌ Erreur lors de la suppression de l'image :", error);
-    throw error;
+  } catch (error: any) {
+    console.error("❌ Image deletion error :", error);
+
+    if (error instanceof CloudinaryError) {
+      return {
+        success: false,
+        title: "Cloudinary error",
+        description: error.message, // ou un message plus clair pour le frontend
+      };
+    }
+
+    if (
+      error.name === "FetchError" ||
+      error.code === "ECONNREFUSED" ||
+      error.code === "ENOTFOUND"
+    ) {
+      return {
+        success: false,
+        title: "Network error",
+        description:
+          "Connection problem with remote service. Please check your network or try again later.",
+      };
+    }
+
+    return {
+      success: false,
+      title: "Deletion error",
+      // description: `An error occurred while deleting the image ${imageId}.`,
+      description: `Unable to delete the image with ${imageId}. Please try again`,
+    };
   }
 }
-
+// `Unable to delete the image with ${id}. Please try again`,
 export async function getNewImages(productId: string, results: UploadedFile[]) {
   try {
     const newImages = await prisma.image.findMany({

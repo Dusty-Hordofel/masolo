@@ -4,7 +4,7 @@ import { Image } from "@prisma/client";
 // import { Image } from "@prisma/client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
-export const useImageManager = () => {
+export const useImageManager2 = () => {
   // const [images, setImages] = useState<Image[]>([]);
   const [images, setImages] = useState<ImageData[]>([]);
   const [urlInput, setUrlInput] = useState("");

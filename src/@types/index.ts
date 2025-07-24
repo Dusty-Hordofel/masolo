@@ -35,3 +35,30 @@ export type FileTypeFilter =
   | "3d-models"
   | ""
   | null;
+
+export type Result<T = unknown> =
+  | {
+      success: true;
+      data?: T;
+      title: string;
+      description: string;
+    }
+  | {
+      success: false;
+      title: string;
+      description: string;
+    };
+
+export class CloudinaryError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "CloudinaryError";
+  }
+}
+
+export class NetworkError extends Error {
+  constructor(message: string, public originalError?: unknown) {
+    super(message);
+    this.name = "NetworkError";
+  }
+}

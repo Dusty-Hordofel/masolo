@@ -126,12 +126,19 @@ export function useProductEditor({
 
   // Manage image deletion
   const handleDeleteProductImage = async (id: string) => {
-    const deletedProductImage = await deleteProductImage(id);
-    if (deletedProductImage.success) {
-      setDeletedImageIds((prev) => [...prev, id]);
+    setDeletedImageIds((prev) => [...prev, id]);
+
+    const result = await deleteProductImage(id);
+    if (result.success) {
       toast({
-        title: deletedProductImage?.title,
-        description: deletedProductImage?.description,
+        title: result.title,
+        description: result.description,
+      });
+    } else {
+      setDeletedImageIds((prev) => prev.filter((imgId) => imgId !== id));
+      toast({
+        title: result.title,
+        description: result.description,
       });
     }
   };
