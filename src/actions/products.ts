@@ -73,6 +73,36 @@ export async function addProductImages(
   }
 }
 
+export async function addProductImage(
+  storeId: string,
+  productId: string,
+  image: Omit<Image, "id" | "createdAt" | "product" | "store">
+) {
+  try {
+    // Vérifier que le produit existe
+    const existingProduct = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+    if (!existingProduct) {
+      throw new Error(`Product with ID ${productId} not found.`);
+    }
+
+    // Créer l'image en base
+    const createdImage = await prisma.image.create({
+      data: {
+        ...image,
+        productId,
+        storeId,
+      },
+    });
+
+    return createdImage;
+  } catch (error) {
+    console.error("Error adding product image:", error);
+    throw error;
+  }
+}
+
 export async function deleteProductImage(
   imageId: string
 ): Promise<Result<{ id: string }>> {
@@ -136,14 +166,18 @@ export async function deleteProductImage(
   }
 }
 // `Unable to delete the image with ${id}. Please try again`,
-export async function getNewImages(productId: string, results: UploadedFile[]) {
+export async function getNewImages(
+  productId: string,
+  results?: UploadedFile[]
+) {
   try {
     const newImages = await prisma.image.findMany({
       where: { productId },
       orderBy: { createdAt: "desc" },
       // take: 2,
-      take: results.length,
+      take: results?.length,
     });
+    console.log("🚀 ~ getNewImages ~ newImages:", newImages);
     return newImages;
   } catch (error) {
     console.error("Error getting last new images:", error);

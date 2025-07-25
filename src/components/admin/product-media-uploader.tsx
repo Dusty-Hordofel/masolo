@@ -2,9 +2,16 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFileUploadToCloudinary } from "./use-file-upload";
-import { XIcon } from "lucide-react";
+import { Loader2, XIcon } from "lucide-react";
 import { Image } from "@prisma/client";
-import { Button } from "../ui/button";
+import { addProductImage, getNewImages } from "@/actions/products";
+// import { Button } from "../ui/button";
+
+type UploadingImage = {
+  file: File;
+  previewUrl: string;
+  status: "uploading" | "processing" | "done";
+};
 
 const ProductMediaUploader = ({
   storeId,
@@ -20,15 +27,90 @@ const ProductMediaUploader = ({
   handleDeleteProductImage: (id: string) => Promise<void>;
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const { isUploading, uploadFiles } = useFileUploadToCloudinary(
+  const [uploadingImages, setUploadingImages] = useState<UploadingImage[]>([]);
+  console.log("🚀 ~ currentProductImages:", currentProductImages);
+  // console.log("🚀 ~ setUploadingImages:", uploadingImages);
+
+  const { isUploading, uploadFiles, uploadFile } = useFileUploadToCloudinary(
     storeId,
     productId,
     setUploadedImages
   );
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setSelectedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
-  }, []);
+  // const onDrop1 = useCallback((acceptedFiles: File[]) => {
+  //   const newFiles = acceptedFiles.map((file) => ({
+  //     file,
+  //     previewUrl: URL.createObjectURL(file),
+  //     status: "uploading" as "uploading" | "processing" | "done",
+  //   }));
+
+  //   setUploadingImages((prev) => [...prev, ...newFiles]);
+
+  //   // On lance l'upload automatiquement
+  //   acceptedFiles.forEach((file) => handleSingleUpload(file));
+  // }, []);
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const newFiles = acceptedFiles.map((file) => ({
+        file,
+        previewUrl: URL.createObjectURL(file),
+        status: "uploading" as const,
+      }));
+
+      setUploadingImages((prev) => [...prev, ...newFiles]);
+      // On lance l'upload automatiquement
+      acceptedFiles.forEach((file) => uploadFile(file));
+    },
+    [uploadFile]
+  );
+
+  // const handleSingleUpload = async (file: File) => {
+  //   // On simule d’abord "uploading"
+  //   await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  //   // On passe à "processing"
+  //   setUploadingImages((prev) =>
+  //     prev.map((img) =>
+  //       img.file === file ? { ...img, status: "processing" } : img
+  //     )
+  //   );
+
+  //   // Upload réel
+  //   try {
+  //     await uploadFiles([file]); // ta fonction existante
+  //     // Une fois fini, on passe à "done"
+  //     setUploadingImages((prev) =>
+  //       prev.map((img) =>
+  //         img.file === file ? { ...img, status: "done" } : img
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // MOMO YA KALA
+  const onDrop1 = useCallback(
+    async (acceptedFiles: File[]) => {
+      setSelectedFiles((prev) => [...prev, ...acceptedFiles]);
+
+      try {
+        const results = await uploadFiles(acceptedFiles);
+        if (results.success) {
+          setSelectedFiles([]);
+        }
+      } catch (error) {
+        console.log("🚀 ~ handleUpload ~ error:", error);
+        alert("Une erreur est survenue lors du téléversement.");
+      }
+    },
+    [uploadFiles]
+  );
+
+  // const onDrop= useCallback((acceptedFiles: File[]) => {
+  //   setSelectedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+  // }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -36,18 +118,18 @@ const ProductMediaUploader = ({
     multiple: true,
   });
 
-  const handleUpload = async () => {
-    try {
-      const results = await uploadFiles(selectedFiles);
+  // const handleUpload = async () => {
+  //   try {
+  //     const results = await uploadFiles(selectedFiles);
 
-      if (results.success) {
-        setSelectedFiles([]);
-      }
-    } catch (error) {
-      console.log("🚀 ~ handleUpload ~ error:", error);
-      alert("Une erreur est survenue lors du téléversement.");
-    }
-  };
+  //     if (results.success) {
+  //       setSelectedFiles([]);
+  //     }
+  //   } catch (error) {
+  //     console.log("🚀 ~ handleUpload ~ error:", error);
+  //     alert("Une erreur est survenue lors du téléversement.");
+  //   }
+  // };
 
   return (
     <div>
@@ -86,6 +168,46 @@ const ProductMediaUploader = ({
                   </button>
                 </div>
               ))}
+
+            {/* {uploadingImages.map((img, idx) => {
+              if (img.status === "uploading") {
+                return (
+                  <div
+                    key={idx}
+                    className="relative w-36 h-36 rounded-md border bg-white flex items-center justify-center"
+                  >
+                    <Loader2 className="w-6 h-6 animate-spin mb-1" />
+                    <span className="absolute bottom-2 text-xs text-muted-foreground">
+                      Uploading…
+                    </span>
+                  </div>
+                );
+              }
+
+              if (img.status === "processing") {
+                return (
+                  <div
+                    key={idx}
+                    className="relative w-36 h-36 rounded-md overflow-hidden border"
+                  >
+                    <img
+                      src={img.previewUrl}
+                      alt={img.file.name}
+                      className={`w-full h-full object-cover ${
+                        img.status === "processing" ? "blur-sm opacity-60" : ""
+                      }`}
+                    />
+
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-sm">
+                      <Loader2 className="w-6 h-6 animate-spin mb-1 text-black" />
+                      <span className="text-black">Processing…</span>
+                    </div>
+                  </div>
+                );
+              }
+              // processing & done -> on affiche l'image
+            })} */}
+
             <div
               {...getRootProps()}
               className="border-border border-2 rounded-md border-dashed w-36 h-36"
@@ -105,7 +227,35 @@ const ProductMediaUploader = ({
           </div>
         </div>
 
-        {selectedFiles.length > 0 && (
+        {/* <div className="flex gap-4 flex-wrap">
+          {uploadingImages.map((img, idx) => (
+            <div
+              key={idx}
+              className="relative w-36 h-36 rounded-md overflow-hidden border"
+            >
+              <img
+                src={img.previewUrl}
+                alt={img.file.name}
+                className={`w-full h-full object-cover transition ${
+                  img.status === "processing" ? "blur-sm opacity-50" : ""
+                }`}
+              />
+
+              {img.status !== "done" && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 text-white text-sm">
+                  <Loader2 className="animate-spin w-6 h-6 mb-1" />
+                  <span>
+                    {img.status === "uploading"
+                      ? "Uploading..."
+                      : "Processing..."}
+                  </span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div> */}
+
+        {/* {selectedFiles.length > 0 && (
           <div className="mt-4">
             {selectedFiles.map((file, i) => (
               <li key={i}>
@@ -121,7 +271,7 @@ const ProductMediaUploader = ({
               {isUploading ? "Uploading" : "Upload"}
             </Button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

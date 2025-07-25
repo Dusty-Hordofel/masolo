@@ -31,12 +31,12 @@ export function useProductEditor({
   // productStatus,
   initialValues,
 }: ProductEditorSharedProps) {
-  console.log("🚀 ~ initialValues:LO", initialValues);
+  // console.log("🚀 ~ initialValues:LO", initialValues);
   const router = useRouter();
 
   // Status of uploaded & deleted images
   const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
-  console.log("🚀 ~ setUploadedImages:", setUploadedImages);
+  console.log("🚀 ~ setUploadedImages:", uploadedImages);
 
   const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
 

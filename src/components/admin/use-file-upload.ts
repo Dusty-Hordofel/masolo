@@ -1,6 +1,10 @@
 "use client";
 
-import { addProductImages, getNewImages } from "@/actions/products";
+import {
+  addProductImage,
+  addProductImages,
+  getNewImages,
+} from "@/actions/products";
 import { useState } from "react";
 import { Image } from "@prisma/client";
 
@@ -91,6 +95,7 @@ export const useFileUploadToCloudinary = (
       // }
       const newImages = await getNewImages(productId, results);
       console.log("🚀 ~ uploadFiles ~ newImages:SIKA3", newImages);
+
       if (newImages.length > 0) {
         setUploadedImages((prev) => [...prev, ...newImages]);
       }
@@ -108,5 +113,86 @@ export const useFileUploadToCloudinary = (
     }
   };
 
-  return { isUploading, uploadFiles };
+  const uploadFile = async (file: File) => {
+    let result: UploadedFile;
+    // const results: UploadedFile[] = [];
+    // console.log("🚀 ~ handleSingleUpload ~ results:", results);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file); //The file to be uploaded
+      formData.append("upload_preset", UPLOAD_PRESET); // Unsigned preselection
+      formData.append("folder", "masolo"); // Target folder in cloudinary
+
+      const response = await fetch(CLOUDINARY_URL, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      console.log("🚀 ~ handleSingleUpload ~ data:TALA", data);
+
+      if (data.secure_url && data.public_id && data.original_filename) {
+        const format =
+          (data.format || file.type.split("/")[1]).toString() || "unknown";
+
+        const getMediaType = (resourceType: string, mimeType: string) => {
+          if (resourceType === "image") return "image";
+          if (resourceType === "video") return "video";
+          if (resourceType === "raw") {
+            if (mimeType.startsWith("audio/")) return "audio";
+            if (mimeType.includes("pdf")) return "document";
+            if (mimeType.includes("zip") || mimeType.includes("rar"))
+              return "archive";
+            return "document";
+          }
+          return "unknown";
+        };
+
+        const mediaType = getMediaType(data.resource_type, file.type);
+
+        result = {
+          name: data.original_filename,
+          publicId: data.public_id,
+          secureUrl: data.secure_url,
+          alt: data.original_filename.replace(/_/g, " "),
+          size: data.bytes?.toString() || "0",
+          format: format,
+          type: mediaType, // Convertir en string comme requis par le modèle
+          productId: productId,
+          storeId: storeId,
+        };
+
+        await addProductImage(storeId, productId, result);
+        console.log("MALANDA", result);
+
+        const newImages = await getNewImages(productId);
+        console.log("🚀 ~ uploadFile ~ newImages:", newImages);
+
+        if (newImages.length > 0) {
+          setUploadedImages(newImages);
+        }
+        //   // console.log("🚀 ~ uploadFiles ~ newImages:SIKA3", newImages);
+
+        //   setUploadedImages((prev) => [...prev, ...results]);
+        // }
+        // if (newImages.length > 0) {
+        //   setUploadedImages((prev) => [...prev, ...newImages]);
+        // }
+
+        return {
+          success: true,
+          title: "Image televerser",
+          description: "Images téléversées et ajoutées avec succès.",
+        };
+
+        //   // setUploadedImages((prev) => [...prev, ...results]);
+      }
+    } catch (error) {
+      console.log("🚀 ~ handleSingleUpload ~ error:", error);
+      throw error;
+    }
+  };
+
+  return { isUploading, uploadFiles, uploadFile };
 };
