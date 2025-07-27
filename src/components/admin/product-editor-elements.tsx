@@ -6,7 +6,7 @@ import DynamicFormField from "../forms/dynamic-form-field";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 import { ProductEditorSharedProps } from "@/@types/admin/product";
-import { useProductEditor } from "./use-producteditor";
+import { useProductEditor } from "../../hooks/use-producteditor";
 import ProductMediaUploader from "./product-media-uploader";
 
 const ProductEditorElements = ({
