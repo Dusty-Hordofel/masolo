@@ -21,7 +21,7 @@ import {
   getCartTest,
   // updateCartItemQuantity,
 } from "@/actions/add-to-cart";
-import { CartItem } from "@/@types/cart/cart.item.interface";
+import { CartItem } from "@/@types/cart";
 // import { CartItem } from "@prisma/client";
 
 const EditCartLineItem = ({

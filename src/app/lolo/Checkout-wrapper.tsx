@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import CheckoutForm from "./checkout-form";
-import { CheckoutItem } from "@/@types/cart/cart.item.interface";
+import { CheckoutItem } from "@/@types/cart";
 // import { currencyFormatter } from "@/lib/currency";
 
 const CheckoutWrapper = (props: {

@@ -1,6 +1,6 @@
 "use server";
 
-import { CheckoutItem } from "@/@types/cart/cart.item.interface";
+import { CheckoutItem } from "@/@types/cart";
 import { platformFeeDecimal } from "@/lib/application-constants";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
