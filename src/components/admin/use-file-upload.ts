@@ -228,7 +228,7 @@ export const useFileUploadToCloudinary = (
 };
 
 // OLD VERSION
-("use client");
+// "use client";
 
 // import {
 //   addProductImage,
@@ -420,7 +420,7 @@ export const useFileUploadToCloudinary = (
 // };
 
 // VERSION A ANALYSER
-("use client");
+// "use client";
 
 // import { addProductImages, getNewImages } from "@/actions/products";
 // import { useRef, useState } from "react";
