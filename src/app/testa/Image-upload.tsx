@@ -1,4 +1,4 @@
-import { CloudinaryImage, ImageFormData } from "@/@types/cloudinaty";
+import { CloudinaryImage, ImageFormData } from "@/@types/cloudinary";
 import React, { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 // import { CloudinaryImage, ImageFormData } from '@/@types/cloudinary';

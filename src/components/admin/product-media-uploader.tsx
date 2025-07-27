@@ -26,10 +26,8 @@ const ProductMediaUploader = ({
   setUploadedImages: React.Dispatch<React.SetStateAction<Image[]>>;
   handleDeleteProductImage: (id: string) => Promise<void>;
 }) => {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  // const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploadingImages, setUploadingImages] = useState<UploadingImage[]>([]);
-  console.log("🚀 ~ currentProductImages:", currentProductImages);
-  // console.log("🚀 ~ setUploadingImages:", uploadingImages);
 
   const { isUploading, uploadFiles, uploadFile } = useFileUploadToCloudinary(
     storeId,
@@ -60,53 +58,54 @@ const ProductMediaUploader = ({
 
       setUploadingImages((prev) => [...prev, ...newFiles]);
       // On lance l'upload automatiquement
-      acceptedFiles.forEach((file) => uploadFile(file));
+      // acceptedFiles.forEach((file) => uploadFile(file));
+      acceptedFiles.forEach((file) => handleSingleUpload(file));
     },
     [uploadFile]
   );
 
-  // const handleSingleUpload = async (file: File) => {
-  //   // On simule d’abord "uploading"
-  //   await new Promise((resolve) => setTimeout(resolve, 1000));
+  const handleSingleUpload = async (file: File) => {
+    // On simule d’abord "uploading"
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  //   // On passe à "processing"
-  //   setUploadingImages((prev) =>
-  //     prev.map((img) =>
-  //       img.file === file ? { ...img, status: "processing" } : img
-  //     )
-  //   );
+    // On passe à "processing"
+    setUploadingImages((prev) =>
+      prev.map((img) =>
+        img.file === file ? { ...img, status: "processing" } : img
+      )
+    );
 
-  //   // Upload réel
-  //   try {
-  //     await uploadFiles([file]); // ta fonction existante
-  //     // Une fois fini, on passe à "done"
-  //     setUploadingImages((prev) =>
-  //       prev.map((img) =>
-  //         img.file === file ? { ...img, status: "done" } : img
-  //       )
-  //     );
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+    // Upload réel
+    try {
+      await uploadFile(file); // ta fonction existante
+      // Une fois fini, on passe à "done"
+      setUploadingImages((prev) =>
+        prev.map((img) =>
+          img.file === file ? { ...img, status: "done" } : img
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // MOMO YA KALA
-  const onDrop1 = useCallback(
-    async (acceptedFiles: File[]) => {
-      setSelectedFiles((prev) => [...prev, ...acceptedFiles]);
+  // const onDrop1 = useCallback(
+  //   async (acceptedFiles: File[]) => {
+  //     setSelectedFiles((prev) => [...prev, ...acceptedFiles]);
 
-      try {
-        const results = await uploadFiles(acceptedFiles);
-        if (results.success) {
-          setSelectedFiles([]);
-        }
-      } catch (error) {
-        console.log("🚀 ~ handleUpload ~ error:", error);
-        alert("Une erreur est survenue lors du téléversement.");
-      }
-    },
-    [uploadFiles]
-  );
+  //     try {
+  //       const results = await uploadFiles(acceptedFiles);
+  //       if (results.success) {
+  //         setSelectedFiles([]);
+  //       }
+  //     } catch (error) {
+  //       console.log("🚀 ~ handleUpload ~ error:", error);
+  //       alert("Une erreur est survenue lors du téléversement.");
+  //     }
+  //   },
+  //   [uploadFiles]
+  // );
 
   // const onDrop= useCallback((acceptedFiles: File[]) => {
   //   setSelectedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
@@ -169,7 +168,7 @@ const ProductMediaUploader = ({
                 </div>
               ))}
 
-            {/* {uploadingImages.map((img, idx) => {
+            {uploadingImages.map((img, idx) => {
               if (img.status === "uploading") {
                 return (
                   <div
@@ -206,7 +205,7 @@ const ProductMediaUploader = ({
                 );
               }
               // processing & done -> on affiche l'image
-            })} */}
+            })}
 
             <div
               {...getRootProps()}

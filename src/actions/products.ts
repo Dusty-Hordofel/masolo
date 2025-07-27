@@ -2,7 +2,8 @@
 
 import { Result } from "@/@types";
 import { CloudinaryError } from "@/@types";
-import { UploadedFile } from "@/components/admin/use-file-upload";
+import { UploadedFile } from "@/@types/cloudinary";
+// import { UploadedFile } from "@/components/admin/use-file-upload";
 import { prisma } from "@/lib/prisma";
 import { ProductFormData } from "@/schemas/products/product.schema";
 import { deleteImageFromCloudinary } from "@/services/cloudinary/cloudinary.service";

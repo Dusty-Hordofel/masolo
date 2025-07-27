@@ -1,4 +1,4 @@
-import { ImageProcessingState } from "@/@types/cloudinaty";
+import { ImageProcessingState } from "@/@types/cloudinary";
 
 export const createPreview = (file: File): Promise<string> => {
   return new Promise((resolve) => {
