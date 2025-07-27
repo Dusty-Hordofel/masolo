@@ -1,7 +1,7 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useFileUploadToCloudinary } from "./use-file-upload";
+import { useFileUploadToCloudinary } from "../../hooks/use-file-upload";
 import { XIcon } from "lucide-react";
 import { Image } from "@prisma/client";
 // import { Button } from "../ui/button";
