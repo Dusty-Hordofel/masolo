@@ -25,9 +25,9 @@ export type ImageProcessingState = {
 
 export type UploadedFile = {
   name: string;
-  publicId: string; // ID public retourné par Cloudinary
-  secureUrl: string; // URL du fichier téléversé
-  alt: string; //
+  publicId: string; // public ID returned by Cloudinary
+  secureUrl: string; // Uploaded file URL
+  alt: string;
   size: string;
   productId: string;
   storeId: string;
@@ -35,21 +35,21 @@ export type UploadedFile = {
   type: string;
 };
 
-export interface CloudinaryResponse {
+export type CloudinaryResponse = {
   secure_url: string;
   public_id: string;
   original_filename: string;
   format?: string;
   resource_type: string;
   bytes?: number;
-}
+};
 
-export interface UploadResult {
+export type UploadResult = {
   success: boolean;
   title: string;
   description: string;
   data?: UploadedFile;
-}
+};
 
 export type MediaType =
   | "image"
