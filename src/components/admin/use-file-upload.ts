@@ -160,7 +160,7 @@ export const useFileUploadToCloudinary = (
       );
 
       if (!addedImage?.secureUrl) {
-        throw new Error("Échec de l'ajout de l'image en base de données");
+        throw new Error("Failed to add image to database");
       }
 
       // Status update
@@ -178,10 +178,10 @@ export const useFileUploadToCloudinary = (
       // Specific error handling
       if (error instanceof Error) {
         if (error.name === "AbortError") {
-          throw new Error("Timeout: L'upload a pris trop de temps");
+          throw new Error("Timeout: Upload took too long");
         }
 
-        console.error("Erreur lors de l'upload:", {
+        console.error("Upload error:", {
           message: error.message,
           fileName: file.name,
           fileSize: file.size,
