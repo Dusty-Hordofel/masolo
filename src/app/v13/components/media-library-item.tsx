@@ -2,10 +2,11 @@ import { ImageData } from "@/@types";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import { Image } from "@prisma/client";
 import { Eye, X } from "lucide-react";
 
 interface MediaLibraryItemProps {
-  image: ImageData;
+  image: Image;
   isSelected: boolean;
   isActive: boolean;
   onToggleSelection: () => void;
@@ -31,7 +32,8 @@ export default function MediaLibraryItem({
     >
       <picture>
         <img
-          src={image.url || image.preview}
+          src={image.secureUrl}
+          // src={image.url || image.preview}
           alt={image.name}
           className="w-full aspect-square object-cover"
         />

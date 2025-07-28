@@ -12,18 +12,15 @@ export const useImageManager = () => {
   const modalFileInputRef = useRef<HTMLInputElement>(null);
 
   const [storeImages, setStoreImages] = useState<Image[]>([]);
-  console.log("🚀 ~ useImageManager ~ storeImages:", storeImages);
+  // console.log("🚀 ~ useImageManager ~ storeImages:", storeImages);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      const imgs = await getStoreImages("cee0cf56-b4f1-4451-969f-509b2b9ef2e0");
-      console.log("🚀 ~ Home ~ images:MATA", imgs);
-
+    const fetchStoreImages = async () => {
+      const imgs = await getStoreImages("5f4dba74-1040-4fcd-831f-920226cba241");
       setStoreImages(imgs);
-      // setImages(imgs);
     };
 
-    fetchImages();
+    fetchStoreImages();
   }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

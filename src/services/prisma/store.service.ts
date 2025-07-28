@@ -175,7 +175,7 @@ export const StoreService = {
           storeId,
         },
       });
-      console.log("🚀 ~ getStoreImages ~ images:", images);
+      console.log("🚀 ~ getStoreImages ~ images:TALA", images);
 
       return images;
     } catch (error) {

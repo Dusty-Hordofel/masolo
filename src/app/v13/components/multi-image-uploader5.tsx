@@ -17,6 +17,7 @@ import {
   ChevronDown,
   CircleX,
   Eye,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 // import { Checkbox } from "@/components/ui/checkbox";
@@ -156,54 +157,62 @@ export function MultiImageUploader5() {
   };
 
   // Filter and sort images
-  const filteredAndSortedImages = storeImages;
-  // .filter((image) => {
-  //   if (
-  //     searchQuery &&
-  //     !image.name.toLowerCase().includes(searchQuery.toLowerCase())
-  //   )
-  //     return false;
-  //   if (
-  //     fileTypeFilter !== "all" &&
-  //     fileTypeFilter === "images" &&
-  //     !image.type.startsWith("image/")
-  //   )
-  //     return false;
-  //   if (minSize && image.size < Number.parseFloat(minSize) * 1024 * 1024)
-  //     return false;
-  //   if (maxSize && image.size > Number.parseFloat(maxSize) * 1024 * 1024)
-  //     return false;
-  //   if (usageFilter !== "all" && !image.usedIn.includes(usageFilter))
-  //     return false;
-  //   if (
-  //     selectedProducts.size > 0 &&
-  //     !Array.from(selectedProducts).some((product) =>
-  //       image.products.includes(product)
-  //     )
-  //   )
-  //     return false;
-  //   return true;
-  // })
-  // .sort((a, b) => {
-  //   switch (sortBy) {
-  //     case "date-desc":
-  //       return b.uploadDate.getTime() - a.uploadDate.getTime();
-  //     case "date-asc":
-  //       return a.uploadDate.getTime() - b.uploadDate.getTime();
-  //     case "name-asc":
-  //       return a.name.localeCompare(b.name);
-  //     case "name-desc":
-  //       return b.name.localeCompare(a.name);
-  //     case "size-asc":
-  //       return a.size - b.size;
-  //     case "size-desc":
-  //       return b.size - a.size;
-  //     default:
-  //       return 0;
-  //   }
-  // });
+  const filteredAndSortedImages = storeImages
+    .filter((image) => {
+      if (
+        searchQuery &&
+        !image.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+        return false;
+      if (
+        fileTypeFilter !== "all" &&
+        fileTypeFilter === "images" &&
+        !image.type.startsWith("image/")
+      )
+        return false;
+      if (
+        minSize &&
+        Number(image.size) < Number.parseFloat(minSize) * 1024 * 1024
+      )
+        return false;
+      if (
+        maxSize &&
+        Number(image.size) > Number.parseFloat(maxSize) * 1024 * 1024
+      )
+        return false;
+      // if (usageFilter !== "all" && !image.usedIn.includes(usageFilter))
+      //   return false;
+      // if (
+      //   selectedProducts.size > 0 &&
+      //   !Array.from(selectedProducts).some((product) =>
+      //     image.products.includes(product)
+      //   )
+      // )
+      // return false;
+      return true;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "date-desc":
+          return b.createdAt.getTime() - a.createdAt.getTime();
+        case "date-asc":
+          return a.createdAt.getTime() - b.createdAt.getTime();
+        case "name-asc":
+          return a.name.localeCompare(b.name);
+        case "name-desc":
+          return b.name.localeCompare(a.name);
+        case "size-asc":
+          return Number(a.size) - Number(b.size);
+        case "size-desc":
+          return Number(b.size) - Number(a.size);
+        default:
+          return 0;
+      }
+    });
 
   const visibleImages = showExpanded ? storeImages : storeImages.slice(0, 6);
+  console.log("🚀 ~ MultiImageUploader5 ~ visibleImages:", visibleImages);
+
   const remainingCount = Math.max(0, storeImages.length - 5);
   const hasMoreImages = storeImages.length > 5;
   const hasImages = storeImages.length > 0;
@@ -404,14 +413,15 @@ export function MultiImageUploader5() {
                   key={image.id}
                   className="col-span-1 row-span-1 aspect-square"
                 >
-                  <ImageCard
+                  <h1>MOMO</h1>
+                  {/* <ImageCard
                     image={image}
                     isSelected={selectedImages.has(image.id)}
                     onToggleSelection={() => toggleImageSelection(image.id)}
                     onDelete={() => deleteImage(image.id, setSelectedImages)}
                     onView={() => setSelectedImage(image)}
                     className="h-full"
-                  />
+                  /> */}
                 </div>
               ))}
           {/* More images indicator or Add card */}
@@ -632,7 +642,8 @@ export function MultiImageUploader5() {
                       >
                         <picture>
                           <img
-                            src={image.url || image.preview}
+                            src={image.secureUrl}
+                            // src={image.url || image.preview}
                             alt={image.name}
                             className="w-12 h-12 object-cover rounded"
                           />
@@ -640,7 +651,7 @@ export function MultiImageUploader5() {
                         <div className="flex-1">
                           <p className="font-medium">{image.name}</p>
                           <p className="text-sm text-muted-foreground">
-                            {(image.size / 1024 / 1024).toFixed(2)} MB
+                            {(Number(image.size) / 1024 / 1024).toFixed(2)} MB
                           </p>
                         </div>
                         <div className="flex gap-2">
