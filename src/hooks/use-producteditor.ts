@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,9 +43,13 @@ export function useProductEditor({
 
   // Status of uploaded & deleted images
   const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
-  console.log("🚀 ~ setUploadedImages:", uploadedImages);
 
   const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
+  const [selectedImageIds, setSelectedImageIds] = useState<string[]>([]);
+  console.log("🚀 ~ useProductEditor ~ selectedImageIds:", selectedImageIds);
+
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
 
   // React Hook Form
   const defaultValues: ProductFormData = useMemo(
@@ -94,7 +105,8 @@ export function useProductEditor({
       data = await createNewProduct(
         formValues,
         // initialValues?.storeId as string
-        "5f4dba74-1040-4fcd-831f-920226cba241"
+        // "5f4dba74-1040-4fcd-831f-920226cba241"
+        "6790252988a3132278447d6e"
       );
       if (data.productId) {
         router.push(
@@ -143,6 +155,128 @@ export function useProductEditor({
     }
   };
 
+  // const toggleImageSelection = (imageId: string) => {
+  //   console.log("🚀 ~ toggleImageSelection ~ imageId:", imageId);
+  //   setSelectedImages((prev) => {
+  //     const newSet = new Set(prev);
+  //     if (newSet.has(imageId)) {
+  //       newSet.delete(imageId);
+  //     } else {
+  //       newSet.add(imageId);
+  //     }
+  //     return newSet;
+  //   });
+  // };
+  // Fonction pour sélectionner/désélectionner une image
+  const toggleImageSelection = (id: string) => {
+    setSelectedImageIds((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((imgId) => imgId !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
+
+  // Fonction pour supprimer plusieurs images sélectionnées
+  const handleDeleteSelectedImages = async () => {
+    if (selectedImageIds.length === 0) {
+      toast({
+        title: "Aucune sélection",
+        description: "Veuillez sélectionner au moins une image à supprimer.",
+      });
+      return;
+    }
+
+    setIsDeleting(true);
+
+    // Marquer toutes les images comme en cours de suppression
+    setDeletedImageIds((prev) => [...prev, ...selectedImageIds]);
+
+    const deletePromises = selectedImageIds.map((id) => deleteProductImage(id));
+    const results = await Promise.allSettled(deletePromises);
+
+    let successCount = 0;
+    let failedIds: string[] = [];
+
+    results.forEach((result, index) => {
+      const imageId = selectedImageIds[index];
+
+      if (result.status === "fulfilled" && result.value.success) {
+        successCount++;
+      } else {
+        failedIds.push(imageId);
+      }
+    });
+
+    // Retirer les IDs qui ont échoué de la liste des supprimés
+    if (failedIds.length > 0) {
+      setDeletedImageIds((prev) =>
+        prev.filter((id) => !failedIds.includes(id))
+      );
+    }
+
+    // Afficher le résultat
+    if (successCount === selectedImageIds.length) {
+      toast({
+        title: "Suppression réussie",
+        description: `${successCount} image(s) supprimée(s) avec succès.`,
+      });
+    } else if (successCount > 0) {
+      toast({
+        title: "Suppression partielle",
+        description: `${successCount} image(s) supprimée(s), ${failedIds.length} ont échoué.`,
+      });
+    } else {
+      toast({
+        title: "Échec de la suppression",
+        description: "Aucune image n'a pu être supprimée.",
+      });
+    }
+
+    // Réinitialiser l'état
+    setSelectedImageIds([]);
+    setIsSelectionMode(false);
+    setIsDeleting(false);
+  };
+
+  // Fonction utilitaire pour vérifier si une image est sélectionnée
+  const isImageSelected = (id: string) => selectedImageIds.includes(id);
+
+  // Fonction utilitaire pour vérifier si une image est supprimée
+  const isImageDeleted = (id: string) => deletedImageIds.includes(id);
+
+  // const deleteSelectedImages = async (
+  //   selectedImages: Set<string>,
+  //   setSelectedImages: Dispatch<SetStateAction<Set<string>>>
+  // ) => {
+  //   const imagesToDelete = storeImages.filter((img) =>
+  //     selectedImages.has(img.id)
+  //   );
+  //   console.log("🚀 ~ deleteSelectedImages ~ imagesToDelete:", imagesToDelete);
+
+  //   const deletePromises = imagesToDelete.map(async (image) => {
+  //     if (image.id) {
+  //       await deleteProductImage(image.id);
+  //       // try {
+  //       //   await fetch("/api/delete-cloudinary", {
+  //       //     method: "DELETE",
+  //       //     headers: { "Content-Type": "application/json" },
+  //       //     body: JSON.stringify({ publicId: image.publicId }),
+  //       //   });
+  //       // } catch (error) {
+  //       //   console.error("Delete error:", error);
+  //       // }
+  //     }
+
+  //     return;
+  //   });
+
+  //   await Promise.all(deletePromises);
+  //   setStoreImages((prev) => prev.filter((img) => !selectedImages.has(img.id)));
+  //   setSelectedImages(new Set());
+  // };
+
   // Close modal
   const closeModal = useCallback(() => {
     router[displayType === "modal" ? "back" : "push"](
@@ -162,5 +296,9 @@ export function useProductEditor({
     closeModal,
     currentProductImages,
     setUploadedImages,
+    handleDeleteSelectedImages,
+    toggleImageSelection,
+    selectedImageIds,
+    setSelectedImageIds,
   };
 }

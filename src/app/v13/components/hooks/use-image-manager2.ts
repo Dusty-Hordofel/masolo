@@ -1,15 +1,51 @@
 import { ImageData } from "@/@types";
 import { getStoreImages } from "@/actions/store";
+import { useFileUploadToCloudinary } from "@/hooks/use-file-upload";
 import { Image } from "@prisma/client";
 // import { Image } from "@prisma/client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+// import { useFileUploadToCloudinary } from "../../hooks/use-file-upload";
+type UploadingImage = {
+  file: File;
+  previewUrl: string;
+  status: "uploading" | "processing" | "done";
+};
 
-export const useImageManager2 = () => {
+export const useImageManager2 = ({
+  storeId,
+  productId,
+}: // setUploadedImages,
+//
+// currentProductImages,
+// handleDeleteProductImage,
+{
+  storeId: string;
+  productId: string;
+  currentProductImages?: Image[];
+  // setUploadedImages: React.Dispatch<React.SetStateAction<Image[]>>;
+  handleDeleteProductImage?: (id: string) => Promise<void>;
+}) => {
   // const [images, setImages] = useState<Image[]>([]);
   const [images, setImages] = useState<ImageData[]>([]);
   const [urlInput, setUrlInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const modalFileInputRef = useRef<HTMLInputElement>(null);
+
+  console.log("🚀 ~ useImageManager2 ~ fileInputRef:YAYA", fileInputRef);
+  // const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
+  const [uploadingImages, setUploadingImages] = useState<UploadingImage[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
+
+  // console.log(
+  //   "🚀 ~ useImageManager2 ~ setUploadedImages:BOMA MAMA",
+  //   setUploadedImages
+  // );
+
+  const { isUploading, uploadFiles, uploadFile } = useFileUploadToCloudinary(
+    storeId,
+    productId,
+    setUploadedImages
+  );
 
   const [storeImages, setStoreImages] = useState<Image[]>([]);
   console.log("🚀 ~ useImageManager ~ storeImages:", storeImages);
@@ -32,60 +68,61 @@ export const useImageManager2 = () => {
     }
   };
 
-  const uploadImage = async (imageId: string) => {
-    setImages((prev) =>
-      prev.map((img) =>
-        img.id === imageId ? { ...img, isUploading: true, progress: 0 } : img
-      )
-    );
+  // const uploadImage = async (imageId: string) => {
+  //   setImages((prev) =>
+  //     prev.map((img) =>
+  //       img.id === imageId ? { ...img, isUploading: true, progress: 0 } : img
+  //     )
+  //   );
 
-    const image = images.find((img) => img.id === imageId);
-    if (!image) return;
+  //   const image = images.find((img) => img.id === imageId);
+  //   if (!image) return;
 
-    const formData = new FormData();
-    formData.append("file", image.file);
+  //   const formData = new FormData();
+  //   formData.append("file", image.file);
 
-    const xhr = new XMLHttpRequest();
+  //   const xhr = new XMLHttpRequest();
 
-    xhr.upload.addEventListener("progress", (event) => {
-      if (event.lengthComputable) {
-        const percentComplete = (event.loaded / event.total) * 100;
-        setImages((prev) =>
-          prev.map((img) =>
-            img.id === imageId ? { ...img, progress: percentComplete } : img
-          )
-        );
-      }
-    });
+  //   xhr.upload.addEventListener("progress", (event) => {
+  //     if (event.lengthComputable) {
+  //       const percentComplete = (event.loaded / event.total) * 100;
+  //       setImages((prev) =>
+  //         prev.map((img) =>
+  //           img.id === imageId ? { ...img, progress: percentComplete } : img
+  //         )
+  //       );
+  //     }
+  //   });
 
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        const response = JSON.parse(xhr.responseText);
-        setImages((prev) =>
-          prev.map((img) =>
-            img.id === imageId
-              ? {
-                  ...img,
-                  url: response.url,
-                  publicId: response.publicId,
-                  isUploaded: true,
-                  isUploading: false,
-                  progress: 100,
-                  width: response.width,
-                  height: response.height,
-                }
-              : img
-          )
-        );
-      }
-    };
+  //   xhr.onload = () => {
+  //     if (xhr.status >= 200 && xhr.status < 300) {
+  //       const response = JSON.parse(xhr.responseText);
+  //       setImages((prev) =>
+  //         prev.map((img) =>
+  //           img.id === imageId
+  //             ? {
+  //                 ...img,
+  //                 url: response.url,
+  //                 publicId: response.publicId,
+  //                 isUploaded: true,
+  //                 isUploading: false,
+  //                 progress: 100,
+  //                 width: response.width,
+  //                 height: response.height,
+  //               }
+  //             : img
+  //         )
+  //       );
+  //     }
+  //   };
 
-    xhr.open("POST", "/api/upload-cloudinary");
-    xhr.send(formData);
-  };
+  //   xhr.open("POST", "/api/upload-cloudinary");
+  //   xhr.send(formData);
+  // };
 
   const handleFiles = (files: File[]) => {
     const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+    console.log("🚀 ~ handleFiles ~ imageFiles:MAMA MAMAA", imageFiles);
 
     const newImages: ImageData[] = imageFiles.map((file) => ({
       id: Date.now().toString() + Math.random().toString(),
@@ -106,9 +143,31 @@ export const useImageManager2 = () => {
     setImages((prev) => [...prev, ...newImages]);
 
     // Start uploading each image
-    newImages.forEach((image) => {
-      uploadImage(image.id);
-    });
+    // newImages.forEach((image) => {
+    //   uploadImage(image.id);
+    // });
+  };
+
+  const handleSingleUpload = async (file: File) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    setUploadingImages((prev) =>
+      prev.map((img) =>
+        img.file === file ? { ...img, status: "processing" } : img
+      )
+    );
+
+    try {
+      await uploadFile(file);
+
+      setUploadingImages((prev) =>
+        prev.map((img) =>
+          img.file === file ? { ...img, status: "done" } : img
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const addImageFromUrl = async () => {
@@ -186,7 +245,7 @@ export const useImageManager2 = () => {
     addImageFromUrl,
     handleFileChange,
     handleFiles,
-    uploadImage,
+    // uploadImage,
     deleteImage,
     deleteSelectedImages,
     urlInput,

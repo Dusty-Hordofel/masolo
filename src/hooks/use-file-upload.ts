@@ -16,6 +16,95 @@ import {
   validateCloudinaryResponse,
 } from "@/utils/cloudinary";
 
+// const uploadFile = async (storeId: string,setUploadedImages: React.Dispatch<React.SetStateAction<Image[] | []>>, productId: string, file: File) => {
+//   if (!file) {
+//     throw new Error("File required for upload");
+//   }
+//   if (!productId || !storeId) {
+//     throw new Error("productId and storeId are required");
+//   }
+
+//   const controller = new AbortController();
+//   const timeoutId = setTimeout(() => controller.abort(), UPLOAD_CONFIG.TIMEOUT);
+
+//   try {
+//     // Data preparation
+//     const formData = new FormData();
+//     formData.append("file", file);
+//     formData.append("upload_preset", UPLOAD_CONFIG.PRESET);
+//     formData.append("folder", UPLOAD_CONFIG.FOLDER);
+
+//     // Download to Cloudinary
+//     const response = await fetch(UPLOAD_CONFIG.URL, {
+//       method: "POST",
+//       body: formData,
+//       signal: controller.signal,
+//     });
+
+//     clearTimeout(timeoutId);
+
+//     // HTTP response check
+//     if (!response.ok) {
+//       throw new Error(
+//         `Erreur HTTP: ${response.status} - ${response.statusText}`
+//       );
+//     }
+
+//     const cloudinaryData = await response.json();
+
+//     // Cloudinary data validation
+//     if (!validateCloudinaryResponse(cloudinaryData)) {
+//       throw new Error("Invalid Cloudinary response: missing data.");
+//     }
+
+//     // Create the UploadedFile object
+//     const uploadedFile = createUploadedFile(
+//       cloudinaryData,
+//       file,
+//       productId,
+//       storeId
+//     );
+
+//     // Add to database
+//     const addedImage = await addProductImage(storeId, productId, uploadedFile);
+
+//     if (!addedImage?.secureUrl) {
+//       throw new Error("Failed to add image to database");
+//     }
+
+//     // Status update
+//     setUploadedImages((prev) => [...prev, addedImage]);
+
+//     return {
+//       success: true,
+//       title: "Downloaded image",
+//       description: "Images successfully uploaded and added.",
+//       data: addedImage,
+//     };
+//   } catch (error) {
+//     clearTimeout(timeoutId);
+
+//     // Specific error handling
+//     if (error instanceof Error) {
+//       if (error.name === "AbortError") {
+//         throw new Error("Timeout: Upload took too long");
+//       }
+
+//       console.error("Upload error:", {
+//         message: error.message,
+//         fileName: file.name,
+//         fileSize: file.size,
+//         productId,
+//         storeId,
+//       });
+//     }
+
+//     throw error;
+//   }
+// };
+
+// type UploadFileReturn = ReturnType<typeof uploadFile>;
+
 export const useFileUploadToCloudinary = (
   storeId: string,
   productId: string,

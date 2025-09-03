@@ -8,6 +8,9 @@ import { Loader2 } from "lucide-react";
 import { ProductEditorSharedProps } from "@/@types/admin/product";
 import { useProductEditor } from "@/hooks/use-producteditor";
 import ProductMediaUploader from "./product-media-uploader";
+// import ProductMediaUploader4 from "./product-media-uploader4";
+import ProductMediaUploader5 from "./product-media-uploader5";
+import { MultiImageUploader9 } from "./components/multi-image-uploader9";
 
 const ProductEditorElements = ({
   displayType,
@@ -25,6 +28,10 @@ const ProductEditorElements = ({
     closeModal,
     currentProductImages,
     setUploadedImages,
+    handleDeleteSelectedImages,
+    toggleImageSelection,
+    selectedImageIds,
+    setSelectedImageIds,
   } = useProductEditor({ displayType, productStatus, initialValues });
   console.log("🚀 ~ initialValues:", initialValues);
 
@@ -84,6 +91,42 @@ const ProductEditorElements = ({
                 />
               )}
           </div>
+          {/* <div className="flex flex-wrap">
+            {productStatus === "existing-product" &&
+              initialValues &&
+              initialValues.images && (
+                <ProductMediaUploader5
+                  productId={initialValues.id}
+                  storeId={initialValues.storeId}
+                  setUploadedImages={setUploadedImages}
+                  currentProductImages={currentProductImages}
+                  handleDeleteProductImage={handleDeleteProductImage}
+                  hasImages={true}
+                />
+              )}
+          </div> */}
+
+          {/* <ImageGallery
+        currentProductImages={currentProductImages}
+        uploadingImages={uploadingImages}
+        onDeleteImage={handleDeleteProductImage}
+      /> */}
+
+          {productStatus === "existing-product" &&
+            initialValues &&
+            initialValues.images && (
+              <MultiImageUploader9
+                productId={initialValues.id}
+                storeId={initialValues.storeId}
+                setUploadedImages={setUploadedImages}
+                storeImages={currentProductImages}
+                handleDeleteProductImage={handleDeleteProductImage}
+                handleDeleteSelectedImages={handleDeleteSelectedImages}
+                toggleImageSelection={toggleImageSelection}
+                selectedImageIds={selectedImageIds}
+                setSelectedImageIds={setSelectedImageIds}
+              />
+            )}
 
           <div className="flex  gap-x-4">
             <DynamicFormField

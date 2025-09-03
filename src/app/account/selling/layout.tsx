@@ -11,7 +11,8 @@ export default async function SellerLayout(props: PropsWithChildren) {
   console.log("🚀 ~ SellerLayout ~ user:YY", user);
   // console.log("🚀 ~ SellerLayout ~ user:MA", user);
 
-  if (!user || user.role !== "USER") return redirect("/auth/login");
+  if (!user) return redirect("/auth/login");
+  // if (!user || user.role !== "USER") return redirect("/auth/login");
 
   return (
     <>

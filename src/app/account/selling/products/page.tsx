@@ -10,6 +10,7 @@ import { getProducts } from "@/actions/products";
 
 const ProductsPage = async () => {
   const products = await getProducts();
+  console.log("🚀 ~ ProductsPage ~ products:", products);
 
   return (
     <>

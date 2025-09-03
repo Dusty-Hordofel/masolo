@@ -4,7 +4,7 @@ import { Image } from "@prisma/client";
 // import { Image } from "@prisma/client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
-export const useImageManager = () => {
+export const useImageManager3 = () => {
   // const [images, setImages] = useState<Image[]>([]);
   const [images, setImages] = useState<ImageData[]>([]);
   console.log("🚀 ~ useImageManager ~ images:IMG", images);
@@ -17,7 +17,7 @@ export const useImageManager = () => {
 
   useEffect(() => {
     const fetchStoreImages = async () => {
-      const imgs = await getStoreImages("6790252988a3132278447d6e");
+      const imgs = await getStoreImages("5f4dba74-1040-4fcd-831f-920226cba241");
       setStoreImages(imgs);
     };
 
@@ -85,30 +85,29 @@ export const useImageManager = () => {
   const handleFiles = (files: File[]) => {
     console.log("🚀 ~ handleFiles ~ files:MONA MESSO", files);
     const imageFiles = files.filter((file) => file.type.startsWith("image/"));
-    console.log("🚀 ~ handleFiles ~ imageFiles:TALALALA", imageFiles);
 
-    // const newImages: ImageData[] = imageFiles.map((file) => ({
-    //   id: Date.now().toString() + Math.random().toString(),
-    //   file,
-    //   preview: URL.createObjectURL(file),
-    //   isUploaded: false,
-    //   isUploading: false,
-    //   progress: 0,
-    //   isSelected: false,
-    //   name: file.name,
-    //   size: file.size,
-    //   uploadDate: new Date(),
-    //   type: file.type,
-    //   usedIn: ["Supports multimédias du produit"],
-    //   products: [],
-    // }));
+    const newImages: ImageData[] = imageFiles.map((file) => ({
+      id: Date.now().toString() + Math.random().toString(),
+      file,
+      preview: URL.createObjectURL(file),
+      isUploaded: false,
+      isUploading: false,
+      progress: 0,
+      isSelected: false,
+      name: file.name,
+      size: file.size,
+      uploadDate: new Date(),
+      type: file.type,
+      usedIn: ["Supports multimédias du produit"],
+      products: [],
+    }));
 
-    // setImages((prev) => [...prev, ...newImages]);
+    setImages((prev) => [...prev, ...newImages]);
 
     // Start uploading each image
-    // newImages.forEach((image) => {
-    //   uploadImage(image.id);
-    // });
+    newImages.forEach((image) => {
+      uploadImage(image.id);
+    });
   };
 
   // const handleFiles = (files: File[]) => {

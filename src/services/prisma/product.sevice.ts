@@ -167,6 +167,7 @@ export const ProductService = {
     const products = await prisma.product.findMany({
       include: { images: true },
     });
+    console.log("🚀 ~ getProducts ~ products:", products);
 
     return products;
   },

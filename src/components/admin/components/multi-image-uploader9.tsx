@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   ArrowLeft,
   Search,
@@ -15,6 +15,8 @@ import {
   CircleX,
   Eye,
   X,
+  Loader2,
+  XIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +38,24 @@ import { useDragAndDrop } from "./hooks/use-drag-and-drop";
 import { useImageManager } from "./hooks/use-image-manager";
 import { Image as PrismaImage } from "@prisma/client";
 import { FilterControls0 } from "./filter-controls";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
+import MediaLibraryItem from "./media-library-item";
+import FilterControls from "./MultiSelect";
+import {
+  ImageGallery,
+  MediaDropZone,
+  // UploadingImage,
+  // UploadingImage,
+  // UploadingImage,
+  // UploadingImage,
+} from "../product-media-uploader5";
+import { useFileUploadToCloudinary } from "@/hooks/use-file-upload";
 
 const PRODUCTS = [
   "Ocean Blue Shirt",
@@ -60,7 +80,176 @@ const PRODUCTS = [
   "LED High Tops",
 ];
 
-export function MultiImageUploader5() {
+export type UploadingImage = {
+  file: File;
+  previewUrl: string;
+  status: "uploading" | "processing" | "done";
+};
+
+const UploadingImage = ({
+  image,
+  index,
+  visibleImages,
+}: {
+  image: UploadingImage;
+  index: number;
+  visibleImages: number;
+}) => {
+  // if (image.status === "uploading") {
+  //   return (
+  //     <div
+  //       key={index}
+  //       className="relative w-full h-full rounded-md border bg-white flex items-center justify-center"
+  //     >
+  //       <Loader2 className="w-6 h-6 animate-spin mb-1" />
+  //       <span className="absolute bottom-2 text-xs text-muted-foreground">
+  //         Uploading…
+  //       </span>
+  //     </div>
+  //   );
+  // }
+
+  if (image.status === "uploading") {
+    return (
+      <div
+        key={index}
+        className={cn(
+          "relative  rounded-md border bg-white flex items-center justify-center w-full h-full aspect-square",
+          index === 0 && visibleImages === 0
+            ? " col-span-2 row-span-2 "
+            : " col-span-1 row-span-1"
+        )}
+      >
+        <Loader2 className="w-6 h-6 animate-spin mb-1" />
+        <span className="absolute bottom-2 text-xs text-muted-foreground">
+          Uploading…
+        </span>
+      </div>
+    );
+  }
+
+  if (image.status === "processing") {
+    return (
+      <div
+        key={index}
+        className={cn(
+          "relative rounded-md overflow-hidden border w-full h-full aspect-square",
+          index === 0 && visibleImages === 0
+            ? " col-span-2 row-span-2 "
+            : "col-span-1 row-span-1 "
+        )}
+      >
+        <img
+          src={image.previewUrl}
+          alt={image.file.name}
+          className={`w-full h-full object-cover ${
+            image.status === "processing" ? "blur-sm opacity-60" : ""
+          }`}
+        />
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-sm">
+          <Loader2 className="w-6 h-6 animate-spin mb-1 text-black" />
+          <span className="text-black">Processing…</span>
+        </div>
+      </div>
+    );
+  }
+
+  // if (image.status === "processing") {
+  //   return (
+  //     <div
+  //       key={index}
+  //       className={cn(
+  //         "relative rounded-md overflow-hidden border w-full h-full aspect-square",
+  //         index === 0 && visibleImages === 0
+  //           ? " col-span-2 row-span-2 "
+  //           : "col-span-1 row-span-1 "
+  //       )}
+  //     >
+  //       <image
+  //         src={image.previewUrl}
+  //         alt={image.file.name}
+  //         className={`w-full h-full object-cover ${
+  //           image.status === "processing" ? "blur-sm opacity-60" : ""
+  //         }`}
+  //       />
+
+  //       <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-sm">
+  //         <Loader2 className="w-6 h-6 animate-spin mb-1 text-black" />
+  //         <span className="text-black">Processing…</span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  return null;
+};
+
+const UploadedImage = ({
+  image,
+  onDelete,
+}: {
+  image: PrismaImage;
+  onDelete: (id: string) => Promise<void>;
+}) => {
+  return (
+    <div key={image.id} className="relative">
+      <picture>
+        <img
+          src={image.secureUrl}
+          alt={`Uploaded ${image.id}`}
+          style={{
+            width: "144px",
+            height: "144px",
+            objectFit: "cover",
+            borderRadius: "8px",
+            border: "1px solid #ccc",
+          }}
+        />
+      </picture>
+
+      <button
+        type="button"
+        className="absolute top-2 right-2 bg-white rounded-full w-6 h-6 flex items-center justify-center"
+        onClick={async () => await onDelete(image.id)}
+        aria-label="Delete image"
+      >
+        <XIcon className="w-5 h-5" />
+      </button>
+    </div>
+  );
+};
+
+export function MultiImageUploader9({
+  storeId,
+  productId,
+  setUploadedImages,
+  storeImages,
+  handleDeleteProductImage,
+  handleDeleteSelectedImages,
+  toggleImageSelection,
+  selectedImageIds,
+  setSelectedImageIds,
+}: // currentProductImages,
+// showAllImages,
+// hasImages,
+{
+  storeId: string;
+  productId: string;
+  // currentProductImages: PrismaImage[];
+  storeImages: PrismaImage[];
+  setUploadedImages: React.Dispatch<React.SetStateAction<PrismaImage[]>>;
+  handleDeleteProductImage: (id: string) => Promise<void>;
+  handleDeleteSelectedImages: () => Promise<void>;
+  toggleImageSelection: (id: string) => void;
+  selectedImageIds: string[];
+  setSelectedImageIds: React.Dispatch<React.SetStateAction<string[]>>;
+  // setShowAllImages?: React.Dispatch<React.SetStateAction<boolean>>;
+  // showAllImages?: boolean;
+  // hasImages: boolean;
+}) {
+  // let storeImages: PrismaImage[] = [];
+
   const {
     searchQuery,
     setSearchQuery,
@@ -100,35 +289,79 @@ export function MultiImageUploader5() {
     setSelectedProducts,
     productSearchQuery,
     setProductSearchQuery,
-    toggleImageSelection,
+    // toggleImageSelection,
   } = useImageSelection();
 
   const {
-    images,
-    storeImages,
+    // images,
+    // storeImages,
     setStoreImages,
     handleFileChange,
     handleFiles,
-    deleteImage,
+    // deleteImage,
     deleteSelectedImages,
     fileInputRef,
   } = useImageManager();
-  console.log("🚀 ~ MultiImageUploader5 ~ storeImages:", storeImages);
+  // console.log("🚀 ~ MultiImageUploader5 ~ storeImages:", storeImages);
 
-  const { isDragging, handleDragOver, handleDragLeave, handleDrop } =
-    useDragAndDrop(handleFiles);
+  const [uploadingImages, setUploadingImages] = useState<UploadingImage[]>([]);
+  // const [deletingImages, setDeletingImages] = useState<Set<string>>(new Set());
+  // const [selectedImageIds, setSelectedImageIds] = useState<Set<string>>(
+  //   new Set()
+  // );
 
-  const toggleProductFilter = (product: string) => {
-    setSelectedProducts((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(product)) {
-        newSet.delete(product);
-      } else {
-        newSet.add(product);
-      }
-      return newSet;
-    });
-  };
+  // const deleteImageFromCloudinary = async (
+  //   publicId: string,
+  //   imageId: string
+  // ) => {
+  //   // Marquer l'image comme en cours de suppression
+  //   setDeletingImages((prev) => new Set(prev).add(publicId));
+
+  //   try {
+  //     const response = await fetch("/api/delete-image", {
+  //       method: "DELETE",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ publicId }),
+  //     });
+
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       throw new Error(errorData.error || "Erreur lors de la suppression");
+  //     }
+
+  //     const result = await response.json();
+
+  //     if (result.success) {
+  //       // Supprimer l'image de la liste de traitement
+  //       setStoreImages((prev) => prev.filter((img) => img.id !== imageId));
+  //     } else {
+  //       throw new Error("La suppression sur Cloudinary a échoué");
+  //     }
+  //   } catch (error: unknown) {
+  //     console.error("Erreur lors de la suppression:", error);
+
+  //     if (error instanceof Error) {
+  //       alert(`Erreur lors de la suppression de l'image: ${error.message}`);
+  //     } else {
+  //       alert("Erreur inconnue lors de la suppression de l'image.");
+  //     }
+  //   } finally {
+  //     // Retirer l'image de l'état de suppression
+  //     setDeletingImages((prev) => {
+  //       const newSet = new Set(prev);
+  //       newSet.delete(publicId);
+  //       return newSet;
+  //     });
+  //   }
+  // };
+
+  const { isUploading, uploadFiles, uploadFile } = useFileUploadToCloudinary(
+    storeId,
+    productId,
+    setUploadedImages
+  );
 
   // Filter and sort images
   const filteredAndSortedImages = storeImages
@@ -190,63 +423,11 @@ export function MultiImageUploader5() {
       }
     });
 
-  // const filteredAndSortedImages = storeImages
-  //   .filter((image) => {
-  //     if (
-  //       searchQuery &&
-  //       !image.name.toLowerCase().includes(searchQuery.toLowerCase())
-  //     )
-  //       return false;
-  //     if (
-  //       fileTypeFilter !== "all" &&
-  //       fileTypeFilter === "images" &&
-  //       !image.type.startsWith("image/")
-  //     )
-  //       return false;
-  //     if (
-  //       minSize &&
-  //       Number(image.size) < Number.parseFloat(minSize) * 1024 * 1024
-  //     )
-  //       return false;
-  //     if (
-  //       maxSize &&
-  //       Number(image.size) > Number.parseFloat(maxSize) * 1024 * 1024
-  //     )
-  //       return false;
-  //     // if (usageFilter !== "all" && !image.usedIn.includes(usageFilter))
-  //     //   return false;
-  //     // if (
-  //     //   selectedProducts.size > 0 &&
-  //     //   !Array.from(selectedProducts).some((product) =>
-  //     //     image.products.includes(product)
-  //     //   )
-  //     // )
-  //     // return false;
-  //     return true;
-  //   })
-  //   .sort((a, b) => {
-  //     switch (sortBy) {
-  //       case "date-desc":
-  //         return b.createdAt.getTime() - a.createdAt.getTime();
-  //       case "date-asc":
-  //         return a.createdAt.getTime() - b.createdAt.getTime();
-  //       case "name-asc":
-  //         return a.name.localeCompare(b.name);
-  //       case "name-desc":
-  //         return b.name.localeCompare(a.name);
-  //       case "size-asc":
-  //         return Number(a.size) - Number(b.size);
-  //       case "size-desc":
-  //         return Number(b.size) - Number(a.size);
-  //       default:
-  //         return 0;
-  //     }
-  //   });
-
   const visibleImages = showExpanded ? storeImages : storeImages.slice(0, 6);
+  // console.log("🚀 ~ MultiImageUploader9 ~ visibleImages:", visibleImages);
 
-  const remainingCount = Math.max(0, storeImages.length - 5);
-  const hasMoreImages = storeImages.length > 5;
+  const remainingCount = Math.max(0, storeImages.length - 6);
+  const hasMoreImages = storeImages.length > 7;
   const hasImages = storeImages.length > 0;
 
   // Navigation for preview in modal
@@ -298,6 +479,8 @@ export function MultiImageUploader5() {
     setTimeout(() => setPreviewImageInModal(null), 300); // Wait for animation to complete
   };
 
+  // console.log("MOAMAA", uploadingImages);
+
   // Single image view
   if (selectedImage) {
     return (
@@ -338,98 +521,75 @@ export function MultiImageUploader5() {
   return (
     <div className="space-y-4">
       {/* Controls */}
-      {selectedImages.size > 0 && (
-        <div className="flex gap-2 justify-end">
-          <Button
-            onClick={() =>
-              deleteSelectedImages(selectedImages, setSelectedImages)
-            }
-            variant="destructive"
-            size="sm"
-          >
-            Supprimer ({selectedImages.size})
-          </Button>
-        </div>
-      )}
+      {
+        // selectedImages.size > 0
+        selectedImageIds.length > 0 && (
+          <div className="flex gap-2 justify-end">
+            <Button
+              onClick={
+                handleDeleteSelectedImages
+                // deleteSelectedImages(selectedImages, setSelectedImages)
+              }
+              variant="destructive"
+              size="sm"
+              type="button"
+            >
+              Supprimer ({selectedImageIds.length})
+            </Button>
+          </div>
+        )
+      }
 
-      {/* Images Grid */}
       {storeImages.length === 0 ? (
-        <MediaUploader
-          isDragging={isDragging}
-          handleDragOver={handleDragOver}
-          handleDragLeave={handleDragLeave}
-          handleDrop={handleDrop}
-          fileInputRef={fileInputRef}
-          setShowAllImages={setShowAllImages}
+        <MediaDropZone
+          setUploadingImages={setUploadingImages}
+          uploadFile={uploadFile}
           showAllImages={showAllImages}
           hasImages={hasImages}
-          ignoreNextClick={ignoreNextClick}
         />
       ) : (
         <div className="grid grid-cols-3 gap-1 sm:grid-cols-6 ">
-          {/* First image - large */}
-          {storeImages[0] && (
+          {visibleImages[0] && (
             <div className="col-span-2 row-span-2 aspect-square">
               <ImageCard
                 image={storeImages[0]}
-                isSelected={selectedImages.has(storeImages[0].id)}
+                isSelected={selectedImageIds.includes(visibleImages[0].id)}
                 onToggleSelection={() =>
-                  toggleImageSelection(storeImages[0].id)
+                  toggleImageSelection(visibleImages[0].id)
                 }
-                onDelete={() =>
-                  deleteImage(storeImages[0].id, setSelectedImages)
-                }
-                onView={() => setSelectedImage(storeImages[0])}
+                // onDelete={() =>
+                //   deleteImage(visibleImages[0].id, setSelectedImages)
+                // }
+                onView={() => setSelectedImage(visibleImages[0])}
                 className="h-full"
               />
             </div>
           )}
 
-          {/* Other images - uniform size */}
+          {visibleImages.slice(1).map((image) => (
+            <div key={image.id} className="col-span-1 row-span-1 aspect-square">
+              <ImageCard
+                image={image}
+                isSelected={selectedImageIds.includes(image.id)}
+                onToggleSelection={() => toggleImageSelection(image.id)}
+                // onDelete={() => deleteImage(image.id, setSelectedImages)}
+                onView={() => setSelectedImage(image)}
+                className="h-full"
+              />
+            </div>
+          ))}
 
-          {!showExpanded
-            ? visibleImages.slice(1, 7).map((image) => (
-                <div
-                  key={image.id}
-                  className="col-span-1 row-span-1 aspect-square"
-                >
-                  <ImageCard
-                    image={image}
-                    isSelected={selectedImages.has(image.id)}
-                    onToggleSelection={() => toggleImageSelection(image.id)}
-                    onDelete={() => deleteImage(image.id, setSelectedImages)}
-                    onView={() => setSelectedImage(image)}
-                    className="h-full"
-                  />
-                </div>
-              ))
-            : visibleImages.map((image) => (
-                <div
-                  key={image.id}
-                  className="col-span-1 row-span-1 aspect-square"
-                >
-                  <h1>MOMO</h1>
-                  {/* <ImageCard
-                    image={image}
-                    isSelected={selectedImages.has(image.id)}
-                    onToggleSelection={() => toggleImageSelection(image.id)}
-                    onDelete={() => deleteImage(image.id, setSelectedImages)}
-                    onView={() => setSelectedImage(image)}
-                    className="h-full"
-                  /> */}
-                </div>
-              ))}
           {/* More images indicator or Add card */}
-          {!showExpanded && hasMoreImages && images.length > 6 && (
+          {!showExpanded && hasMoreImages && !isUploading && (
             <div
               className="aspect-square relative cursor-pointer group"
               onClick={() => setShowExpanded(true)}
             >
               <div className="w-full h-full bg-muted rounded-lg overflow-hidden relative">
-                {images[7] && (
+                {visibleImages[7] && (
                   <picture>
                     <img
-                      src={images[7].url || images[7].preview}
+                      src={visibleImages[7].secureUrl}
                       alt="More images"
                       className="w-full h-full object-cover"
                     />
@@ -437,7 +597,6 @@ export function MultiImageUploader5() {
                 )}
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
                   <div className="text-white text-center">
-                    {/* <Plus className="h-6 w-6 mx-auto mb-1" /> */}
                     <p className="text-sm font-medium">+{remainingCount}</p>
                     <p className="text-xs">images</p>
                   </div>
@@ -445,20 +604,24 @@ export function MultiImageUploader5() {
               </div>
             </div>
           )}
-          <div className="col-span-1 row-span-1 aspect-square">
-            <AddImageCard onOpenModal={() => setShowAllImages(true)} />
-          </div>
+
+          {showExpanded && hasMoreImages && !isUploading && (
+            <div className="col-span-1 row-span-1 aspect-square">
+              <AddImageCard onOpenModal={() => setShowAllImages(true)} />
+            </div>
+          )}
+
+          {uploadingImages.map((img, idx) => {
+            return (
+              <UploadingImage
+                image={img}
+                index={idx}
+                visibleImages={visibleImages.length}
+              />
+            );
+          })}
         </div>
       )}
-
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        multiple
-        className="hidden"
-        onChange={handleFileChange}
-      />
 
       {/* Media Library Modal */}
       <Dialog
@@ -529,7 +692,13 @@ export function MultiImageUploader5() {
                 className="flex-1 overflow-y-auto p-4 space-y-4"
                 ref={imageListRef}
               >
-                <MediaUploader
+                <MediaDropZone
+                  setUploadingImages={setUploadingImages}
+                  uploadFile={uploadFile}
+                  showAllImages={showAllImages}
+                  hasImages={hasImages}
+                />
+                {/* <MediaUploader
                   isDragging={isDragging}
                   handleDragOver={handleDragOver}
                   handleDragLeave={handleDragLeave}
@@ -539,7 +708,7 @@ export function MultiImageUploader5() {
                   showAllImages={showAllImages}
                   hasImages={hasImages}
                   ignoreNextClick={ignoreNextClick}
-                />
+                /> */}
                 {viewMode === "grid" ? (
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {filteredAndSortedImages.map((image) => (
@@ -549,9 +718,9 @@ export function MultiImageUploader5() {
                         isSelected={selectedImages.has(image.id)}
                         isActive={previewImageInModal?.id === image.id}
                         onToggleSelection={() => toggleImageSelection(image.id)}
-                        onDelete={() =>
-                          deleteImage(image.id, setSelectedImages)
-                        }
+                        // onDelete={() =>
+                        //   deleteImage(image.id, setSelectedImages)
+                        // }
                         onView={() => handlePreviewImage(image)}
                       />
                     ))}
@@ -602,7 +771,7 @@ export function MultiImageUploader5() {
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <Button
+                          {/* <Button
                             variant="destructive"
                             size="icon"
                             className="h-8 w-8"
@@ -611,7 +780,7 @@ export function MultiImageUploader5() {
                             }
                           >
                             <X className="h-4 w-4" />
-                          </Button>
+                          </Button> */}
                         </div>
                       </div>
                     ))}
@@ -745,15 +914,6 @@ interface ViewModeSelectorProps {
   setViewMode: (mode: ViewMode) => void;
 }
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Checkbox } from "@/components/ui/checkbox";
-import MediaLibraryItem from "./media-library-item";
-import FilterControls from "./MultiSelect";
-
 interface ViewModeSelectorProps {
   viewMode: "grid" | "list";
   setViewMode: (mode: "grid" | "list") => void;
@@ -826,103 +986,3 @@ export function ViewModeSelector({
     </Popover>
   );
 }
-
-// export function ViewModeSelector({
-//   viewMode,
-//   setViewMode,
-// }: ViewModeSelectorProps) {
-//   return (
-//     <Popover>
-//       <PopoverTrigger asChild>
-//         <Button
-//           variant="outline"
-//           size="icon"
-//           className="p-2"
-//           aria-label="Change display mode"
-//         >
-//           {viewMode === "grid" ? (
-//             <Grid3X3 className="h-4 w-4" />
-//           ) : (
-//             <List className="h-4 w-4" />
-//           )}
-//           <ChevronDown className="h-4 w-4 opacity-50 ml-1" />
-//         </Button>
-//       </PopoverTrigger>
-//       <PopoverContent align="end" className="w-48 p-1">
-//         <div className="space-y-1">
-//           <Button
-//             variant={viewMode === "grid" ? "secondary" : "ghost"}
-//             className="w-full justify-start cursor-pointer"
-//             onClick={() => setViewMode("grid")}
-//           >
-//             <Grid3X3 className="h-4 w-4 mr-2" />
-//             Affichage en grille
-//             {viewMode === "grid" && <Check className="h-4 w-4 ml-auto" />}
-//           </Button>
-//           <Button
-//             variant={viewMode === "list" ? "secondary" : "ghost"}
-//             className="w-full justify-start cursor-pointer"
-//             onClick={() => {
-//               setViewMode("list");
-//               // setOpenFilter(null);
-//             }}
-//           >
-//             <List className="h-4 w-4 mr-2" />
-//             Affichage en liste
-//             {viewMode === "list" && <Check className="h-4 w-4 ml-auto" />}
-//           </Button>
-//         </div>
-//       </PopoverContent>
-//     </Popover>
-//   );
-// }
-
-// export function ViewModeSelector({
-//   viewMode,
-//   setViewMode,
-// }: // setOpenFilter,
-// ViewModeSelectorProps) {
-//   return (
-//     <DropdownMenu>
-//       <DropdownMenuTrigger asChild>
-//         <Button
-//           variant="outline"
-//           size="icon"
-//           className="p-2"
-//           aria-label="Change display mode"
-//         >
-//           {viewMode === "grid" ? (
-//             <Grid3X3 className="h-4 w-4" />
-//           ) : (
-//             <List className="h-4 w-4" />
-//           )}
-//           <ChevronDown className="h-4 w-4 opacity-50 ml-1" />
-//         </Button>
-//       </DropdownMenuTrigger>
-//       <DropdownMenuContent align="end">
-//         <DropdownMenuItem
-//           onClick={() => {
-//             // setOpenFilter(null);
-//             setViewMode("grid");
-//           }}
-//           className="cursor-pointer"
-//         >
-//           <Grid3X3 className="h-4 w-4 mr-2" />
-//           Affichage en grille
-//           {viewMode === "grid" && <Check className="h-4 w-4 ml-auto" />}
-//         </DropdownMenuItem>
-//         <DropdownMenuItem
-//           onClick={() => {
-//             // setOpenFilter(null);
-//             setViewMode("list");
-//           }}
-//           className="cursor-pointer"
-//         >
-//           <List className="h-4 w-4 mr-2" />
-//           Affichage en liste
-//           {viewMode === "list" && <Check className="h-4 w-4 ml-auto" />}
-//         </DropdownMenuItem>
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   );
-// }

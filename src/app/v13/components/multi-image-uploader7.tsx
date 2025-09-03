@@ -60,7 +60,17 @@ const PRODUCTS = [
   "LED High Tops",
 ];
 
-export function MultiImageUploader5() {
+export function MultiImageUploader7({
+  storeId,
+  productId,
+}: // setUploadedImages,
+{
+  storeId: string;
+  productId: string;
+  // currentProductImages?: Image[];
+  // setUploadedImages: React.Dispatch<React.SetStateAction<PrismaImage[]>>;
+  // handleDeleteProductImage?: (id: string) => Promise<void>;
+}) {
   const {
     searchQuery,
     setSearchQuery,
@@ -112,7 +122,8 @@ export function MultiImageUploader5() {
     deleteImage,
     deleteSelectedImages,
     fileInputRef,
-  } = useImageManager();
+  } = useImageManager2({ storeId, productId });
+
   console.log("🚀 ~ MultiImageUploader5 ~ storeImages:", storeImages);
 
   const { isDragging, handleDragOver, handleDragLeave, handleDrop } =
@@ -753,6 +764,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import MediaLibraryItem from "./media-library-item";
 import FilterControls from "./MultiSelect";
+import { useImageManager2 } from "./hooks/use-image-manager2";
 
 interface ViewModeSelectorProps {
   viewMode: "grid" | "list";

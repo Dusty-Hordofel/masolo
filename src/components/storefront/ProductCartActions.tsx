@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { useProductCartActions } from "@/hooks/useProductCartActions";
+import { useProductCartActions } from "@/hooks/use-product-cart-actions";
 
 interface AddToCartResult {
   success: boolean;

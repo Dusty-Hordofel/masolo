@@ -10,7 +10,7 @@ interface MediaLibraryItemProps {
   isSelected: boolean;
   isActive: boolean;
   onToggleSelection: () => void;
-  onDelete: () => void;
+  // onDelete: () => void;
   onView: () => void;
 }
 
@@ -19,7 +19,7 @@ export default function MediaLibraryItem({
   isSelected,
   isActive,
   onToggleSelection,
-  onDelete,
+  // onDelete,
   onView,
 }: MediaLibraryItemProps) {
   return (
@@ -63,7 +63,7 @@ export default function MediaLibraryItem({
           >
             <Eye className="h-4 w-4 text-white" />
           </Button>
-          <Button
+          {/* <Button
             variant="destructive"
             size="icon"
             className="h-8 w-8"
@@ -73,7 +73,7 @@ export default function MediaLibraryItem({
             }}
           >
             <X className="h-4 w-4" />
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

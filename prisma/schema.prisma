@@ -18,7 +18,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
+  // provider = "postgresql"
   url      = env("DATABASE_URL")
   // relationMode = "prisma"
 }
@@ -42,7 +43,8 @@ enum UserRole {
 }
 
 model User {
-  id                      String                 @id @default(uuid())
+  id                      String                 @id @default(auto()) @map("_id") @db.ObjectId
+  // id                      String                 @id @default(uuid())
   name                    String?
   email                   String?                @unique
   emailVerified           DateTime?
@@ -65,7 +67,8 @@ model User {
 
 model Account {
   // id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  id                String  @id @default(uuid())
+  // id                String  @id @default(uuid())
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String
   // userId            String  @db.ObjectId
   type              String
@@ -86,9 +89,10 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(uuid())
+  // id           String   @id @default(uuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionToken String   @unique @map("session_token")
-  userId       String
+  userId       String   @db.ObjectId
   expires      DateTime @map("expiresAt")
   user         User     @relation(fields: [userId], references: [id])
 
@@ -96,7 +100,8 @@ model Session {
 }
 
 model VerificationToken {
-  id      String   @id @default(uuid())
+  // id      String   @id @default(uuid())
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   email   String
   token   String   @unique
   expires DateTime @map("expiresAt")
@@ -105,7 +110,8 @@ model VerificationToken {
 }
 
 model PasswordResetToken {
-  id      String   @id @default(uuid())
+  // id      String   @id @default(uuid())
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   email   String
   token   String   @unique
   expires DateTime
@@ -114,7 +120,8 @@ model PasswordResetToken {
 }
 
 model TwoFactorToken {
-  id      String   @id @default(uuid())
+  // id      String   @id @default(uuid())
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   email   String
   token   String   @unique
   expires DateTime
@@ -123,32 +130,48 @@ model TwoFactorToken {
 }
 
 model TwoFactorConfirmation {
-  id String @id @default(uuid())
-
-  userId String
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
 }
 
 model Product {
-  id                  String   @id @default(uuid())
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
   name                String
-  price               Float    @default(0)
+  price               Float      @default(0)
   description         String
-  inventory           Int      @default(0)
-  isPreOrderAvailable Boolean  @default(false)
-  storeId             String   @map("store_id")
-  store               Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  inventory           Int        @default(0)
+  isPreOrderAvailable Boolean    @default(false)
+  storeId             String     @map("store_id")
+  store               Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
   images              Image[]
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  CartItem            CartItem[]
 
   @@map("products")
 }
 
+// model Image {
+//   id        String   @id @default(uuid())
+//   name      String
+//   publicId  String
+//   secureUrl String
+//   alt       String
+//   size      String
+//   format    String
+//   type      String
+//   productId String   @map("product_id")
+//   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   storeId   String   @map("store_id")
+//   store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+//   createdAt DateTime @default(now())
+// }
+
 model Image {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   publicId  String
   secureUrl String
@@ -156,11 +179,17 @@ model Image {
   size      String
   format    String
   type      String
-  productId String   @map("product_id")
+  isMain    Boolean  @default(false) // Ajout pour marquer l'image principale
+  order     Int      @default(0) // Ajout pour l'ordre d'affichage
+  productId String   @map("product_id") @db.ObjectId
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  storeId   String   @map("store_id")
+  storeId   String   @map("store_id") @db.ObjectId
   store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
+  @@index([productId, isMain]) // Index pour optimiser les requêtes d'image principale
+  @@index([storeId]) // Index pour les requêtes par store
+  @@map("images")
 }
 
 // model Store {
@@ -182,13 +211,13 @@ model Image {
 //   DISABLED
 // }
 model Store {
-  id          String    @id @default(uuid())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String    @unique @map("store_name")
   industry    String?
   description String?
   slug        String    @unique @map("slug")
-  owner       User?     @relation(fields: [ownerId], references: [id])
-  ownerId     String?
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     String    @db.ObjectId
   products    Product[] // Ajout de la relation inverse avec Product
   images      Image[] // Ajout de la relation inverse avec Image
   payments    Payment[]
@@ -209,35 +238,51 @@ model Store {
 //   orders      Order[]
 // }
 
+// model Payment {
+//   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+//   storeId                String  @unique @map("store_id") // Ajout de @unique
+//   stripeAccountId        String?
+//   stripeAccountCreatedAt Int?
+//   stripeAccountExpiresAt Int?
+//   detailsSubmitted       Boolean @default(false)
+
+//   store Store? @relation(fields: [storeId], references: [id], onDelete: Cascade) // ✅ Relation avec Store
+// }
+
 model Payment {
-  id                     Int     @id @default(autoincrement())
-  storeId                String  @unique @map("store_id") // Ajout de @unique
+  id                     String  @id @default(auto()) @map("_id") @db.ObjectId
+  storeId                String  @unique @map("store_id") @db.ObjectId
   stripeAccountId        String?
   stripeAccountCreatedAt Int?
   stripeAccountExpiresAt Int?
   detailsSubmitted       Boolean @default(false)
 
-  store Store? @relation(fields: [storeId], references: [id], onDelete: Cascade) // ✅ Relation avec Store
+  store Store? @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
 }
 
 model Order {
-  id                        Int     @id @default(autoincrement())
+  id                        String   @id @default(auto()) @map("_id") @db.ObjectId
   prettyOrderId             Int?
-  storeId                   String
+  storeId                   String   @db.ObjectId
   items                     Json
-  total                     Decimal @default(0) @db.Decimal(10, 2)
-  stripePaymentIntentId     String  @unique @db.VarChar(256)
+  total                     Float    @default(0)
+  stripePaymentIntentId     String   @unique
   stripePaymentIntentStatus String?
   name                      String?
   email                     String?
-  createdAt                 Int
-  addressId                 Int
-  store                     Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  address                   Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  createdAt                 DateTime @default(now())
+  addressId                 String   @db.ObjectId
+
+  store   Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  address Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
+
+  @@map("orders")
 }
 
 model Address {
-  id         Int     @id @default(autoincrement())
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
   line1      String
   line2      String?
   city       String
@@ -245,21 +290,74 @@ model Address {
   postalCode String
   country    String
   orders     Order[]
+
+  @@map("addresses")
 }
 
 model Cart {
-  id              String     @id @default(uuid())
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
   cartItems       CartItem[]
-  // items           Json?
   paymentIntentId String?
   clientSecret    String?
   isClosed        Boolean    @default(false)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@map("carts")
 }
 
 model CartItem {
-  id        String @id @default(uuid()) // ✅ Génère un ID unique pour chaque CartItem
-  productId String // ID du produit
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  productId String @db.ObjectId
   qty       Int    @default(0)
-  cartId    String @map("cart_id")
-  cart      Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId    String @map("cart_id") @db.ObjectId
+
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("cart_items")
 }
+
+// model Order {
+//   id                        Int     @id @default(autoincrement())
+//   prettyOrderId             Int?
+//   storeId                   String
+//   items                     Json
+//   total                     Decimal @default(0) @db.Decimal(10, 2)
+//   stripePaymentIntentId     String  @unique @db.VarChar(256)
+//   stripePaymentIntentStatus String?
+//   name                      String?
+//   email                     String?
+//   createdAt                 Int
+//   addressId                 Int
+//   store                     Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+//   address                   Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
+// }
+
+// model Address {
+//   id         Int     @id @default(autoincrement())
+//   line1      String
+//   line2      String?
+//   city       String
+//   state      String
+//   postalCode String
+//   country    String
+//   orders     Order[]
+// }
+
+// model Cart {
+//   id              String     @id @default(uuid())
+//   cartItems       CartItem[]
+//   // items           Json?
+//   paymentIntentId String?
+//   clientSecret    String?
+//   isClosed        Boolean    @default(false)
+// }
+
+// model CartItem {
+//   id        String @id @default(uuid()) // ✅ Génère un ID unique pour chaque CartItem
+//   productId String // ID du produit
+//   qty       Int    @default(0)
+//   cartId    String @map("cart_id")
+//   cart      Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+// }
