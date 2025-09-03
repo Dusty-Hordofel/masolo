@@ -106,12 +106,6 @@ const ProductEditorElements = ({
               )}
           </div> */}
 
-          {/* <ImageGallery
-        currentProductImages={currentProductImages}
-        uploadingImages={uploadingImages}
-        onDeleteImage={handleDeleteProductImage}
-      /> */}
-
           {productStatus === "existing-product" &&
             initialValues &&
             initialValues.images && (
