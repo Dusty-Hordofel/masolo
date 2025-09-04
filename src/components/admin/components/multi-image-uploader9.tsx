@@ -56,6 +56,7 @@ import {
   // UploadingImage,
 } from "../product-media-uploader5";
 import { useFileUploadToCloudinary } from "@/hooks/use-file-upload";
+import ImageGrid from "./image-grid";
 
 const PRODUCTS = [
   "Ocean Blue Shirt",
@@ -496,10 +497,7 @@ export function MultiImageUploader9({
         <div className="max-w-4xl mx-auto">
           <picture>
             <img
-              src={
-                selectedImage.secureUrl
-                // || selectedImage.preview
-              }
+              src={selectedImage.secureUrl}
               alt={selectedImage.name || ""}
               className="w-full h-auto rounded-lg shadow-lg"
             />
@@ -623,6 +621,20 @@ export function MultiImageUploader9({
         </div>
       )}
 
+      <ImageGrid
+        visibleImages={visibleImages}
+        storeImages={storeImages}
+        selectedImageIds={selectedImageIds}
+        toggleImageSelection={toggleImageSelection}
+        setSelectedImage={setSelectedImage}
+        showExpanded={showExpanded}
+        setShowExpanded={setShowExpanded}
+        hasMoreImages={hasMoreImages}
+        isUploading={isUploading}
+        setShowAllImages={setShowAllImages}
+        uploadingImages={uploadingImages}
+      />
+
       {/* Media Library Modal */}
       <Dialog
         open={showAllImages}
@@ -698,24 +710,14 @@ export function MultiImageUploader9({
                   showAllImages={showAllImages}
                   hasImages={hasImages}
                 />
-                {/* <MediaUploader
-                  isDragging={isDragging}
-                  handleDragOver={handleDragOver}
-                  handleDragLeave={handleDragLeave}
-                  handleDrop={handleDrop}
-                  fileInputRef={fileInputRef}
-                  setShowAllImages={setShowAllImages}
-                  showAllImages={showAllImages}
-                  hasImages={hasImages}
-                  ignoreNextClick={ignoreNextClick}
-                /> */}
+
                 {viewMode === "grid" ? (
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {filteredAndSortedImages.map((image) => (
                       <MediaLibraryItem
                         key={image.id}
                         image={image}
-                        isSelected={selectedImages.has(image.id)}
+                        isSelected={selectedImageIds.includes(image.id)}
                         isActive={previewImageInModal?.id === image.id}
                         onToggleSelection={() => toggleImageSelection(image.id)}
                         // onDelete={() =>
@@ -741,7 +743,6 @@ export function MultiImageUploader9({
                         <picture>
                           <img
                             src={image.secureUrl}
-                            // src={image.url || image.preview}
                             alt={image.name}
                             className="w-12 h-12 object-cover rounded"
                           />
@@ -754,7 +755,7 @@ export function MultiImageUploader9({
                         </div>
                         <div className="flex gap-2">
                           <Checkbox
-                            checked={selectedImages.has(image.id)}
+                            checked={selectedImageIds.includes(image.id)}
                             onCheckedChange={() =>
                               toggleImageSelection(image.id)
                             }
@@ -771,16 +772,6 @@ export function MultiImageUploader9({
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
-                          {/* <Button
-                            variant="destructive"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() =>
-                              deleteImage(image.id, setSelectedImages)
-                            }
-                          >
-                            <X className="h-4 w-4" />
-                          </Button> */}
                         </div>
                       </div>
                     ))}
