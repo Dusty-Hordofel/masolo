@@ -12,8 +12,29 @@ import { routes } from "@/app/data/routes";
 import { getStoreAndProduct } from "@/actions/store";
 import { ProductCard } from "@/components/storefront/product-card";
 
+import { auth } from "@/lib/(auth)/better-auth/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
 export default async function Home() {
   const storeAndProduct = await getStoreAndProduct();
+
+   const [session, activeSessions, deviceSessions] = await Promise.all([
+    auth.api.getSession({
+      headers: await headers(),
+    }),
+    auth.api.listSessions({
+      headers: await headers(),
+    }),
+    auth.api.listDeviceSessions({
+      headers: await headers(),
+    }),
+  ]).catch((e) => {
+    console.log(e);
+    throw redirect("/sign-in");
+  });
+
+  console.log(session,"MONA")
 
   return (
     <div>
