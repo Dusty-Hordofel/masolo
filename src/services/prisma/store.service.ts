@@ -1,10 +1,152 @@
-import { currentUser } from "@/lib/auth";
+import { auth } from "@/lib/(auth)/better-auth/auth";
 import { prisma } from "@/lib/prisma";
 import { StoreSchemaFormData } from "@/schemas/stores/stores.schema";
 import { createSlug } from "@/utils";
+import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
 
 export const StoreService = {
-  async createStore(storeValues: StoreSchemaFormData) {
+   async  createStoreForUser(storeValues: StoreSchemaFormData) {
+
+      const session = await auth.api.getSession({ headers: await headers() });
+      console.log("🚀 ~ fetchUserStores ~ session:", session)
+
+      if (!session)  redirect("/sign-in")
+    
+
+  try {
+        const existingStore = await prisma.store.findFirst({
+        where: {
+          name: storeValues.name,
+        },
+      });
+
+
+    if (existingStore) {
+      return {
+        success: false,
+        title: "Store already exists",
+        description: "A store with that name already exists. Please try again.",
+      };
+    }
+
+     const newStore = await prisma.store.create({
+        data: {
+          ...storeValues,
+          slug: createSlug(storeValues.name),
+          owner: {
+            connect: { id: session.user.id },
+          },
+        },
+      });
+
+    // Invalide le cache pour recharger la page
+    revalidatePath("/dashboard");
+
+    return {
+      success: true,
+      data: newStore,
+      title: "Store created",
+      description: "Success! Your store has been created.",
+    };
+  } catch (error: any) {
+    if (error instanceof Prisma.PrismaClientInitializationError) {
+      return {
+        success: false,
+        title: "Database connection failed",
+        description: "Impossible de se connecter à la base de données.",
+      };
+    } else if (
+      error instanceof Prisma.PrismaClientKnownRequestError ||
+      error instanceof Prisma.PrismaClientValidationError ||
+      error instanceof Prisma.PrismaClientRustPanicError
+    ) {
+      return {
+        success: false,
+        title: "Server error",
+        description: "Une erreur serveur est survenue. Veuillez réessayer plus tard.",
+      };
+    } else {
+      return {
+        success: false,
+        title: "Unknown error",
+        description: error.message || "Sorry, an error occurred creating your store.",
+      };
+    }
+  }
+},
+
+// Fonction cache par userId
+ getUserStores:  
+/*  cache( */
+  async (userId: string) => {
+
+      const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) return { redirect: "/sign-in" as const};
+
+  // Vérifier que l'utilisateur existe encore en base
+  const user = await prisma.user.findUnique({ where: { id: session.user.id } });
+  if (!user) return { redirect: "/sign-in" };
+
+  
+  try {
+    const stores = await prisma.store.findMany({
+        where: { ownerId: userId },
+      });
+
+    return {
+      success: true,
+      data: stores,
+      title: "Stores fetched",
+      description: "Stores loaded successfully",
+    };
+
+
+  } catch (err: any) {
+    if (err instanceof Prisma.PrismaClientInitializationError) {
+      return {
+        success: false,
+        title: "Database connection failed",
+        description: "Impossible de se connecter à la base de données.",
+      };
+    } else if (
+      err instanceof Prisma.PrismaClientKnownRequestError ||
+      err instanceof Prisma.PrismaClientValidationError ||
+      err instanceof Prisma.PrismaClientRustPanicError
+    ) {
+      return {
+        success: false,
+        title: "Server error",
+        description: "Une erreur serveur est survenue. Veuillez réessayer plus tard.",
+      };
+    } else {
+      return {
+        success: false,
+        title: "Unknown error",
+        description: err.message || "Une erreur inconnue est survenue.",
+      };
+    }
+  }
+}
+/* S */
+, 
+
+async  fetchUserStores() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  console.log("🚀 ~ fetchUserStores ~ session:SESSION", session)
+  if (!session) return { redirect: "/sign-in" as const};
+
+  // Vérifier que l'utilisateur existe encore en base
+  const user = await prisma.user.findUnique({ where: { id: session.user.id } });
+  if (!user) return { redirect: "/sign-in" };
+
+  return this.getUserStores(user.id);
+}
+
+ /*  async createStore(storeValues: StoreSchemaFormData) {
     const user = await currentUser();
 
     console.log("🚀 ~ createStore ~ user:", user);
@@ -60,8 +202,9 @@ export const StoreService = {
         description: "Sorry, an error occured creating your store. ",
       };
     }
-  },
-  async getUserStores(userId: string) {
+  }, */
+  ,
+/*   async getUserStores(userId: string) {
     try {
       const stores = await prisma.store.findMany({
         where: { ownerId: userId },
@@ -72,7 +215,7 @@ export const StoreService = {
       console.error("Error fetching user stores:", error);
       return [];
     }
-  },
+  }, */
 
   async getStoreAndProduct() {
     try {
@@ -139,6 +282,7 @@ export const StoreService = {
       return null;
     }
   },
+
   async getStoreBySlug(slug: string, returnId: boolean = false) {
     try {
       const store = await prisma.store.findFirst({

@@ -14,11 +14,12 @@ import {
 import { createStore } from "@/actions/store";
 import { useToast } from "@/hooks/use-toast.hook";
 import { cn } from "@/lib/utils";
-import { useSession } from "next-auth/react";
+/* import { useSession } from "@/lib/(auth)/better-auth/auth-client"; */
+
 
 export const CreateNewStore = () => {
   const router = useRouter();
-  const { data: session, update } = useSession();
+/* const { data } = useSession(); */
 
   // console.log("🚀 ~ CreateNewStore ~ session:POPO", session);
   const { toast } = useToast();
@@ -41,10 +42,10 @@ export const CreateNewStore = () => {
   const handleStoreSubmit = async (data: StoreSchemaFormData) => {
     const res = await createStore(data);
 
-    if (!res.error) {
+    if (!res.success) {
       reset();
 
-      const newSession = {
+    /*   const newSession = {
         ...session,
         user: {
           ...session?.user,
@@ -52,7 +53,7 @@ export const CreateNewStore = () => {
         },
       };
 
-      await update(newSession);
+      await update(newSession); */
 
       // Trigger the server-side update without modifying the session locally
       // await update();

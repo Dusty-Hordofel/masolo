@@ -106,7 +106,7 @@ export function useProductEditor({
         formValues,
         // initialValues?.storeId as string
         // "5f4dba74-1040-4fcd-831f-920226cba241"
-        "6790252988a3132278447d6e"
+        "cmg6c0mav0000uwx0afcc3nu2"
       );
       if (data.productId) {
         router.push(

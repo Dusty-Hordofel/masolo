@@ -95,7 +95,7 @@ model Verification {
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
 
-  @@map("verification")
+  /* @@map("verification") */
 }
 
 model Passkey {
@@ -112,7 +112,7 @@ model Passkey {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("passkey")
+  /* @@map("passkey") */
 }
 
 model TwoFactor {
@@ -144,8 +144,11 @@ model Session {
 // --------------------
 
 model Store {
-   id        String   @id @default(cuid()) @map("_id")
+  id        String   @id @default(cuid()) @map("_id")
   name      String
+  industry    String?
+  description String?
+  slug        String  @unique @map("slug")
   ownerId   String    
   owner     User      @relation(fields: [ownerId], references: [id])
   products  Product[]
@@ -155,6 +158,16 @@ model Store {
 
   @@map("store")
 }
+
+//   id          String  @id @default(uuid())
+//   name        String  @unique @map("store_name")
+//   industry    String?
+//   description String?
+//   slug        String  @unique @map("slug")
+//   owner       User?   @relation(fields: [ownerId], references: [id])
+//   ownerId     String?
+
+//   @@map("stores")
 
 model Product {
    id        String   @id @default(cuid()) @map("_id")

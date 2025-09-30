@@ -27,7 +27,8 @@ import { Button } from "@/components/ui/button";
 import { X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { signUp } from "@/lib/(auth)/better-auth/auth-client";
-import { signUpSchema } from "@/helpers/zod/signup-schema";
+import { signUpSchema } from "@/lib/zod/signup-schema";
+
 
 export function SignUp() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);

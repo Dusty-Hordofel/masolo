@@ -127,6 +127,7 @@ export const auth = betterAuth({
       clientSecret: process.env.MICROSOFT_CLIENT_SECRET as string,
     },
   },
+  
   plugins: [
     // other plugin options
     magicLink({

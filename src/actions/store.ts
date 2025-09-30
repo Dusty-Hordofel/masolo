@@ -1,11 +1,19 @@
 "use server";
 
+import { auth } from "@/lib/(auth)/better-auth/auth";
+import { AuthError } from "@/lib/errors/auth-error";
+import { DBConnectionError } from "@/lib/errors/db-error";
+import { PrismaError } from "@/lib/errors/prisma-error";
 import { prisma } from "@/lib/prisma";
 import { StoreSchemaFormData } from "@/schemas/stores/stores.schema";
 import { StoreService } from "@/services/prisma/store.service";
+import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import { cache } from "react";
 
 export async function createStore(data: StoreSchemaFormData) {
-  return await StoreService.createStore(data);
+  return await StoreService.createStoreForUser(data);
 }
 
 export async function getStoreAndProduct() {
@@ -51,3 +59,5 @@ export async function getStoreByProductId(productId: string) {
 export const getStoreImages = async (storeId: string) => {
   return await StoreService.getStoreImages(storeId);
 };
+
+

@@ -19,7 +19,7 @@ import { redirect } from "next/navigation";
 export default async function Home() {
   const storeAndProduct = await getStoreAndProduct();
 
-   const [session, activeSessions, deviceSessions] = await Promise.all([
+  /*  const [session, activeSessions, deviceSessions] = await Promise.all([
     auth.api.getSession({
       headers: await headers(),
     }),
@@ -34,7 +34,22 @@ export default async function Home() {
     throw redirect("/sign-in");
   });
 
-  console.log(session,"MONA")
+  console.log(session,"MONA") */
+
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    
+    if(!session) {
+        redirect("/sign-in")
+    }
+
+
+console.log(session
+  ,"MONA2")
+
+
 
   return (
     <div>
