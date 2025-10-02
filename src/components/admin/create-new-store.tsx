@@ -45,7 +45,7 @@ export const CreateNewStore = () => {
     if (!res.success) {
       reset();
 
-    /*   const newSession = {
+    /* const newSession = {
         ...session,
         user: {
           ...session?.user,

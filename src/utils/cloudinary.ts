@@ -1,7 +1,10 @@
 import { UploadedFile } from "@/@types/cloudinary";
 
 export const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
-export const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUD_SECRET as string;
+export const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET as string;
+console.log("🚀 ~ CLOUDINARY_URL:", CLOUDINARY_URL)
+console.log("🚀 ~ UPLOAD_PRESET:", UPLOAD_PRESET)
+/* const UPLOAD_PRESET = mdtyff4d */
 
 interface CloudinaryResponse {
   secure_url: string;
@@ -9,8 +12,7 @@ interface CloudinaryResponse {
   original_filename: string;
   format?: string;
   resource_type: string;
-  bytes?: number;
-}
+  bytes?: number;}
 
 interface UploadResult {
   success: boolean;

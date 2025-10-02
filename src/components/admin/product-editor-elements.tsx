@@ -33,7 +33,7 @@ const ProductEditorElements = ({
     selectedImageIds,
     setSelectedImageIds,
   } = useProductEditor({ displayType, productStatus, initialValues });
-  console.log("🚀 ~ initialValues:", initialValues);
+  /* console.log("🚀 ~ initialValues:", initialValues); */
 
   return (
     <>
@@ -78,7 +78,7 @@ const ProductEditorElements = ({
             }}
           />
 
-          <div className="flex flex-wrap">
+         {/*  <div className="flex flex-wrap">
             {productStatus === "existing-product" &&
               initialValues &&
               initialValues.images && (
@@ -90,7 +90,7 @@ const ProductEditorElements = ({
                   handleDeleteProductImage={handleDeleteProductImage}
                 />
               )}
-          </div>
+          </div> */}
           {/* <div className="flex flex-wrap">
             {productStatus === "existing-product" &&
               initialValues &&

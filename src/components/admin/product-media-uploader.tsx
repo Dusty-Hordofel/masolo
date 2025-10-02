@@ -47,7 +47,9 @@ const ProductMediaUploader = ({
   );
 
   const handleSingleUpload = async (file: File) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("🚀 ~ handleSingleUpload ~ file:TALA", file)
+
+/*     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     setUploadingImages((prev) =>
       prev.map((img) =>
@@ -65,7 +67,7 @@ const ProductMediaUploader = ({
       );
     } catch (error) {
       console.error(error);
-    }
+    } */
   };
 
   const { getRootProps, getInputProps } = useDropzone({

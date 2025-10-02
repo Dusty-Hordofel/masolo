@@ -3,8 +3,8 @@ import { useState, useRef } from "react";
 
 export function useImageSelection() {
   const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
-  console.log("🚀 ~ useImageSelection ~ selectedImages:", selectedImages);
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  /*  console.log("🚀 ~ useImageSelection ~ selectedImages:", selectedImages); */
   // console.log("🚀 ~ useImageSelection ~ setSelectedImage:CECE", selectedImage);
   const [previewImageInModal, setPreviewImageInModal] = useState<Image | null>(
     null
@@ -22,7 +22,7 @@ export function useImageSelection() {
   const [productSearchQuery, setProductSearchQuery] = useState("");
 
   const toggleImageSelection = (imageId: string) => {
-    console.log("🚀 ~ toggleImageSelection ~ imageId:", imageId);
+    /* console.log("🚀 ~ toggleImageSelection ~ imageId:", imageId); */
     setSelectedImages((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(imageId)) {
@@ -56,3 +56,7 @@ export function useImageSelection() {
     toggleImageSelection,
   };
 }
+
+
+
+

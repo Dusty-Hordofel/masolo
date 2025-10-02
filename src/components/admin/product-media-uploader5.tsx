@@ -189,7 +189,7 @@ export const MediaDropZone = ({
     title: string;
     description: string;
     data: Image;
-  }>;
+  }>; 
   setUploadingImages: React.Dispatch<React.SetStateAction<UploadingImage[]>>;
   showAllImages?: boolean;
   hasImages: boolean;
@@ -212,6 +212,7 @@ export const MediaDropZone = ({
   );
 
   const handleSingleUpload = async (file: File) => {
+  console.log("🚀 ~ handleSingleUpload ~ file:YOLO", file)
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     setUploadingImages((prev) =>
@@ -223,11 +224,11 @@ export const MediaDropZone = ({
     try {
       await uploadFile(file);
 
-      setUploadingImages((prev) =>
+       setUploadingImages((prev) =>
         prev.map((img) =>
           img.file === file ? { ...img, status: "done" } : img
         )
-      );
+      ); 
     } catch (error) {
       console.error(error);
     }

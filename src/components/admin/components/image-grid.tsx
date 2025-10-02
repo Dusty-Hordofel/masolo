@@ -172,8 +172,8 @@ const ImageGrid = ({
       <MainImageCard />
       <SecondaryImageCards />
       <MoreImagesIndicator />
-      <AddImageButton />
       <UploadingImages />
+      <AddImageButton />
     </div>
   );
 };

@@ -34,7 +34,8 @@ export async function deleteProduct(id: string) {
 export async function addProductImages(
   storeId: string,
   productId: string,
-  productImages: Array<Omit<Image, "id" | "createdAt" | "product" | "store">>
+  productImages: Array<UploadedFile>
+/*   productImages: Array<Omit<Image, "id" | "createdAt" | "product" | "store">> */
   // Array<{
   //   name: string;
   //   publicId: string;
@@ -77,7 +78,8 @@ export async function addProductImages(
 export async function addProductImage(
   storeId: string,
   productId: string,
-  image: Omit<Image, "id" | "createdAt" | "product" | "store">
+  image: UploadedFile
+ /*  image: Omit<Image, "id" | "createdAt" | "product" | "store"> */
 ) {
   try {
     // Vérifier que le produit existe
