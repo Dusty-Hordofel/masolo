@@ -1,11 +1,11 @@
 "use client";
 import React, { MutableRefObject, useCallback, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useFileUploadToCloudinary } from "../../hooks/use-file-upload";
+import { useFileUploadToCloudinary } from "../../../hooks/use-file-upload";
 import { Loader2, XIcon } from "lucide-react";
 import { Image } from "@prisma/client";
 import MediaUrlDropdown from "@/app/v13/components/media-url-dropdown";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 type UploadingImage = {
   file: File;

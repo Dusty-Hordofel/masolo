@@ -46,7 +46,7 @@ export function useProductEditor({
 
   const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
   const [selectedImageIds, setSelectedImageIds] = useState<string[]>([]);
-  console.log("🚀 ~ useProductEditor ~ selectedImageIds:", selectedImageIds);
+  console.log("🚀 ~ useProductEditor ~ selectedImageIds:SIDS", selectedImageIds);
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSelectionMode, setIsSelectionMode] = useState(false);
@@ -141,7 +141,8 @@ export function useProductEditor({
     setDeletedImageIds((prev) => [...prev, id]);
 
     const result = await deleteProductImage(id);
-    if (result.success) {
+    console.log("🚀 ~ handleDeleteProductImage ~ result:DELETION RESULT", result)
+  /*   if (result.success) {
       toast({
         title: result.title,
         description: result.description,
@@ -152,7 +153,7 @@ export function useProductEditor({
         title: result.title,
         description: result.description,
       });
-    }
+    } */
   };
 
   // const toggleImageSelection = (imageId: string) => {
@@ -196,6 +197,9 @@ export function useProductEditor({
     const deletePromises = selectedImageIds.map((id) => deleteProductImage(id));
     const results = await Promise.allSettled(deletePromises);
 
+    console.log("🚀 ~ handleDeleteSelectedImages ~ results:RERE", results)
+    
+    
     let successCount = 0;
     let failedIds: string[] = [];
 
@@ -207,17 +211,17 @@ export function useProductEditor({
       } else {
         failedIds.push(imageId);
       }
-    });
+    }); 
 
     // Retirer les IDs qui ont échoué de la liste des supprimés
-    if (failedIds.length > 0) {
+     if (failedIds.length > 0) {
       setDeletedImageIds((prev) =>
         prev.filter((id) => !failedIds.includes(id))
       );
-    }
+    } 
 
     // Afficher le résultat
-    if (successCount === selectedImageIds.length) {
+     if (successCount === selectedImageIds.length) {
       toast({
         title: "Suppression réussie",
         description: `${successCount} image(s) supprimée(s) avec succès.`,
@@ -233,7 +237,7 @@ export function useProductEditor({
         description: "Aucune image n'a pu être supprimée.",
       });
     }
-
+ 
     // Réinitialiser l'état
     setSelectedImageIds([]);
     setIsSelectionMode(false);

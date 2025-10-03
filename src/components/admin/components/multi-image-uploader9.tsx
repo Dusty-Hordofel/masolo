@@ -17,6 +17,8 @@ import {
   X,
   Loader2,
   XIcon,
+  ImageIcon,
+  Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -97,7 +99,6 @@ const UploadingImage = ({
   index: number;
   visibleImages: number;
 }) => {
-
 
   if (image.status === "uploading") {
     return (
@@ -206,28 +207,20 @@ export function MultiImageUploader9({
   setSelectedImageIds: React.Dispatch<React.SetStateAction<string[]>>;
 
 }) {
+  console.log("🚀 ~ MultiImageUploader9 ~ selectedImageIds:TALA", selectedImageIds)
+  console.log("🚀 ~ MultiImageUploader9 ~ selectedImageIds:TALA", selectedImageIds.length)
  
 
   const {
-    selectedImages,
-    setSelectedImages,
-    selectedImage,
+   /*  selectedImage, *///ne pas suppimer
     setSelectedImage,
     previewImageInModal,
     setPreviewImageInModal,
     isPreviewAnimating,
     setIsPreviewAnimating,
-    /*  showAllImages,
-    setShowAllImages, */
     showExpanded,
     setShowExpanded,
     imageListRef,
-    ignoreNextClick,
-    selectedProducts,
-    setSelectedProducts,
-    productSearchQuery,
-    setProductSearchQuery,
-    // toggleImageSelection,
   } = useImageSelection();
 
 
@@ -245,7 +238,7 @@ export function MultiImageUploader9({
   const visibleImages = showExpanded ? storeImages : storeImages.slice(0, 6);
 
 
-  const remainingCount = Math.max(0, storeImages.length - 6);
+  /* const remainingCount = Math.max(0, storeImages.length - 6); */
   const hasMoreImages = storeImages.length > 7;
   const hasImages = storeImages.length > 0;
 
@@ -265,45 +258,61 @@ export function MultiImageUploader9({
  
  
 
-  // Single image view
-  if (selectedImage) {
-    return (
-      <div className="space-y-4">
-        <Button
-          variant="outline"
-          onClick={() => setSelectedImage(null)}
-          className="flex items-center gap-2"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Retour
-        </Button>
-        <div className="max-w-4xl mx-auto">
-          <picture>
-            <img
-              src={selectedImage.secureUrl}
-              alt={selectedImage.name || ""}
-              className="w-full h-auto rounded-lg shadow-lg"
-            />
-          </picture>
-          <div className="mt-4 p-4 bg-muted rounded-lg">
-            <h3 className="font-semibold">{selectedImage.name}</h3>
-            <p className="text-sm text-muted-foreground">
-              {/* Taille: {(selectedImage.size / 1024 / 1024).toFixed(2)} MB */}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Ajouté le: {selectedImage.createdAt.toLocaleDateString()}
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+ /*  if (selectedImage)  {
+  return <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-300">
+        <div className="relative w-full h-full flex flex-col items-center justify-center">
+      <Button
+        variant="outline"
+        onClick={() => setSelectedImage(null)}
+        className="absolute top-4 left-4 flex items-center gap-2 z-50"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Retour
+      </Button>
+
+      <picture>
+        <img
+          src={selectedImage.secureUrl}
+          alt={selectedImage.name || ""}
+          className="max-h-[70vh] max-w-full h-auto w-auto object-contain rounded-xl shadow-2xl ring-1 ring-white/10"
+        />
+      </picture>
+
+      <div className="w-full max-w-2xl pt-5">
+              <div className="bg-background/95 backdrop-blur-md rounded-2xl shadow-2xl border border-border/50 overflow-hidden">
+                <div className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <ImageIcon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-semibold text-foreground mb-2 truncate">{selectedImage.name}</h3>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Calendar className="h-4 w-4" />
+                        <span>
+                          Ajouté le{" "}
+                          {selectedImage.createdAt.toLocaleDateString("fr-FR", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
+              </div>
+            </div>
+    </div>
+  </div>
+}
+ */
 
   return (
     <div className="space-y-4">
-      {/* Controls */}
+      
       {
-        // selectedImages.size > 0
         selectedImageIds.length > 0 && (
           <div className="flex gap-2 justify-end">
             <Button
@@ -315,7 +324,7 @@ export function MultiImageUploader9({
               size="sm"
               type="button"
             >
-              Supprimer ({selectedImageIds.length})
+              {`Supprimer ${selectedImageIds.length}`}
             </Button>
           </div>
         )
@@ -373,82 +382,3 @@ export function MultiImageUploader9({
   );
 }
 
-type ViewMode = "grid" | "list";
-
-interface ViewModeSelectorProps {
-  viewMode: ViewMode;
-  setViewMode: (mode: ViewMode) => void;
-}
-
-interface ViewModeSelectorProps {
-  viewMode: "grid" | "list";
-  setViewMode: (mode: "grid" | "list") => void;
-  openFilter: string | null;
-  setOpenFilter: Dispatch<SetStateAction<string | null>>;
-}
-
-export function ViewModeSelector({
-  viewMode,
-  setViewMode,
-  openFilter,
-  setOpenFilter,
-}: ViewModeSelectorProps) {
-  return (
-    <Popover
-      open={openFilter === "viewMode"}
-      onOpenChange={(open) => setOpenFilter(open ? "viewMode" : null)}
-    >
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="p-2"
-          aria-label="Change display mode"
-        >
-          {viewMode === "grid" ? (
-            <Grid3X3 className="h-4 w-4" />
-          ) : (
-            <List className="h-4 w-4" />
-          )}
-          <ChevronDown className="h-4 w-4 opacity-50 ml-1" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className="w-48 p-1"
-        align="end"
-        side="bottom"
-        // sideOffset={10}
-        alignOffset={80}
-        avoidCollisions={false} // Désactive la détection de collision
-        hideWhenDetached={false}
-      >
-        <div className="space-y-1">
-          <Button
-            variant={viewMode === "grid" ? "secondary" : "ghost"}
-            className="w-full justify-start cursor-pointer"
-            onClick={() => {
-              setViewMode("grid");
-              setOpenFilter(null); // Ferme le popover après sélection
-            }}
-          >
-            <Grid3X3 className="h-4 w-4 mr-2" />
-            Affichage en grille
-            {viewMode === "grid" && <Check className="h-4 w-4 ml-auto" />}
-          </Button>
-          <Button
-            variant={viewMode === "list" ? "secondary" : "ghost"}
-            className="w-full justify-start cursor-pointer"
-            onClick={() => {
-              setViewMode("list");
-              setOpenFilter(null); // Ferme le popover après sélection
-            }}
-          >
-            <List className="h-4 w-4 mr-2" />
-            Affichage en liste
-            {viewMode === "list" && <Check className="h-4 w-4 ml-auto" />}
-          </Button>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}

@@ -114,8 +114,9 @@ export async function deleteProductImage(
     const image = await prisma.image.findUnique({
       where: { id: imageId },
     });
+    console.log("🚀 ~ deleteProductImage ~ image:IMG", image)
 
-    if (!image) {
+     if (!image) {
       return {
         success: false,
         title: "Image not found",
@@ -123,12 +124,12 @@ export async function deleteProductImage(
       };
     }
 
-    await deleteImageFromCloudinary(image.publicId);
+    await deleteImageFromCloudinary(image.publicId); 
 
     await prisma.image.delete({
       where: { id: imageId },
     });
-
+ 
     return {
       success: true,
       title: "Product deleted",

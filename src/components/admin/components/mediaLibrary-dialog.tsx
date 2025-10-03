@@ -39,7 +39,8 @@ import {
   MediaDropZone,
 
 } from "../product-media-uploader5";
-import { UploadingImage, ViewModeSelector } from "./multi-image-uploader9";
+import { UploadingImage } from "./multi-image-uploader9";
+import { ViewModeSelector } from "./view-mode-selector";
 
 
 const MediaLibraryDialog = ({

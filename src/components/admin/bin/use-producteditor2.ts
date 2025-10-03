@@ -19,24 +19,19 @@ import {
 } from "@/app/data/routes";
 import {
   Image,
-  // , Product
 } from "@prisma/client";
 import {
   ProductEditorSharedProps,
-  // ProductWithImages,
+
 } from "@/@types/admin/product";
 
 export function useProductEditor2({
   displayType,
-  // productStatus,
   initialValues,
 }: ProductEditorSharedProps) {
-  // console.log("🚀 ~ initialValues:LO", initialValues);
   const router = useRouter();
-
-  // Status of uploaded & deleted images
   const [uploadedImages, setUploadedImages] = useState<Image[]>([]);
-  console.log("🚀 ~ setUploadedImages:", uploadedImages);
+ 
 
   const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
 

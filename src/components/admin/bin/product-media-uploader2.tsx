@@ -1,12 +1,18 @@
 "use client";
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useFileUploadToCloudinary } from "../../hooks/use-file-upload";
+import { useFileUploadToCloudinary } from "../../../hooks/use-file-upload";
 import { XIcon } from "lucide-react";
 import { Image } from "@prisma/client";
-// import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
-const ProductMediaUploader3 = ({
+type UploadingImage = {
+  file: File;
+  previewUrl: string;
+  status: "uploading" | "processing" | "done";
+};
+
+const ProductMediaUploader2 = ({
   storeId,
   productId,
   setUploadedImages,
@@ -20,6 +26,7 @@ const ProductMediaUploader3 = ({
   handleDeleteProductImage: (id: string) => Promise<void>;
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploadingImages, setUploadingImages] = useState<UploadingImage[]>([]);
 
   const { isUploading, uploadFiles } = useFileUploadToCloudinary(
     storeId,
@@ -27,28 +34,28 @@ const ProductMediaUploader3 = ({
     setUploadedImages
   );
 
-  const onDrop = useCallback(
-    async (acceptedFiles: File[]) => {
-      setSelectedFiles((prev) => [...prev, ...acceptedFiles]);
-
-      try {
-        const results = await uploadFiles(acceptedFiles);
-        if (results.success) {
-          setSelectedFiles([]);
-        }
-      } catch (error) {
-        console.log("🚀 ~ handleUpload ~ error:", error);
-        alert("Une erreur est survenue lors du téléversement.");
-      }
-    },
-    [uploadFiles]
-  );
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setSelectedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+  }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: { "image/*": [] },
     multiple: true,
   });
+
+  const handleUpload = async () => {
+    try {
+      const results = await uploadFiles(selectedFiles);
+
+      if (results.success) {
+        setSelectedFiles([]);
+      }
+    } catch (error) {
+      console.log("🚀 ~ handleUpload ~ error:", error);
+      alert("Une erreur est survenue lors du téléversement.");
+    }
+  };
 
   return (
     <div>
@@ -105,9 +112,27 @@ const ProductMediaUploader3 = ({
             </div>
           </div>
         </div>
+
+        {selectedFiles.length > 0 && (
+          <div className="mt-4">
+            {selectedFiles.map((file, i) => (
+              <li key={i}>
+                {file.name} ({(file.size / 1024).toFixed(2)} KB)
+              </li>
+            ))}
+            <Button
+              onClick={handleUpload}
+              disabled={isUploading || selectedFiles.length === 0}
+              className="mt-2"
+              type="button"
+            >
+              {isUploading ? "Uploading" : "Upload"}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default ProductMediaUploader3;
+export default ProductMediaUploader2;
