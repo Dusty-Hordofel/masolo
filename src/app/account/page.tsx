@@ -1,4 +1,4 @@
-import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
+import { HeadingAndSubheading } from "@/app/account/_components/heading-and-subheading";
 
 export default function Account() {
   return (

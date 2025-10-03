@@ -1,6 +1,6 @@
 import { FileTypeFilter, ImageData, SortOption, ViewMode } from "@/@types";
 import { useState } from "react";
-import { FileType, SortType } from "../select-options";
+import { FileType, SortType } from "../../../components/admin/components/select-options";
 
 export function useImageFilters() {
   const [searchQuery, setSearchQuery] = useState("");

@@ -1,5 +1,5 @@
 import { ProductWithImages } from "@/@types/admin/product";
-import { ProductEditor } from "@/components/admin/product-editor";
+import { ProductEditor } from "@/app/account/_components/product-editor";
 import { getProduct } from "@/actions/products";
 
 interface ProductPageParams {

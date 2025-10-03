@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import MediaUrlDropdown from "./media-url-dropdown";
+import MediaUrlDropdown from "../../../../../app/account/_components/media-url-dropdown";
 import { cn } from "@/lib/utils";
 import { MutableRefObject } from "react";
 

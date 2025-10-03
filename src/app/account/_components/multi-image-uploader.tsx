@@ -2,87 +2,22 @@
 
 import type React from "react";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  ArrowLeft,
-  Search,
-  Grid3X3,
-  List,
-  ChevronLeft,
-  ChevronRight,
-  Check,
-  ChevronDown,
-  CircleX,
-  Eye,
-  X,
   Loader2,
-  XIcon,
-  ImageIcon,
-  Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import AddImageCard from "./add-image-card";
-import ImageCard from "./image-card";
-import { MediaUploader } from "./media-uploader";
-import { useImageFilters } from "./hooks/use-image-filters";
-import { useImageSelection } from "./hooks/use-image-selection";
-import { useDragAndDrop } from "./hooks/use-drag-and-drop";
-import { useImageManager } from "./hooks/use-image-manager";
+import { useImageSelection } from "./use-image-selection";
 import { Image as PrismaImage } from "@prisma/client";
-import { FilterControls0 } from "./filter-controls";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Checkbox } from "@/components/ui/checkbox";
-import MediaLibraryItem from "./media-library-item";
-import FilterControls from "./MultiSelect";
-import {
-  ImageGallery,
-  MediaDropZone,
-  // UploadingImage,
-  // UploadingImage,
-  // UploadingImage,
-  // UploadingImage,
-} from "../product-media-uploader5";
-import { useFileUploadToCloudinary } from "@/hooks/use-file-upload";
+
+
+import { useFileUploadToCloudinary } from "@/app/account/_hooks/use-file-upload";
 import ImageGrid from "./image-grid";
 import MediaLibraryDialog from "./mediaLibrary-dialog";
+import MediaDropZone from "./media-drop-zone";
 
-const PRODUCTS = [
-  "Ocean Blue Shirt",
-  "Classic Varsity Top",
-  "Yellow Wool Jumper",
-  "Floral White Top",
-  "Striped Silk Blouse",
-  "Classic Leather Jacket",
-  "Dark Denim Top",
-  "Navy Sports Jacket",
-  "Soft Winter Jacket",
-  "Black Leather Bag",
-  "Zipped Jacket",
-  "Silk Summer Top",
-  "Long Sleeve Cotton Top",
-  "Chequered Red Shirt",
-  "White Cotton Shirt",
-  "Olive Green Jacket",
-  "Blue Silk Tuxedo",
-  "Red Sports Tee",
-  "Striped Skirt and Top",
-  "LED High Tops",
-];
 
 export type UploadingImage = {
   file: File;
@@ -150,42 +85,8 @@ const UploadingImage = ({
   return null;
 };
 
-const UploadedImage = ({
-  image,
-  onDelete,
-}: {
-  image: PrismaImage;
-  onDelete: (id: string) => Promise<void>;
-}) => {
-  return (
-    <div key={image.id} className="relative">
-      <picture>
-        <img
-          src={image.secureUrl}
-          alt={`Uploaded ${image.id}`}
-          style={{
-            width: "144px",
-            height: "144px",
-            objectFit: "cover",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-          }}
-        />
-      </picture>
 
-      <button
-        type="button"
-        className="absolute top-2 right-2 bg-white rounded-full w-6 h-6 flex items-center justify-center"
-        onClick={async () => await onDelete(image.id)}
-        aria-label="Delete image"
-      >
-        <XIcon className="w-5 h-5" />
-      </button>
-    </div>
-  );
-};
-
-export function MultiImageUploader9({
+export function MultiImageUploader({
   storeId,
   productId,
   setUploadedImages,
@@ -193,7 +94,7 @@ export function MultiImageUploader9({
   handleDeleteSelectedImages,
   toggleImageSelection,
   selectedImageIds,
-  setSelectedImageIds,
+  /* setSelectedImageIds, */
 }: 
 {
   storeId: string;
@@ -207,6 +108,7 @@ export function MultiImageUploader9({
   setSelectedImageIds: React.Dispatch<React.SetStateAction<string[]>>;
 
 }) {
+  console.log("🚀 ~ MultiImageUploader ~ storeImages:STOR", storeImages)
  
 
   const {
@@ -224,7 +126,7 @@ export function MultiImageUploader9({
 
   const [uploadingImages, setUploadingImages] = useState<UploadingImage[]>([]);
   const [showAllImages, setShowAllImages] = useState(false);
-  console.log("🚀 ~ MultiImageUploader9 ~ uploadingImages:", uploadingImages);
+
 
   const { isUploading, uploadFiles, uploadFile } = useFileUploadToCloudinary(
     storeId,

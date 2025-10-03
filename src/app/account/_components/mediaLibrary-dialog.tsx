@@ -2,21 +2,13 @@
 
 import type React from "react";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction} from "react";
 import {
-  ArrowLeft,
   Search,
-  Grid3X3,
-  List,
   ChevronLeft,
   ChevronRight,
-  Check,
-  ChevronDown,
   CircleX,
   Eye,
-  X,
-  Loader2,
-  XIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,17 +22,14 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-import { useImageFilters } from "./hooks/use-image-filters";
+import { useImageFilters } from "../_hooks/use-image-filters";
 import {  Image as PrismaImage } from "@prisma/client";
 import { Checkbox } from "@/components/ui/checkbox";
-import MediaLibraryItem from "./media-library-item";
-import FilterControls from "./MultiSelect";
-import {
-  MediaDropZone,
-
-} from "../product-media-uploader5";
-import { UploadingImage } from "./multi-image-uploader9";
+import MediaLibraryItem from "../_hooks/media-library-item";
+import { UploadingImage } from "./multi-image-uploader";
 import { ViewModeSelector } from "./view-mode-selector";
+import MediaDropZone from "./media-drop-zone";
+import FilterControls from "./filter-controls";
 
 
 const MediaLibraryDialog = ({
@@ -83,7 +72,6 @@ const MediaLibraryDialog = ({
     
 ) => {
 
-     
         const {
           searchQuery,
           setSearchQuery,

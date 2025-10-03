@@ -4,7 +4,6 @@ import AddImageCard from "./add-image-card";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Image } from "@prisma/client";
-// import { UploadingImage } from "../product-media-uploader5";
 
 // Composant amélioré avec de meilleures pratiques
 const ImageGrid = ({

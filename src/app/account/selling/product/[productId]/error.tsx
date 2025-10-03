@@ -1,7 +1,7 @@
 "use client";
 
 import { singleLevelNestedRoutes } from "@/app/data/routes";
-import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
+import { HeadingAndSubheading } from "@/app/account/_components/heading-and-subheading";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

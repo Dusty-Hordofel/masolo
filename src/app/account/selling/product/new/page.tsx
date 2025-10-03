@@ -1,4 +1,4 @@
-import { ProductEditor } from "@/components/admin/product-editor";
+import { ProductEditor } from "@/app/account/_components/product-editor";
 import React from "react";
 
 const NewProductPage = () => {

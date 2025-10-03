@@ -1,6 +1,6 @@
 import { ImageData } from "@/@types";
 import { getStoreImages } from "@/actions/store";
-import { useFileUploadToCloudinary } from "@/hooks/use-file-upload";
+import { useFileUploadToCloudinary } from "@/app/account/_hooks/use-file-upload";
 import { Image } from "@prisma/client";
 // import { Image } from "@prisma/client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";

@@ -1,4 +1,4 @@
-import { HeadingAndSubheading } from "@/components/admin/heading-and-subheading";
+import { HeadingAndSubheading } from "@/app/account/_components/heading-and-subheading";
 import { InfoCard } from "@/components/admin/info-card";
 import { Button } from "@/components/ui/button";
 import {

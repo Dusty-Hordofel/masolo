@@ -1,16 +1,13 @@
 "use client";
 
 import React from "react";
-import { HeadingAndSubheading } from "./heading-and-subheading";
-import DynamicFormField from "../forms/dynamic-form-field";
-import { Button } from "../ui/button";
+import { HeadingAndSubheading } from "@/app/account/_components/heading-and-subheading";
+import DynamicFormField from "@/components/forms/dynamic-form-field";
+import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { ProductEditorSharedProps } from "@/@types/admin/product";
-import { useProductEditor } from "@/hooks/use-producteditor";
-import ProductMediaUploader from "./product-media-uploader";
-// import ProductMediaUploader4 from "./product-media-uploader4";
-import ProductMediaUploader5 from "./product-media-uploader5";
-import { MultiImageUploader9 } from "./components/multi-image-uploader9";
+import { useProductEditor } from "@/app/account/_hooks/use-producteditor";
+import { MultiImageUploader } from "@/app/account/_components/multi-image-uploader";
 
 const ProductEditorElements = ({
   displayType,
@@ -109,7 +106,7 @@ const ProductEditorElements = ({
           {productStatus === "existing-product" &&
             initialValues &&
             initialValues.images && (
-              <MultiImageUploader9
+              <MultiImageUploader
                 productId={initialValues.id}
                 storeId={initialValues.storeId}
                 setUploadedImages={setUploadedImages}

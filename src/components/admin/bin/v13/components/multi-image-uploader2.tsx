@@ -50,7 +50,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import MediaUrlDropdown from "./media-url-dropdown";
+import MediaUrlDropdown from "../../../../../app/account/_components/media-url-dropdown";
 
 interface ImageData {
   id: string;
