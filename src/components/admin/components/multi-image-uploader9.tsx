@@ -207,8 +207,6 @@ export function MultiImageUploader9({
   setSelectedImageIds: React.Dispatch<React.SetStateAction<string[]>>;
 
 }) {
-  console.log("🚀 ~ MultiImageUploader9 ~ selectedImageIds:TALA", selectedImageIds)
-  console.log("🚀 ~ MultiImageUploader9 ~ selectedImageIds:TALA", selectedImageIds.length)
  
 
   const {

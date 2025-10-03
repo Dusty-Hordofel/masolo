@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { useFileUploadToCloudinary } from "../../../hooks/use-file-upload";
 import { Loader2, XIcon } from "lucide-react";
 import { Image } from "@prisma/client";
-import MediaUrlDropdown from "@/app/v13/components/media-url-dropdown";
+import MediaUrlDropdown from "@/components/admin/bin/v13/components/media-url-dropdown";
 import { Button } from "../../ui/button";
 
 type UploadingImage = {
