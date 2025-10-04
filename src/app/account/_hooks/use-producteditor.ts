@@ -26,19 +26,15 @@ import {
 } from "@/app/data/routes";
 import {
   Image,
-  // , Product
 } from "@prisma/client";
 import {
   ProductEditorSharedProps,
-  // ProductWithImages,
 } from "@/@types/admin/product";
 
 export function useProductEditor({
   displayType,
-  // productStatus,
   initialValues,
 }: ProductEditorSharedProps) {
-  // console.log("🚀 ~ initialValues:LO", initialValues);
   const router = useRouter();
 
   // Status of uploaded & deleted images
@@ -142,7 +138,7 @@ export function useProductEditor({
 
     const result = await deleteProductImage(id);
     console.log("🚀 ~ handleDeleteProductImage ~ result:DELETION RESULT", result)
-  /*   if (result.success) {
+    if (result.success) {
       toast({
         title: result.title,
         description: result.description,
@@ -153,7 +149,7 @@ export function useProductEditor({
         title: result.title,
         description: result.description,
       });
-    } */
+    } 
   };
 
   // const toggleImageSelection = (imageId: string) => {

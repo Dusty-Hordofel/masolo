@@ -1,4 +1,4 @@
-import { HeadingAndSubheading } from "../../app/account/_components/heading-and-subheading";
+import { HeadingAndSubheading } from "./heading-and-subheading";
 
 export const InfoCard = (props: {
   heading: string;

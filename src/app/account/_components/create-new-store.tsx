@@ -1,12 +1,12 @@
 "use client";
 
-import DynamicFormField from "../forms/dynamic-form-field";
+import DynamicFormField from "@/components/forms/dynamic-form-field";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Heading } from "../ui/heading";
+import { Heading } from "@/components/ui/heading";
 import {
   storeSchema,
   StoreSchemaFormData,
@@ -14,14 +14,12 @@ import {
 import { createStore } from "@/actions/store";
 import { useToast } from "@/hooks/use-toast.hook";
 import { cn } from "@/lib/utils";
-/* import { useSession } from "@/lib/(auth)/better-auth/auth-client"; */
+
 
 
 export const CreateNewStore = () => {
   const router = useRouter();
-/* const { data } = useSession(); */
 
-  // console.log("🚀 ~ CreateNewStore ~ session:POPO", session);
   const { toast } = useToast();
 
   const defaultValues: StoreSchemaFormData = {
@@ -44,19 +42,6 @@ export const CreateNewStore = () => {
 
     if (!res.success) {
       reset();
-
-    /* const newSession = {
-        ...session,
-        user: {
-          ...session?.user,
-          store: [...(session?.user.store || []), res.newStore],
-        },
-      };
-
-      await update(newSession); */
-
-      // Trigger the server-side update without modifying the session locally
-      // await update();
 
       router.refresh();
     }

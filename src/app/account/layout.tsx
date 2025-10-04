@@ -5,7 +5,7 @@ import { ContentWrapper } from "@/components/ui/content-wrapper";
 import { Heading } from "@/components/ui/heading";
 import { Line } from "@/components/ui/line";
 import { SecondaryMenu } from "@/components/secondary-menu";
-import { PaymentConnectionStatus } from "@/components/admin/payment-connection-status";
+/* import { PaymentConnectionStatus } from "@/components/admin/payment-connection-status"; */
 import { Footer } from "@/components/footer";
 
 export default async function AdminLayout({ children }: PropsWithChildren) {

@@ -1,5 +1,5 @@
 
-import { CreateNewStore } from "@/components/admin/create-new-store";
+import { CreateNewStore } from "@/app/account/_components/create-new-store";
 /* import { currentUser } from "@/lib/auth"; */
 import { PropsWithChildren } from "react";
 
@@ -13,7 +13,6 @@ import { StoreService } from "@/services/prisma/store.service";
 export default async function SellerLayout(props: PropsWithChildren) {
 
   const result = await StoreService.fetchUserStores();
-  console.log("🚀 ~ SellerLayout ~ result:TALA", result)
 
   if ("redirect" in result) {
   redirect(result.redirect as string);
