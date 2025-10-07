@@ -230,12 +230,12 @@ export function MultiImageUploader({
         )
       }
 
-      <MediaDropZone
+    {/*   <MediaDropZone
         setUploadingImages={setUploadingImages}
         uploadFile={uploadFile}
         showAllImages={showAllImages}
         hasImages={hasImages}
-      />
+      /> */}
 
       {storeImages.length === 0 ? (
         <MediaDropZone

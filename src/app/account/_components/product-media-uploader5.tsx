@@ -1,6 +1,6 @@
 "use client";
 import React, {  useState } from "react";
-import { useFileUploadToCloudinary } from "../../app/account/_hooks/use-file-upload";
+import { useFileUploadToCloudinary } from "../_hooks/use-file-upload";
 import { Loader2, XIcon } from "lucide-react";
 import { Image } from "@prisma/client";
 import MediaDropZone from "@/app/account/_components/media-drop-zone";
@@ -10,6 +10,7 @@ export type UploadingImage = {
   previewUrl: string;
   status: "uploading" | "processing" | "done";
 };
+
 
 const ProductMediaUploader5 = ({
   storeId,

@@ -4,6 +4,8 @@ import {
   FieldErrors,
   Path,
   FieldValues,
+  Controller,
+  Control,
 } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +17,7 @@ type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 
 interface DynamicFormFieldProps<T extends FieldValues> {
-  inputType: "select" | "input" | "textarea" | "file" | "test";
+  inputType: "select" | "input" | "textarea" | "file" | "test" | "editor";
   type?: "text" | "email" | "password" | "number";
   // name: string;
   name: Path<T>; // Assurer que "name" est une clé valide du formulaire
@@ -27,11 +29,12 @@ interface DynamicFormFieldProps<T extends FieldValues> {
   lines?: number;
   register: UseFormRegister<T>;
   errors: FieldErrors<FieldValues>;
-  fieldProps?: InputProps | TextareaProps | SelectProps;
+  fieldProps?: InputProps | TextareaProps | SelectProps| { placeholder?: string };
   showLabel?: boolean;
   floatingLabel?: boolean;
   showError?: boolean;
   children?: ReactNode;
+  control?: Control<T>;
 }
 
 const DynamicFormField = <T extends FieldValues>({
@@ -49,11 +52,13 @@ const DynamicFormField = <T extends FieldValues>({
   showError = true,
   showLabel = false,
   floatingLabel = false,
+  control,
 }: DynamicFormFieldProps<T>) => {
   const error = errors[name];
   const errorMessage = error ? (error.message as string) : "";
 
   switch (inputType) {
+
     case "textarea":
       return (
         <div className="w-full">
@@ -193,7 +198,7 @@ export default DynamicFormField;
 
 interface ErrorMessageProps<T extends FieldValues> {
   error: FieldErrors<T>[Path<T>];
-  type?: "text" | "email" | "password" | "number" | "checkbox" | "file";
+  type?: "text" | "email" | "password" | "number" | "checkbox" | "file"| "file";
   errorMessage: string;
 }
 

@@ -36,6 +36,7 @@ const ImageGrid = ({
   const remainingImages = visibleImages.slice(1);
   const remainingCount = Math.max(0, storeImages.length - visibleImages.length);
   const moreImagesPreview = visibleImages[7];
+  const hasImages = storeImages.length > 0
 
   // Gestionnaires d'événements optimisés
   const handleToggleSelection = useCallback(
@@ -137,8 +138,10 @@ const ImageGrid = ({
   };
 
   // Composant pour le bouton d'ajout
-  const AddImageButton = () => {
-    if (!(showExpanded && hasMoreImages && !isUploading)) return null;
+  const AddImageButton = ({hasImages}:{hasImages:boolean}) => {
+    if (!(hasImages && !isUploading)) return null;
+
+     /*  if (!(showExpanded && hasMoreImages && !isUploading)) return null; */
 
     return (
       <div className="col-span-1 row-span-1 aspect-square">
@@ -172,7 +175,7 @@ const ImageGrid = ({
       <SecondaryImageCards />
       <MoreImagesIndicator />
       <UploadingImages />
-      <AddImageButton />
+      <AddImageButton hasImages={hasImages}/>
     </div>
   );
 };

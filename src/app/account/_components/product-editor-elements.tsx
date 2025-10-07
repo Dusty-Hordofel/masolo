@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import { ProductEditorSharedProps } from "@/@types/admin/product";
 import { useProductEditor } from "@/app/account/_hooks/use-producteditor";
 import { MultiImageUploader } from "@/app/account/_components/multi-image-uploader";
+import { TipTapProductEditor } from "./richTextEditor/tiptap-product-editor";
 
 const ProductEditorElements = ({
   displayType,
@@ -29,8 +30,12 @@ const ProductEditorElements = ({
     toggleImageSelection,
     selectedImageIds,
     setSelectedImageIds,
+    setValue,
+    watch,
   } = useProductEditor({ displayType, productStatus, initialValues });
-  /* console.log("🚀 ~ initialValues:", initialValues); */
+  
+
+   const description = watch("description")
 
   return (
     <>
@@ -62,46 +67,13 @@ const ProductEditorElements = ({
               disabled: false,
             }}
           />
-          <DynamicFormField
-            showLabel
-            inputType="textarea"
-            label="Description"
-            name="description"
-            register={register}
-            errors={errors}
-            lines={8}
-            fieldProps={{
-              placeholder: "Enter a product description*",
-            }}
-          />
 
-         {/*  <div className="flex flex-wrap">
-            {productStatus === "existing-product" &&
-              initialValues &&
-              initialValues.images && (
-                <ProductMediaUploader
-                  productId={initialValues.id}
-                  storeId={initialValues.storeId}
-                  setUploadedImages={setUploadedImages}
-                  currentProductImages={currentProductImages}
-                  handleDeleteProductImage={handleDeleteProductImage}
+              <TipTapProductEditor
+                  content={description}
+                  onChange={(value) => setValue("description", value, { shouldValidate: true })}
+                  placeholder="Décrivez votre produit en détail. Utilisez la barre d'outils pour formater le texte..."
                 />
-              )}
-          </div> */}
-          {/* <div className="flex flex-wrap">
-            {productStatus === "existing-product" &&
-              initialValues &&
-              initialValues.images && (
-                <ProductMediaUploader5
-                  productId={initialValues.id}
-                  storeId={initialValues.storeId}
-                  setUploadedImages={setUploadedImages}
-                  currentProductImages={currentProductImages}
-                  handleDeleteProductImage={handleDeleteProductImage}
-                  hasImages={true}
-                />
-              )}
-          </div> */}
+
 
           {productStatus === "existing-product" &&
             initialValues &&
@@ -111,7 +83,7 @@ const ProductEditorElements = ({
                 storeId={initialValues.storeId}
                 setUploadedImages={setUploadedImages}
                 storeImages={currentProductImages}
-               /*  handleDeleteProductImage={handleDeleteProductImage} */
+                /*  handleDeleteProductImage={handleDeleteProductImage} */
                 handleDeleteSelectedImages={handleDeleteSelectedImages}
                 toggleImageSelection={toggleImageSelection}
                 selectedImageIds={selectedImageIds}

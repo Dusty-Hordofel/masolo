@@ -1,6 +1,4 @@
 import {
-  Dispatch,
-  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -64,6 +62,8 @@ export function useProductEditor({
     handleSubmit,
     reset,
     watch,
+    control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormData>({
     resolver: zodResolver(ProductSchema),
@@ -152,18 +152,7 @@ export function useProductEditor({
     } 
   };
 
-  // const toggleImageSelection = (imageId: string) => {
-  //   console.log("🚀 ~ toggleImageSelection ~ imageId:", imageId);
-  //   setSelectedImages((prev) => {
-  //     const newSet = new Set(prev);
-  //     if (newSet.has(imageId)) {
-  //       newSet.delete(imageId);
-  //     } else {
-  //       newSet.add(imageId);
-  //     }
-  //     return newSet;
-  //   });
-  // };
+
   // Fonction pour sélectionner/désélectionner une image
   const toggleImageSelection = (id: string) => {
     setSelectedImageIds((prev) => {
@@ -240,43 +229,6 @@ export function useProductEditor({
     setIsDeleting(false);
   };
 
-  // Fonction utilitaire pour vérifier si une image est sélectionnée
-  const isImageSelected = (id: string) => selectedImageIds.includes(id);
-
-  // Fonction utilitaire pour vérifier si une image est supprimée
-  const isImageDeleted = (id: string) => deletedImageIds.includes(id);
-
-  // const deleteSelectedImages = async (
-  //   selectedImages: Set<string>,
-  //   setSelectedImages: Dispatch<SetStateAction<Set<string>>>
-  // ) => {
-  //   const imagesToDelete = storeImages.filter((img) =>
-  //     selectedImages.has(img.id)
-  //   );
-  //   console.log("🚀 ~ deleteSelectedImages ~ imagesToDelete:", imagesToDelete);
-
-  //   const deletePromises = imagesToDelete.map(async (image) => {
-  //     if (image.id) {
-  //       await deleteProductImage(image.id);
-  //       // try {
-  //       //   await fetch("/api/delete-cloudinary", {
-  //       //     method: "DELETE",
-  //       //     headers: { "Content-Type": "application/json" },
-  //       //     body: JSON.stringify({ publicId: image.publicId }),
-  //       //   });
-  //       // } catch (error) {
-  //       //   console.error("Delete error:", error);
-  //       // }
-  //     }
-
-  //     return;
-  //   });
-
-  //   await Promise.all(deletePromises);
-  //   setStoreImages((prev) => prev.filter((img) => !selectedImages.has(img.id)));
-  //   setSelectedImages(new Set());
-  // };
-
   // Close modal
   const closeModal = useCallback(() => {
     router[displayType === "modal" ? "back" : "push"](
@@ -288,7 +240,9 @@ export function useProductEditor({
     register,
     handleSubmit,
     watch,
+    control,
     errors,
+    setValue,
     isSubmitting,
     handleProductSubmit,
     handleDeleteProduct,

@@ -18,11 +18,10 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  // provider = "postgresql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
-  // relationMode = "prisma"
 }
+
 
 enum UserRole {
   SUPER_ADMIN // Full control over the platform
@@ -173,7 +172,7 @@ model Product {
    id        String   @id @default(cuid()) @map("_id")
   name                String
   price               Float      @default(0)
-  description         String
+  description         String     @db.Text
   inventory           Int        @default(0)
   isPreOrderAvailable Boolean    @default(false)
   storeId             String     

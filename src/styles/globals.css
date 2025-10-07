@@ -170,3 +170,58 @@ body {
   /* Placeholder-shown */
   @apply has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground;
 }
+
+
+
+/* Tiptap Editor Styles */
+.tiptap {
+  @apply outline-none;
+}
+
+.tiptap p {
+  @apply mb-4;
+}
+
+.tiptap h1 {
+  @apply text-3xl font-bold mb-4 mt-6;
+}
+
+.tiptap h2 {
+  @apply text-2xl font-bold mb-3 mt-5;
+}
+
+.tiptap h3 {
+  @apply text-xl font-bold mb-2 mt-4;
+}
+
+.tiptap ul {
+  @apply list-disc pl-6 mb-4;
+}
+
+.tiptap ol {
+  @apply list-decimal pl-6 mb-4;
+}
+
+.tiptap li {
+  @apply mb-1;
+}
+
+.tiptap strong {
+  @apply font-bold;
+}
+
+.tiptap em {
+  @apply italic;
+}
+
+.tiptap a {
+  @apply text-accent underline hover:text-accent/80 transition-colors;
+}
+
+.tiptap code {
+  @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+.tiptap blockquote {
+  @apply border-l-4 border-border pl-4 italic my-4;
+}

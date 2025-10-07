@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.mjs"
-  ],
+, "src/app/account/_components/richTextEditor/MenuBar.jsx", "src/app/account/_components/richTextEditor/JobDescriptionEditor.jsx"  ],
   "exclude": ["node_modules"]
 }
