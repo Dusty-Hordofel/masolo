@@ -1,9 +1,9 @@
 import { routes } from "@/app/data/routes";
-import { CartLineItems } from "@/components/storefrontc/cart-line-items";
+/* import { CartLineItems } from "@/components/storefrontc/cart-line-items"; */
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
-import { currencyFormatter } from "@/lib/currency";
-import { getCart } from "@/actions/add-to-cart";
+/* import { currencyFormatter } from "@/lib/currency";
+import { getCart } from "@/actions/add-to-cart"; */
 import { ChevronRight } from "lucide-react";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -12,9 +12,9 @@ import { CheckoutButton } from "./components/checkout-button";
 
 const CartPage = async () => {
   const cartId = cookies().get("cartId")?.value;
-  const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
+/*   const { cartItems, uniqueStoreIds, cartItemDetails } = await getCart(
     String(cartId)
-  );
+  ); */
   // console.log("🚀 ~ CartPage ~ cartItems:", cartItems);
   // console.log("🚀 ~ CartPage ~ cartItemDetails:", cartItemDetails);
 
@@ -32,7 +32,7 @@ const CartPage = async () => {
   // console.log("🚀 ~ cartQuantity ~ cartQuantity:", cartQuantity);
   // console.log("🚀 ~ CartPage ~ lolo:", lolo);
 
-  if (!String(cartId) || !cartItems.length) {
+/*   if (!String(cartId) || !cartItems.length) {
     return (
       <div className="mt-4 gap-4 rounded-md border-2 border-dashed border-gray-200 p-6 text-center h-[200px] flex items-center justify-center flex-col">
         <Heading size="h3">Your cart is empty</Heading>
@@ -42,7 +42,7 @@ const CartPage = async () => {
       </div>
     );
   }
-
+ */
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
@@ -57,7 +57,7 @@ const CartPage = async () => {
           </Button>
         </Link>
       </div>
-      <div className="lg:grid lg:grid-cols-9 lg:gap-6 flex flex-col-reverse gap-6">
+      {/* <div className="lg:grid lg:grid-cols-9 lg:gap-6 flex flex-col-reverse gap-6">
         <div className="col-span-6 flex flex-col gap-8">
           {uniqueStoreIds.map((storeId, i) => (
             <div
@@ -70,14 +70,7 @@ const CartPage = async () => {
                     ?.name
                 }
               </Heading>
-              <CartLineItems
-                variant="cart"
-                cartItems={cartItems}
-                products={
-                  cartItemDetails?.filter((item) => item.storeId === storeId) ??
-                  []
-                }
-              />
+          
             </div>
           ))}
         </div>
@@ -110,7 +103,16 @@ const CartPage = async () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
+
+       {/*    <CartLineItems
+                variant="cart"
+                cartItems={cartItems}
+                products={
+                  cartItemDetails?.filter((item) => item.storeId === storeId) ??
+                  []
+                }
+              /> */}
     </div>
   );
 };

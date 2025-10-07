@@ -18,7 +18,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -168,11 +168,12 @@ model Store {
 
 //   @@map("stores")
 
+
 model Product {
    id        String   @id @default(cuid()) @map("_id")
   name                String
   price               Float      @default(0)
-  description         String     @db.Text
+  description         String    
   inventory           Int        @default(0)
   isPreOrderAvailable Boolean    @default(false)
   storeId             String     

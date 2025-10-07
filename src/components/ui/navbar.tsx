@@ -10,7 +10,7 @@ import { ProductSearch } from "../storefront/product-search";
 import { IconWithText } from "./icon-with-text";
 import { Truck } from "lucide-react";
 import { MenuItems } from "./menu-items";
-import { ShoppingCartHeader } from "../shopping-cart-header";
+/* import { ShoppingCartHeader } from "../shopping-cart-header"; */
 
 const NavBar = ({
   showSecondAnnouncementBar,
@@ -66,7 +66,7 @@ const NavBar = ({
               </Link>
             </li>
             <li>
-              <ShoppingCartHeader />
+             {/*  <ShoppingCartHeader /> */}
             </li>
           </ul>
         </ContentWrapper>

@@ -2,7 +2,7 @@
 
 import { StoreAndProduct } from "@/@types/admin/product";
 import { Button } from "@/components/ui/button";
-import { addToCart } from "@/actions/add-to-cart";
+/* import { addToCart } from "@/actions/add-to-cart"; */
 import {
   useTransition,
   useCallback,
@@ -50,7 +50,7 @@ export const ProductCard = ({
           {!hideButtonActions && (
             <div className="flex flex-col sm:flex-row gap-2 items-center justify-between mt-4 mb-8">
               <ProductQuickViewButton productId={product.id} />
-              <ProductCartActions
+             {/*  <ProductCartActions
                 addToCartAction={addToCart}
                 availableInventory={product.inventory}
                 isPreOrderAvailable={product.isPreOrderAvailable}
@@ -58,7 +58,7 @@ export const ProductCard = ({
                 productName={product.name}
                 disableQuantitySelector
                 id={product.id}
-              />
+              /> */}
             </div>
           )}
         </div>
@@ -86,7 +86,7 @@ export const ProductInformation = ({
 
 export const ProductCartActions = (props: {
   id: string;
-  addToCartAction: typeof addToCart;
+  /* addToCartAction: typeof addToCart; */
   availableInventory: number;
   isPreOrderAvailable?: boolean;
   productId: string;
@@ -108,11 +108,11 @@ export const ProductCartActions = (props: {
         !props.disableQuantitySelector && (
           <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
         )}
-      {getActionButton(
+      {/* {getActionButton(
         props.availableInventory,
         props.isPreOrderAvailable ?? false,
         { ...props, quantity }
-      )}
+      )} */}
       availableInventory: number | null, isPreOrderAvailable: boolean, props:
       ActionButtonProps
     </div>

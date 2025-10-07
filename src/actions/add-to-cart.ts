@@ -9,7 +9,7 @@ import { z } from "zod";
 import { ProductWithImages } from "@/@types/admin/product";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
-export async function addToCart(newCartItem: Omit<CartItem, "cartId">) {
+/* export async function addToCart(newCartItem: Omit<CartItem, "cartId">) {
   try {
     const cookieStore = cookies();
     const cartId = cookieStore.get("cartId")?.value;
@@ -48,9 +48,9 @@ export async function addToCart(newCartItem: Omit<CartItem, "cartId">) {
         "An unexpected error occurred while processing your request. Please try again later.",
     };
   }
-}
+} */
 
-export async function updateCart(
+/* export async function updateCart(
   cartId: string,
   newCartItem: Omit<CartItem, "cartId">
 ) {
@@ -85,11 +85,11 @@ export async function updateCart(
         "An unexpected error occurred while processing your request. Please try again later.",
     };
   }
-}
+} */
 
 const CartIdSchema = z.string();
 
-export async function getCart(cartId: string) {
+/* export async function getCart(cartId: string) {
   try {
     const parsedCartId = CartIdSchema.safeParse(cartId);
 
@@ -122,7 +122,7 @@ export async function getCart(cartId: string) {
     console.error("❌ Erreur dans getCart:", error);
     throw new Error("Impossible de récupérer le panier.");
   }
-}
+} */
 
 export type getCartTest = Omit<
   ProductWithImages,
@@ -177,7 +177,7 @@ export async function getCartItem(cartId: string, productId: string) {
   });
 }
 
-export async function createCartItem(
+/* export async function createCartItem(
   cartId: string,
   newCartItem: Omit<CartItem, "cartId">
 ) {
@@ -189,7 +189,7 @@ export async function createCartItem(
     },
   });
 }
-
+ */
 export async function updateCartItemQuantity(
   productId: string,
   cartId: string,

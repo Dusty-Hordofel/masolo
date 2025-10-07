@@ -1,8 +1,8 @@
 "use server";
 import { ShoppingCart } from "lucide-react";
-import { cookies } from "next/headers";
-import { getCart, getCartTest } from "@/actions/add-to-cart";
-import {
+/* import { cookies } from "next/headers"; */
+import { getCartTest } from "@/actions/add-to-cart";
+/* import {
   Sheet,
   SheetBody,
   SheetClose,
@@ -12,13 +12,13 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "@/components/ui/sheet"; */
 import { Heading } from "./ui/heading";
-import { EmptyState } from "./ui/empty-state";
+/* import { EmptyState } from "./ui/empty-state"; */
 import { CartLineItems } from "./storefront/cart-line-items";
-import CartNavigationButton from "./cart-navigation-button";
+/* import CartNavigationButton from "./cart-navigation-button"; */
 
-const getCartData = async () => {
+/* const getCartData = async () => {
   const cartId = cookies().get("cartId")?.value;
   if (!cartId)
     return { cartItems: [], uniqueStoreIds: [], cartItemDetails: [] };
@@ -31,9 +31,9 @@ const getCartData = async () => {
   );
 
   return { cartItems, uniqueStoreIds, cartItemDetails, numberOfCartItems };
-};
+}; */
 
-export const ShoppingCartHeader = async () => {
+/* export const ShoppingCartHeader = async () => {
   const { cartItems, uniqueStoreIds, cartItemDetails, numberOfCartItems } =
     await getCartData();
 
@@ -75,7 +75,7 @@ export const ShoppingCartHeader = async () => {
       </SheetContent>
     </Sheet>
   );
-};
+}; */
 
 export const CartIconBadge = ({
   numberOfCartItems,
